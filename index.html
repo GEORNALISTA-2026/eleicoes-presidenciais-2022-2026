@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Presidente 2022 × 2026 • Dashboard detalhado</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2c;--panel2:#182238;--text:#eef3ff;--muted:#9eabc5;--line:#293653;--accent:#62a8ff;--good:#45d19a;--warn:#f4c95d;--bad:#ff6b7a;--shadow:0 16px 40px rgba(0,0,0,.24)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#172443 0,#0b1020 45%,#080c16 100%);color:var(--text);font:14px/1.45 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.container{max-width:1550px;margin:auto;padding:22px}.hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px}.title h1{font-size:30px;margin:0 0 5px}.title p{margin:0;color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.btn:hover{border-color:var(--accent)}.btn.primary{background:#1c4e8d;border-color:#3275c9}.btn:disabled{opacity:.45;cursor:not-allowed}
+.card{background:linear-gradient(180deg,rgba(24,34,56,.96),rgba(16,24,41,.96));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+.status{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#0e172a;border:1px solid var(--line);color:var(--muted)}.pill.ok{color:var(--good);border-color:#245d4c}.pill.err{color:var(--bad);border-color:#71323c}.small{font-size:12px;color:var(--muted)}
+.modebar{display:flex;gap:8px;flex-wrap:wrap}.mode{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:#0e1628;color:var(--muted);cursor:pointer;font-weight:800}.mode.active{background:#1b3158;color:#fff;border-color:#3769a8}
+.toolbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.field label{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.field select{width:100%;padding:10px 11px;border-radius:9px;border:1px solid var(--line);background:#0d1526;color:var(--text);outline:none}.field select:focus{border-color:var(--accent)}
+.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.metric{background:#0e1628;border:1px solid var(--line);border-radius:13px;padding:14px}.metric .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}.metric .v{font-size:25px;font-weight:800;margin-top:4px}.metric .s{font-size:11px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tabs{display:flex;gap:8px;margin:4px 0 14px;flex-wrap:wrap}.tab{padding:9px 13px;border-radius:9px;border:1px solid var(--line);background:#0e1628;color:var(--muted);cursor:pointer;font-weight:700}.tab.active{background:#1b3158;color:#fff;border-color:#3769a8}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}.table th:first-child,.table td:first-child{text-align:left}.table th{position:sticky;top:0;background:#111c31;color:#cbd6ee;font-size:11px;text-transform:uppercase;letter-spacing:.04em}.table tr:hover td{background:#17233a}.bar{height:8px;background:#26334d;border-radius:99px;overflow:hidden;min-width:90px}.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.empty{text-align:center;padding:38px;color:var(--muted)}.notice{padding:12px 14px;border-radius:11px;background:#101a2d;border:1px solid var(--line);color:#c6d2ea}.notice strong{color:#fff}.hidden{display:none!important}.footer{color:#7886a2;font-size:11px;margin-top:18px}.delta-up{color:var(--good);font-weight:700}.delta-down{color:var(--bad);font-weight:700}.delta-zero{color:var(--muted)}
+@media(max-width:1100px){.toolbar{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(3,1fr)}.grid2,.grid3{grid-template-columns:1fr}}
+@media(max-width:650px){.container{padding:12px}.hero{display:block}.hero .actions{margin-top:12px;justify-content:flex-start}.toolbar{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.title h1{font-size:24px}}
+
+/* Visual premium */
+:root{--accent:#7db4ff;--accent2:#a88cff;--glow:0 20px 55px rgba(0,0,0,.32)}
+body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),transparent 60%),radial-gradient(800px 420px at 92% 0%,rgba(121,86,180,.20),transparent 60%),linear-gradient(180deg,#080d18 0%,#0b1120 48%,#080c15 100%)}
+.container{max-width:1650px;padding:24px}
+.hero{padding:22px 24px;border:1px solid rgba(125,180,255,.18);border-radius:22px;background:linear-gradient(135deg,rgba(24,38,67,.88),rgba(13,20,35,.74));box-shadow:var(--glow);align-items:center}
+.title h1{font-size:34px;letter-spacing:-.035em;background:linear-gradient(90deg,#fff,#bcd7ff 55%,#d4c8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.title p{font-size:13px;letter-spacing:.02em}
+.actions .btn{border-radius:12px;background:rgba(13,22,39,.85);backdrop-filter:blur(10px)}
+.actions .btn.primary{background:linear-gradient(135deg,#24558f,#453c88);border-color:rgba(141,187,255,.45)}
+.card{border-color:rgba(117,145,190,.18);background:linear-gradient(180deg,rgba(20,31,52,.82),rgba(11,19,34,.86));box-shadow:0 14px 42px rgba(0,0,0,.20);backdrop-filter:blur(14px)}
+.toolbar .field select,.field select{background:rgba(7,14,27,.82);border-color:rgba(117,145,190,.25);border-radius:11px}
+.modebar,.tabs{padding:4px;border-radius:14px;background:rgba(5,11,21,.45);width:max-content;max-width:100%}
+.mode,.tab{border:1px solid transparent;border-radius:10px;background:transparent;padding:10px 14px}.mode.active,.tab.active{background:linear-gradient(135deg,#254e82,#3c3b75);border-color:rgba(142,188,255,.35);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.metrics{gap:10px}.metric{border-color:rgba(117,145,190,.18);background:linear-gradient(180deg,rgba(11,21,38,.85),rgba(9,16,29,.75));border-radius:15px}.metric .v{letter-spacing:-.025em}
+.spotlight{padding:20px 20px 18px;overflow:hidden;position:relative}.spotlight:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(94,153,230,.08),transparent 45%,rgba(167,135,230,.08));pointer-events:none}
+.spot-head{position:relative;display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}.spot-title{font-size:18px;font-weight:850;letter-spacing:-.02em}.spot-sub{font-size:12px;color:var(--muted)}
+.duels{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px}.duel{border:1px solid rgba(117,145,190,.20);border-radius:18px;padding:16px;background:linear-gradient(145deg,rgba(16,28,48,.92),rgba(9,16,29,.82));box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.duel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.duel-year{font-weight:850;font-size:15px}.duel-level{font-size:11px;color:var(--muted);max-width:60%;text-align:right}
+.faces{display:grid;grid-template-columns:1fr 56px 1fr;gap:10px;align-items:center}.cand{text-align:center}.cand .name{font-weight:850;font-size:18px;line-height:1.1}.cand .role{font-size:11px;color:var(--muted);margin-top:3px}.cand .votes{font-size:27px;font-weight:900;letter-spacing:-.04em;margin-top:8px}.cand .share{font-size:12px;color:#c9d7ee;margin-top:1px}.vs{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;margin:auto;background:#0b1424;border:1px solid rgba(132,159,202,.25);color:#93a6c8;font-size:11px;font-weight:900}
+.duel-bar{height:9px;background:#27344c;border-radius:99px;display:flex;overflow:hidden;margin:14px 0 11px}.duel-bar .left,.duel-bar .right{height:100%}.duel-bar .left{background:linear-gradient(90deg,#78a9e8,#91b9ef)}.duel-bar .right{background:linear-gradient(90deg,#a18de1,#b7a5ec)}
+.duel-foot{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.duel-stat{padding:8px 9px;border-radius:10px;background:rgba(6,13,24,.55);border:1px solid rgba(117,145,190,.12)}.duel-stat .k{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.06em}.duel-stat .v{font-size:13px;font-weight:800;margin-top:2px}.duel-note{margin-top:10px;font-size:10px;color:#7f8eaa}
+.featured-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.featured-card{padding:14px;border:1px solid rgba(117,145,190,.16);border-radius:14px;background:rgba(8,15,27,.48)}.featured-card h3{margin:0 0 10px}.featured-line{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(117,145,190,.10)}.featured-line:last-child{border-bottom:0}.featured-line span:last-child{font-weight:850}
+.table th{background:#0d172a}.bar{background:#202d44}.bar>i{background:linear-gradient(90deg,#78a9e8,#9d8bdd)}
+.notice{background:rgba(11,20,35,.62);border-color:rgba(117,145,190,.15)}
+@media(max-width:900px){.duels,.featured-grid{grid-template-columns:1fr}.faces{grid-template-columns:1fr 44px 1fr}.cand .votes{font-size:23px}}
+@media(max-width:650px){.container{padding:10px}.hero{padding:17px}.title h1{font-size:26px}.spotlight{padding:15px}.duel{padding:13px}.duel-foot{grid-template-columns:1fr 1fr}.duel-stat:last-child{grid-column:1/-1}.cand .name{font-size:15px}.cand .votes{font-size:20px}.modebar,.tabs{width:100%;overflow:auto}.mode,.tab{white-space:nowrap}.spot-head{display:block}.duel-level{max-width:none;text-align:left;margin-top:4px}}
+
+
+.variation-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:16px}.variation-title{font-size:19px;font-weight:900;letter-spacing:-.02em}.variation-sub{font-size:12px;color:var(--muted);margin-top:3px}.variation-note{padding:10px 12px;border:1px solid rgba(117,145,190,.14);background:rgba(8,15,27,.45);border-radius:11px;color:#aebbd2;font-size:11px;margin-bottom:16px}.variation-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.variation-card{border:1px solid rgba(117,145,190,.18);border-radius:16px;background:linear-gradient(145deg,rgba(16,28,48,.9),rgba(9,16,29,.78));padding:16px}.variation-card h3{margin:0 0 4px;font-size:15px}.variation-card .chart-caption{font-size:11px;color:var(--muted);margin-bottom:15px}.vchart{display:grid;gap:15px}.vrow{display:grid;grid-template-columns:185px 1fr;gap:12px;align-items:center}.vlabel{font-weight:800;font-size:12px;line-height:1.25}.vlabel small{display:block;color:var(--muted);font-weight:500;margin-top:2px}.bars{display:grid;gap:6px}.barline{display:grid;grid-template-columns:54px 1fr 88px;gap:7px;align-items:center}.bar-year{font-size:10px;color:var(--muted);font-weight:800}.bartrack{height:11px;background:#202d44;border-radius:99px;overflow:hidden}.barfill{height:100%;border-radius:99px;background:linear-gradient(90deg,#78a9e8,#9d8bdd);min-width:0}.barvalue{font-size:11px;text-align:right;font-weight:800}.barvalue.na{color:#687895;font-weight:600}.variation-deltas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.variation-delta{padding:11px;border-radius:11px;background:rgba(6,13,24,.55);border:1px solid rgba(117,145,190,.12)}.variation-delta .k{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.06em}.variation-delta .v{font-size:16px;font-weight:900;margin-top:3px}.variation-delta .s{font-size:10px;color:var(--muted);margin-top:2px}.variation-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:13px;color:var(--muted);font-size:10px}.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#78a9e8;margin-right:5px}.legend-dot.second{background:#9d8bdd}@media(max-width:900px){.variation-grid{grid-template-columns:1fr}.vrow{grid-template-columns:145px 1fr}}@media(max-width:650px){.variation-head{display:block}.vrow{grid-template-columns:1fr;gap:6px}.barline{grid-template-columns:48px 1fr 76px}.variation-deltas{grid-template-columns:1fr}}
+
+.geo-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:16px}.geo-title{font-size:20px;font-weight:900;letter-spacing:-.02em}.geo-sub{font-size:12px;color:var(--muted);margin-top:3px}.geo-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.geo-control{padding:9px 11px;border:1px solid rgba(117,145,190,.2);border-radius:10px;background:rgba(7,14,27,.72);color:var(--text)}.geo-search{min-width:260px;flex:1}.geo-table{min-width:980px}.geo-table .num{text-align:right}.geo-note{margin:12px 0;padding:11px 13px;border-radius:11px;background:rgba(11,20,35,.62);border:1px solid rgba(117,145,190,.15);color:#b9c7df;font-size:12px}.geo-section-title{margin:20px 0 9px;font-size:15px}.geo-badge{display:inline-block;padding:3px 7px;border-radius:999px;background:#101c31;border:1px solid rgba(117,145,190,.16);font-size:10px;color:#aebbd3}.geo-positive{color:var(--good);font-weight:800}.geo-negative{color:var(--bad);font-weight:800}.geo-neutral{color:var(--muted)}
+.geo-focus{margin:16px 0 22px}.geo-focus-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}.geo-focus-title{font-size:18px;font-weight:900}.geo-focus-sub{font-size:12px;color:var(--muted);margin-top:4px}.geo-focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.geo-focus-card{border:1px solid rgba(117,145,190,.18);border-radius:14px;background:linear-gradient(145deg,rgba(16,29,49,.9),rgba(8,15,28,.92));overflow:hidden}.geo-focus-card.gain{border-color:rgba(73,190,128,.28)}.geo-focus-card.loss{border-color:rgba(235,102,102,.25)}.geo-focus-card-head{padding:13px 15px;border-bottom:1px solid rgba(117,145,190,.13);display:flex;justify-content:space-between;align-items:center}.geo-focus-card-head strong{font-size:13px}.geo-focus-card-head span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.geo-list{padding:8px 0}.geo-item{display:grid;grid-template-columns:28px 1fr auto;gap:9px;align-items:center;padding:8px 14px;border-bottom:1px solid rgba(117,145,190,.08)}.geo-item:last-child{border-bottom:0}.geo-rank{font-size:11px;color:#8291aa;font-weight:800}.geo-place{font-size:12px;font-weight:750}.geo-place small{display:block;color:#75849d;font-size:10px;margin-top:2px;font-weight:500}.geo-delta{font-size:13px;font-weight:900;text-align:right}.geo-delta.gain{color:var(--good)}.geo-delta.loss{color:var(--bad)}.geo-mini{font-size:10px;color:#71809a;font-weight:500;margin-top:2px}.geo-section-label{display:flex;align-items:center;gap:8px;margin:20px 0 9px;font-size:15px}.geo-section-label .geo-badge{font-size:9px}.geo-top-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.geo-top-card{border:1px solid rgba(117,145,190,.16);border-radius:13px;background:rgba(8,15,28,.72);overflow:hidden}.geo-top-card h4{margin:0;padding:12px 14px;border-bottom:1px solid rgba(117,145,190,.11);font-size:13px}.geo-top-card h4 small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:3px}.geo-table.top-table{min-width:620px}.geo-table.top-table th:first-child,.geo-table.top-table td:first-child{width:45px;text-align:center}.geo-table.top-table td:nth-child(3),.geo-table.top-table th:nth-child(3){text-align:right}.geo-table.top-table td:nth-child(4),.geo-table.top-table th:nth-child(4){text-align:right}@media(max-width:850px){.geo-focus-grid,.geo-top-grid{grid-template-columns:1fr}}
+
+.map-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:16px 0}
+.map-field{display:flex;flex-direction:column;gap:6px;min-width:210px}
+.map-field label{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.map-field select{background:#0c1425;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;min-width:210px}
+.map-layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:14px;align-items:stretch}
+.election-map{height:650px;min-height:420px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#101a2c}
+.map-side{display:flex;flex-direction:column;gap:12px}
+.map-stat{background:linear-gradient(145deg,rgba(31,48,77,.8),rgba(17,26,44,.95));border:1px solid var(--line);border-radius:14px;padding:14px}
+.map-stat .big{font-size:26px;font-weight:900;margin:5px 0}
+.map-legend{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}
+.map-legend-item{display:flex;align-items:center;gap:8px}
+.map-swatch{width:14px;height:14px;border-radius:4px;border:1px solid rgba(255,255,255,.18);flex:none}
+.map-note{font-size:12px;color:var(--muted);line-height:1.5}
+.leaflet-container{font:13px system-ui,sans-serif;background:#0e1728}
+.leaflet-tooltip{background:#111c30;color:#eef3ff;border:1px solid #3a4c6b;box-shadow:0 8px 22px #0005;border-radius:8px}
+.leaflet-tooltip:before{border-top-color:#3a4c6b}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#111c30;color:#eef3ff}
+.leaflet-popup-content{line-height:1.55}
+@media(max-width:850px){.map-layout{grid-template-columns:1fr}.map-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.election-map{height:520px}}
+@media(max-width:520px){.map-side{grid-template-columns:1fr}.election-map{height:440px}.map-field,.map-field select{width:100%;min-width:0}}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <div class="title">
+      <h1>Presidente 2022 × 2026</h1>
+      <p>Resultados presidenciais por seção • comparação detalhada 2022 × 2026</p>
+    </div>
+    <div class="actions">
+      <span class="pill" id="onlineBadge">Carregando dados online…</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="status" id="status">
+      <span class="pill">Dados hospedados no GitHub Pages</span>
+      <span class="small">Os dados são carregados automaticamente. A primeira consulta pode levar alguns segundos.</span>
+    </div>
+    <div style="height:10px"></div>
+    <div class="grid2">
+      <div class="notice" id="status2022"><strong>2022:</strong> não carregado</div>
+      <div class="notice" id="status2026"><strong>2026:</strong> não carregado</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="modebar">
+      <button class="mode active" data-mode="compare">Comparar 2022 × 2026</button>
+      <button class="mode" data-mode="2022">Somente 2022</button>
+      <button class="mode" data-mode="2026">Somente 2026</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <div class="field"><label>UF</label><select id="uf" disabled><option value="">Brasil</option></select></div>
+      <div class="field"><label>Município</label><select id="municipio" disabled><option value="">Todos</option></select></div>
+      <div class="field"><label>Zona</label><select id="zona" disabled><option value="">Todas</option></select></div>
+      <div class="field"><label>Seção</label><select id="secao" disabled><option value="">Todas</option></select></div>
+      <div class="field"><label>Candidato / categoria</label><select id="candidato" disabled><option value="">Todos</option></select></div>
+    </div>
+  </div>
+
+  <section class="spotlight card" id="spotlight"></section>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="resumo">Resumo</button>
+    <button class="tab" data-tab="ranking">Ranking</button>
+    <button class="tab" data-tab="variacao">Variação</button>
+    <button class="tab" data-tab="geografia">Geografia</button>
+    <button class="tab" data-tab="mapas">Mapas eleitorais</button>
+    <button class="tab" data-tab="zonas">Zonas</button>
+    <button class="tab" data-tab="secoes">Seções</button>
+    <button class="tab" data-tab="candidatoTab">Candidato</button>
+  </div>
+
+  <section id="tab-resumo" class="card"></section>
+  <section id="tab-ranking" class="card hidden"></section>
+  <section id="tab-variacao" class="card hidden"></section>
+  <section id="tab-geografia" class="card hidden"></section>
+  <section id="tab-mapas" class="card hidden"></section>
+  <section id="tab-zonas" class="card hidden"></section>
+  <section id="tab-secoes" class="card hidden"></section>
+  <section id="tab-candidatoTab" class="card hidden"></section>
+
+  <div class="footer">
+    Destaque: 2022 = Lula × Jair Bolsonaro • 2026 = Lula × Flávio Bolsonaro. Os nomes e números de urna seguem os registros eleitorais do TSE. Dados derivados dos bancos presidenciais e das camadas detalhadas de 2022 e 2026. O dashboard apresenta estatísticas descritivas dos dados. Em 2022, aptos e abstenções não estão disponíveis na tabela de seções usada para a camada detalhada; o comparecimento é obtido pela soma dos votos presidenciais da seção.
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+'use strict';
+
+const $ = id => document.getElementById(id);
+
+const state = {
+  mode: 'compare',
+  years: {
+    2022: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null},
+    2026: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null}
+  },
+  uf:'',
+  municipio:'',
+  zona:'',
+  secao:'',
+  candidato:''
+};
+
+function escapeHtml(v){
+  return String(v ?? '').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function fmt(v){return num(v).toLocaleString('pt-BR')}
+function pct(v,d=1){return num(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d})+'%'}
+function option(value,label){return '<option value="'+escapeHtml(value)+'">'+escapeHtml(label)+'</option>'}
+function setSelect(el,html,disabled=false){el.innerHTML=html;el.disabled=disabled}
+
+function candidateName(year,code){
+  const c=String(code);
+  if(c==='95') return 'Branco';
+  if(c==='96') return 'Nulo';
+  const name=state.years[year].candidates[c];
+  return name && String(name).trim() && String(name).toLowerCase()!=='null'
+    ? String(name)
+    : 'Código '+c;
+}
+
+function totalVotes(summary){
+  return Object.values(summary?.votos||{}).reduce((a,b)=>a+num(b),0);
+}
+
+function aggregate(rows){
+  const out={secoes:rows.length,aptos:0,comparecimento:0,abstencoes:0,votos:{}};
+  for(const r of rows){
+    out.aptos+=num(r.a);
+    out.comparecimento+=num(r.c);
+    out.abstencoes+=num(r.b);
+    for(const [code,v] of Object.entries(r.v||{})){
+      out.votos[code]=(out.votos[code]||0)+num(v);
+    }
+  }
+  return out;
+}
+
+function hasYear(year){return !!state.years[year].index}
+
+function currentYears(){
+  if(state.mode==='2022') return hasYear('2022')?['2022']:[];
+  if(state.mode==='2026') return hasYear('2026')?['2026']:[];
+  return ['2022','2026'].filter(hasYear);
+}
+
+function summaryFor(year){
+  const d=state.years[year];
+  if(!d.index) return null;
+
+  if(!state.uf) return d.index.resumo_nacional;
+
+  const u=d.index.ufs[state.uf];
+  if(!u) return null;
+
+  if(!state.municipio) return u.resumo;
+
+  const m=u.municipios[state.municipio];
+  if(!m) return null;
+
+  if(!state.zona) return m.resumo;
+
+  const z=m.zonas[String(state.zona)];
+  if(!z) return null;
+
+  if(!state.secao) return z.resumo;
+
+  const rows=filteredRows(year);
+  return aggregate(rows);
+}
+
+function levelLabel(){
+  if(!state.uf) return 'Brasil';
+  const y=currentYears()[0];
+  const d=state.years[y];
+  const u=d?.index?.ufs?.[state.uf];
+  if(!u) return state.uf;
+  if(!state.municipio) return state.uf;
+  const m=u.municipios[state.municipio];
+  if(!m) return state.municipio;
+  if(!state.zona) return m.nm_municipio;
+  if(!state.secao) return m.nm_municipio+' • Zona '+state.zona;
+  return m.nm_municipio+' • Zona '+state.zona+' • Seção '+state.secao;
+}
+
+function setStatus(text,kind=''){
+  $('status').innerHTML='<span class="pill '+kind+'">'+escapeHtml(text)+'</span>';
+}
+
+function updateDataStatus(){
+  for(const year of ['2022','2026']){
+    const d=state.years[year];
+    if(!d.index){
+      $('status'+year).innerHTML='<strong>'+year+':</strong> não carregado';
+    }else{
+      $('status'+year).innerHTML='<strong>'+year+':</strong> '+fmt(d.index.total_secoes)+' seções • '+fmt(totalVotes(d.index.resumo_nacional))+' votos';
+    }
+  }
+}
+
+async function loadYear(year,files){
+  const d=state.years[year];
+  d.files.clear();
+  d.loadedRanges.clear();
+  d.rows=[];
+  for(const f of files)d.files.set(f.name,f);
+
+  const indexFile=files.find(f=>f.name==='index.json');
+  const candFile=files.find(f=>f.name==='candidatos.json');
+  if(!indexFile)throw new Error('index.json não encontrado na pasta '+year+'.');
+  if(!candFile)throw new Error('candidatos.json não encontrado na pasta '+year+'.');
+
+  d.index=JSON.parse(await indexFile.text());
+  d.candidates=JSON.parse(await candFile.text());
+  if(typeof mapState!=='undefined'){mapState.index22=null;mapState.index26=null;}
+
+  const ufs=Object.keys(d.index.ufs||{}).sort();
+  if(!ufs.length)throw new Error('index.json de '+year+' não contém UFs.');
+
+  updateDataStatus();
+  rebuildFilters();
+
+  setStatus('Dados '+year+' carregados • '+fmt(d.index.total_secoes)+' seções','ok');
+  renderAll();
+}
+
+function commonUFs(){
+  const a=Object.keys(state.years['2022'].index?.ufs||{});
+  const b=Object.keys(state.years['2026'].index?.ufs||{});
+  if(state.mode==='2022')return a;
+  if(state.mode==='2026')return b;
+  return a.filter(x=>b.includes(x));
+}
+
+function commonMunicipios(uf){
+  const a=state.years['2022'].index?.ufs?.[uf]?.municipios||{};
+  const b=state.years['2026'].index?.ufs?.[uf]?.municipios||{};
+  if(state.mode==='2022')return Object.entries(a);
+  if(state.mode==='2026')return Object.entries(b);
+  return Object.keys(a).filter(c=>b[c]).map(c=>[c,{
+    nm_municipio:a[c].nm_municipio||b[c].nm_municipio,
+    zonas:a[c].zonas
+  }]);
+}
+
+function commonZonas(uf,mun){
+  const a=state.years['2022'].index?.ufs?.[uf]?.municipios?.[mun]?.zonas||{};
+  const b=state.years['2026'].index?.ufs?.[uf]?.municipios?.[mun]?.zonas||{};
+  if(state.mode==='2022')return Object.entries(a);
+  if(state.mode==='2026')return Object.entries(b);
+  return Object.keys(a).filter(z=>b[z]).map(z=>[z,a[z]]);
+}
+
+function rebuildFilters(){
+  const ufs=commonUFs().sort();
+  setSelect($('uf'),'<option value="">Brasil (todas as UFs)</option>'+ufs.map(u=>option(u,u)).join(''),false);
+
+  if(state.uf){
+    const mus=commonMunicipios(state.uf).sort((a,b)=>
+      String(a[1].nm_municipio).localeCompare(String(b[1].nm_municipio),'pt-BR')
+    );
+    setSelect($('municipio'),'<option value="">Todos os municípios</option>'+
+      mus.map(([c,m])=>option(c,m.nm_municipio+' ('+c+')')).join(''),false);
+  }else{
+    setSelect($('municipio'),'<option value="">Todos os municípios</option>',true);
+  }
+
+  if(state.uf && state.municipio){
+    const zs=commonZonas(state.uf,state.municipio).sort((a,b)=>num(a[0])-num(b[0]));
+    setSelect($('zona'),'<option value="">Todas as zonas</option>'+
+      zs.map(([z,o])=>option(z,'Zona '+z+' • '+fmt(o.secoes)+' seções')).join(''),false);
+  }else{
+    setSelect($('zona'),'<option value="">Todas as zonas</option>',true);
+  }
+
+  setSelect($('secao'),'<option value="">Todas as seções</option>',true);
+  rebuildCandidateFilter();
+}
+
+function rebuildCandidateFilter(){
+  const years=currentYears();
+  if(years.length===0){
+    setSelect($('candidato'),'<option value="">Todos</option>',true);
+    return;
+  }
+
+  let entries=[];
+  if(years.length===1){
+    const y=years[0];
+    entries=Object.entries(state.years[y].candidates)
+      .sort((a,b)=>String(a[1]).localeCompare(String(b[1]),'pt-BR'))
+      .map(([c,n])=>[y,c,n]);
+  }else{
+    const seen=new Set();
+    for(const y of years){
+      for(const [c,n] of Object.entries(state.years[y].candidates)){
+        const key=y+'|'+c;
+        if(!seen.has(key)){
+          seen.add(key);
+          entries.push([y,c,n]);
+        }
+      }
+    }
+    entries.sort((a,b)=>
+      String(a[2]).localeCompare(String(b[2]),'pt-BR') ||
+      a[0].localeCompare(b[0]) ||
+      num(a[1])-num(b[1])
+    );
+  }
+
+  let html='<option value="">Todos</option>';
+  for(const [y,c,n] of entries){
+    html+=option(y+'|'+c,(years.length>1?y+' • ':'')+c+' • '+candidateName(y,c));
+  }
+  setSelect($('candidato'),html,false);
+  if(state.candidato){
+    const exists=[...$('candidato').options].some(o=>o.value===state.candidato);
+    if(!exists)state.candidato='';
+  }
+}
+
+async function readRange(year,uf,start,end){
+  const d=state.years[year];
+  const key=uf+':'+start+':'+end;
+  if(d.loadedRanges.has(key))return d.loadedRanges.get(key);
+
+  let f=d.files.get(uf+'.jsonl');
+  if(!f && d.remoteBase){
+    const url=new URL(encodeURIComponent(uf)+'.jsonl',d.remoteBase);
+    const res=await fetch(url.href);
+    if(!res.ok)throw new Error('Falha ao carregar '+uf+'.jsonl de '+year+' ('+res.status+').');
+    f=await res.blob();
+    d.files.set(uf+'.jsonl',f);
+  }
+  if(!f)throw new Error('Arquivo '+uf+'.jsonl não foi encontrado nos dados de '+year+'.');
+
+  const text=await f.slice(start,end).text();
+  const rows=text.split('\n').filter(Boolean).map(JSON.parse);
+  d.loadedRanges.set(key,rows);
+  return rows;
+}
+
+function filteredRows(year){
+  const d=state.years[year];
+  return (d.rows||[])
+    .filter(r=>!state.zona||String(r.z)===String(state.zona))
+    .filter(r=>!state.secao||String(r.s)===String(state.secao));
+}
+
+async function loadMunicipio(year){
+  const d=state.years[year];
+  const m=d.index?.ufs?.[state.uf]?.municipios?.[state.municipio];
+  if(!m)return [];
+
+  const ranges=[];
+  for(const [z,o] of Object.entries(m.zonas||{})){
+    if(state.mode==='compare'){
+      const other=year==='2022'?'2026':'2022';
+      const otherM=state.years[other].index?.ufs?.[state.uf]?.municipios?.[state.municipio];
+      if(!otherM?.zonas?.[z])continue;
+    }
+    ranges.push(readRange(year,state.uf,o.start,o.end));
+  }
+  const all=await Promise.all(ranges);
+  d.rows=all.flat();
+  return d.rows;
+}
+
+async function loadZona(year){
+  const d=state.years[year];
+  const z=d.index?.ufs?.[state.uf]?.municipios?.[state.municipio]?.zonas?.[String(state.zona)];
+  if(!z)return [];
+  d.rows=await readRange(year,state.uf,z.start,z.end);
+  return d.rows;
+}
+
+async function onUF(){
+  state.uf=$('uf').value||'';
+  state.municipio='';
+  state.zona='';
+  state.secao='';
+  state.candidato='';
+  for(const y of ['2022','2026'])state.years[y].rows=[];
+  rebuildFilters();
+  renderAll();
+  setStatus(state.uf?(state.uf+' • seleção geográfica ativa'):'Brasil • ranking nacional ativo','ok');
+}
+
+async function onMunicipio(){
+  state.municipio=$('municipio').value||'';
+  state.zona='';
+  state.secao='';
+  state.candidato='';
+  for(const y of ['2022','2026'])state.years[y].rows=[];
+
+  rebuildFilters();
+
+  if(!state.municipio){
+    renderAll();
+    return;
+  }
+
+  setStatus('Carregando município…');
+  try{
+    for(const y of currentYears())await loadMunicipio(y);
+    renderAll();
+    setStatus(levelLabel()+' • município carregado','ok');
+  }catch(e){
+    console.error(e);
+    setStatus('Erro: '+e.message,'err');
+  }
+}
+
+async function onZona(){
+  state.zona=$('zona').value||'';
+  state.secao='';
+  state.candidato='';
+  for(const y of ['2022','2026'])state.years[y].rows=[];
+
+  if(!state.zona){
+    rebuildFilters();
+    renderAll();
+    return;
+  }
+
+  setStatus('Carregando zona…');
+  try{
+    for(const y of currentYears())await loadZona(y);
+
+    const sectionSets=currentYears().map(y=>
+      new Set(state.years[y].rows.map(r=>String(r.s)))
+    );
+
+    let sections=[];
+    if(sectionSets.length===1){
+      sections=[...sectionSets[0]];
+    }else if(sectionSets.length===2){
+      sections=[...sectionSets[0]].filter(s=>sectionSets[1].has(s));
+    }
+
+    sections.sort((a,b)=>num(a)-num(b));
+
+    setSelect(
+      $('secao'),
+      '<option value="">Todas as seções</option>'+
+      sections.map(s=>option(s,'Seção '+s)).join(''),
+      false
+    );
+
+    renderAll();
+    setStatus(levelLabel()+' • zona carregada','ok');
+  }catch(e){
+    console.error(e);
+    setStatus('Erro: '+e.message,'err');
+  }
+}
+
+function onSecao(){
+  state.secao=$('secao').value||'';
+  renderAll();
+  setStatus(levelLabel()+' • seção selecionada','ok');
+}
+
+function onCandidate(){
+  state.candidato=$('candidato').value||'';
+  renderAll();
+}
+
+function rankingArray(summary){
+  return Object.entries(summary?.votos||{})
+    .sort((a,b)=>num(b[1])-num(a[1]));
+}
+
+function rankingHtml(year,summary,limit=30){
+  if(!summary)return '<div class="empty">Dados não disponíveis.</div>';
+  const arr=rankingArray(summary);
+  const total=totalVotes(summary);
+  if(!arr.length)return '<div class="empty">Nenhum voto encontrado.</div>';
+  const max=num(arr[0][1])||1;
+
+  return '<div class="tablewrap"><table class="table"><thead><tr><th>#</th><th>Candidato/categoria</th><th>Votos</th><th>%</th><th></th></tr></thead><tbody>'+
+    arr.slice(0,limit).map((x,i)=>
+      '<tr><td>'+(i+1)+'</td>'+
+      '<td>'+escapeHtml(candidateName(year,x[0]))+' <span class="small">('+escapeHtml(x[0])+')</span></td>'+
+      '<td>'+fmt(x[1])+'</td>'+
+      '<td>'+pct(total?x[1]/total*100:0)+'</td>'+
+      '<td><div class="bar"><i style="width:'+Math.max(1,num(x[1])/max*100)+'%"></i></div></td></tr>'
+    ).join('')+
+    '</tbody></table></div>';
+}
+
+function deltaClass(v){
+  return v>0?'delta-up':v<0?'delta-down':'delta-zero';
+}
+
+function deltaText(v){
+  if(v>0)return '+'+fmt(v);
+  return fmt(v);
+}
+
+function duelCard(year,summary){
+  if(!summary)return '<div class="empty">Dados não disponíveis.</div>';
+  const p=year==='2022'
+    ? [{code:'13',name:'Lula',role:'PT'},{code:'22',name:'Jair Bolsonaro',role:'PL'}]
+    : [{code:'13',name:'Lula',role:'PT'},{code:'22',name:'Flávio Bolsonaro',role:'PL'}];
+  const total=totalVotes(summary);
+  const a=num(summary.votos?.[p[0].code]);
+  const b=num(summary.votos?.[p[1].code]);
+  const va=total?a/total*100:0;
+  const vb=total?b/total*100:0;
+  const pairTotal=a+b;
+  const pairShare=total?pairTotal/total*100:0;
+  const diffVotes=a-b;
+  const diffPP=va-vb;
+  const barA=pairTotal?a/pairTotal*100:50;
+  const barB=pairTotal?b/pairTotal*100:50;
+  return '<article class="duel">'+
+    '<div class="duel-head"><div class="duel-year">'+year+' • 1º turno</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
+    '<div class="faces">'+
+      '<div class="cand"><div class="name">'+escapeHtml(p[0].name)+'</div><div class="role">'+escapeHtml(p[0].role)+' • nº '+p[0].code+'</div><div class="votes">'+fmt(a)+'</div><div class="share">'+pct(va)+' dos votos válidos</div></div>'+ 
+      '<div class="vs">VS</div>'+ 
+      '<div class="cand"><div class="name">'+escapeHtml(p[1].name)+'</div><div class="role">'+escapeHtml(p[1].role)+' • nº '+p[1].code+'</div><div class="votes">'+fmt(b)+'</div><div class="share">'+pct(vb)+' dos votos válidos</div></div>'+ 
+    '</div>'+ 
+    '<div class="duel-bar"><div class="left" style="width:'+barA+'%"></div><div class="right" style="width:'+barB+'%"></div></div>'+ 
+    '<div class="duel-foot">'+
+      '<div class="duel-stat"><div class="k">Diferença em votos</div><div class="v">'+(diffVotes>=0?'+':'')+fmt(diffVotes)+'</div></div>'+ 
+      '<div class="duel-stat"><div class="k">Diferença em p.p.</div><div class="v">'+(diffPP>=0?'+':'')+pct(diffPP,2)+'</div></div>'+ 
+      '<div class="duel-stat"><div class="k">Participação conjunta</div><div class="v">'+pct(pairShare)+'</div></div>'+ 
+    '</div>'+ 
+    '<div class="duel-note">Percentuais calculados sobre os votos válidos do recorte geográfico selecionado.</div>'+ 
+  '</article>';
+}
+
+function renderSpotlight(){
+  const years=currentYears();
+  if(!years.length){$('spotlight').innerHTML='<div class="empty">Carregue os dados para visualizar o confronto destacado.</div>';return;}
+  const cards=years.map(y=>duelCard(y,summaryFor(y))).join('');
+  $('spotlight').innerHTML='<div class="spot-head"><div><div class="spot-title">Confrontos presidenciais em destaque</div><div class="spot-sub">Comparação descritiva dos dois candidatos destacados em cada eleição</div></div><div class="small">Recorte: '+escapeHtml(levelLabel())+'</div></div><div class="duels">'+cards+'</div>';
+}
+
+function renderMetrics(){
+  const years=currentYears();
+  if(!years.length){$('metrics').innerHTML='';return}
+
+  if(years.length===1){
+    const y=years[0],s=summaryFor(y);
+    if(!s){$('metrics').innerHTML='';return}
+    const valid=rankingArray(s).filter(([c])=>!['95','96'].includes(String(c))).reduce((a,[,v])=>a+num(v),0);
+    const total=totalVotes(s);
+    $('metrics').innerHTML=[
+      ['Seções',fmt(s.secoes),''],
+      ['Aptos',s.aptos?fmt(s.aptos):'N/D',s.aptos?'':'não disponível em 2022'],
+      ['Comparecimento',fmt(s.comparecimento),s.aptos?pct(s.comparecimento/s.aptos*100):''],
+      ['Brancos + nulos',fmt(num(s.votos?.['95'])+num(s.votos?.['96'])),total?pct((num(s.votos?.['95'])+num(s.votos?.['96']))/total*100):''],
+      ['Votos nominais',fmt(valid),y]
+    ].map(x=>'<div class="metric"><div class="k">'+x[0]+'</div><div class="v">'+x[1]+'</div><div class="s">'+x[2]+'</div></div>').join('');
+    return;
+  }
+
+  const a=summaryFor('2022'),b=summaryFor('2026');
+  if(!a||!b){$('metrics').innerHTML='<div class="notice">Selecione uma combinação geográfica existente nas duas eleições.</div>';return}
+
+  const va=totalVotes(a),vb=totalVotes(b);
+  $('metrics').innerHTML=[
+    ['Seções','2022: '+fmt(a.secoes),'2026: '+fmt(b.secoes)],
+    ['Votos','2022: '+fmt(va),'2026: '+fmt(vb)],
+    ['Δ votos',deltaText(vb-va),pct(va?(vb-va)/va*100:0)],
+    ['Brancos + nulos','2022: '+fmt(num(a.votos?.['95'])+num(a.votos?.['96'])),'2026: '+fmt(num(b.votos?.['95'])+num(b.votos?.['96']))],
+    ['Votos nominais','2022: '+fmt(va-num(a.votos?.['95'])-num(a.votos?.['96'])),'2026: '+fmt(vb-num(b.votos?.['95'])-num(b.votos?.['96']))]
+  ].map(x=>'<div class="metric"><div class="k">'+x[0]+'</div><div class="v">'+x[1]+'</div><div class="s">'+x[2]+'</div></div>').join('');
+}
+
+function renderResumo(){
+  const years=currentYears();
+
+  if(years.length===0){
+    $('tab-resumo').innerHTML='<div class="empty">Carregue pelo menos uma base para começar.</div>';
+    return;
+  }
+
+  if(years.length===1){
+    const y=years[0],s=summaryFor(y);
+    $('tab-resumo').innerHTML='<h2>Resumo • '+y+'</h2><div class="breadcrumb">Nível atual: <strong>'+escapeHtml(levelLabel())+'</strong></div><div class="grid2"><div><h3>Ranking presidencial</h3>'+rankingHtml(y,s,30)+'</div><div><div class="notice">Navegação: <strong>Brasil → UF → Município → Zona → Seção</strong>.</div><br><div class="notice"><strong>'+fmt(s?.secoes||0)+'</strong> seções no nível atual.</div></div></div>';
+    return;
+  }
+
+  const a=summaryFor('2022'),b=summaryFor('2026');
+  if(!a||!b){
+    $('tab-resumo').innerHTML='<div class="empty">A combinação geográfica selecionada não está disponível nas duas bases.</div>';
+    return;
+  }
+
+  $('tab-resumo').innerHTML='<h2>Comparação • 2022 × 2026</h2>'+
+    '<div class="breadcrumb">Nível atual: <strong>'+escapeHtml(levelLabel())+'</strong></div>'+
+    '<div class="grid2"><div><h3>2022</h3>'+rankingHtml('2022',a,30)+'</div><div><h3>2026</h3>'+rankingHtml('2026',b,30)+'</div></div>'+
+    '<br><div class="notice">A comparação mostra os rankings de cada eleição separadamente. Códigos e candidaturas não são presumidos como equivalentes entre 2022 e 2026.</div>';
+}
+
+function renderRanking(){
+  const years=currentYears();
+  if(years.length<2){
+    $('tab-ranking').innerHTML='<div class="empty">O modo Comparar 2022 × 2026 é necessário para esta aba.</div>';
+    return;
+  }
+
+  const a=summaryFor('2022'),b=summaryFor('2026');
+  if(!a||!b){$('tab-ranking').innerHTML='<div class="empty">Selecione uma combinação geográfica disponível nas duas bases.</div>';return}
+
+  const map=new Map();
+  for(const [c,v] of rankingArray(a))map.set('2022|'+c,{year:'2022',code:c,name:candidateName('2022',c),v22:num(v)});
+  for(const [c,v] of rankingArray(b)){
+    const key='2026|'+c;
+    map.set(key,{year:'2026',code:c,name:candidateName('2026',c),v26:num(v)});
+  }
+
+  const totalA=totalVotes(a),totalB=totalVotes(b);
+  const rows=[...map.values()].sort((x,y)=>
+    Math.max(x.v22||0,x.v26||0)-Math.max(y.v22||0,y.v26||0)
+  ).reverse().slice(0,60);
+
+  $('tab-ranking').innerHTML='<h2>Ranking comparativo</h2>'+
+    '<div class="featured-grid">'+
+      '<div class="featured-card"><h3>2022 • Lula × Jair Bolsonaro</h3><div class="featured-line"><span>Lula</span><span>'+fmt(num(a.votos?.['13']))+' • '+pct(totalA?num(a.votos?.['13'])/totalA*100:0)+'</span></div><div class="featured-line"><span>Jair Bolsonaro</span><span>'+fmt(num(a.votos?.['22']))+' • '+pct(totalA?num(a.votos?.['22'])/totalA*100:0)+'</span></div></div>'+
+      '<div class="featured-card"><h3>2026 • Lula × Flávio Bolsonaro</h3><div class="featured-line"><span>Lula</span><span>'+fmt(num(b.votos?.['13']))+' • '+pct(totalB?num(b.votos?.['13'])/totalB*100:0)+'</span></div><div class="featured-line"><span>Flávio Bolsonaro</span><span>'+fmt(num(b.votos?.['22']))+' • '+pct(totalB?num(b.votos?.['22'])/totalB*100:0)+'</span></div></div>'+
+    '</div>'+
+    '<div class="notice">A tabela mantém as categorias separadas por eleição. A comparação entre 2022 e 2026 não trata Jair Bolsonaro e Flávio Bolsonaro como a mesma candidatura.</div><br>'+
+    '<div class="tablewrap"><table class="table"><thead><tr><th>Eleição</th><th>Candidato/categoria</th><th>Votos</th><th>% do recorte</th></tr></thead><tbody>'+
+    rows.map(r=>'<tr><td>'+r.year+'</td><td>'+escapeHtml(r.name)+' <span class="small">('+escapeHtml(r.code)+')</span></td><td>'+fmt(r.year==='2022'?r.v22:r.v26)+'</td><td>'+pct(r.year==='2022'?(r.v22/totalA*100):(r.v26/totalB*100))+'</td></tr>').join('')+
+    '</tbody></table></div>';
+}
+
+function variationBar(label,sub,value,maxValue,year,formatter){
+  const has=Number.isFinite(value) && value!==null;
+  const width=has && maxValue>0 ? Math.max(0,Math.min(100,value/maxValue*100)) : 0;
+  return '<div class="barline">'+
+    '<div class="bar-year">'+year+'</div>'+
+    '<div class="bartrack"><div class="barfill" style="width:'+width+'%"></div></div>'+
+    '<div class="barvalue '+(has?'':'na')+'">'+(has?formatter(value):'N/D')+'</div>'+
+  '</div>';
+}
+
+function renderVariation(){
+  const years=currentYears();
+  if(years.length<2){
+    $('tab-variacao').innerHTML='<div class="empty">A aba Variação requer as duas bases carregadas e o modo <strong>Comparar 2022 × 2026</strong>.</div>';
+    return;
+  }
+
+  const a=summaryFor('2022'),b=summaryFor('2026');
+  if(!a||!b){
+    $('tab-variacao').innerHTML='<div class="empty">A combinação geográfica selecionada não está disponível nas duas eleições.</div>';
+    return;
+  }
+
+  const totalA=totalVotes(a), totalB=totalVotes(b);
+  const lula22=num(a.votos?.['13']), lula26=num(b.votos?.['13']);
+  const jair22=num(a.votos?.['22']), flavio26=num(b.votos?.['22']);
+  const maxVotes=Math.max(lula22,lula26,jair22,flavio26,1);
+  const lulaShare22=totalA?lula22/totalA*100:0, lulaShare26=totalB?lula26/totalB*100:0;
+  const jairShare22=totalA?jair22/totalA*100:0, flavioShare26=totalB?flavio26/totalB*100:0;
+  const maxShare=Math.max(lulaShare22,lulaShare26,jairShare22,flavioShare26,1);
+  const deltaLula=lula26-lula22;
+  const deltaLulaPct=lula22?deltaLula/lula22*100:0;
+  const deltaLulaShare=lulaShare26-lulaShare22;
+
+  const candidateRows=[
+    {label:'Lula',sub:'mesma candidatura identificada pelo código 13',v22:lula22,v26:lula26,s22:lulaShare22,s26:lulaShare26},
+    {label:'Jair Bolsonaro',sub:'candidato em 2022 • código 22',v22:jair22,v26:null,s22:jairShare22,s26:null},
+    {label:'Flávio Bolsonaro',sub:'candidato em 2026 • código 22',v22:null,v26:flavio26,s22:null,s26:flavioShare26}
+  ];
+
+  const votesRows=candidateRows.map(r=>'<div class="vrow"><div class="vlabel">'+escapeHtml(r.label)+'<small>'+escapeHtml(r.sub)+'</small></div><div class="bars">'+
+    variationBar('', '', r.v22,maxVotes,'2022',fmt)+variationBar('', '', r.v26,maxVotes,'2026',fmt)+
+    '</div></div>').join('');
+
+  const shareRows=candidateRows.map(r=>'<div class="vrow"><div class="vlabel">'+escapeHtml(r.label)+'<small>'+escapeHtml(r.sub)+'</small></div><div class="bars">'+
+    variationBar('', '', r.s22,maxShare,'2022',v=>pct(v,2))+variationBar('', '', r.s26,maxShare,'2026',v=>pct(v,2))+'</div></div>').join('');
+
+  $('tab-variacao').innerHTML=
+    '<div class="variation-head"><div><div class="variation-title">Variação entre eleições</div><div class="variation-sub">Comparação dos votos e da participação nos votos válidos no recorte: '+escapeHtml(levelLabel())+'</div></div><div class="small">2022 → 2026</div></div>'+
+    '<div class="variation-note"><strong>Importante:</strong> Lula é a mesma candidatura nos dois anos. Jair Bolsonaro concorreu em 2022 e Flávio Bolsonaro em 2026; portanto, as barras desses dois candidatos são apresentadas separadamente e não representam a mesma pessoa ou candidatura.</div>'+
+    '<div class="variation-grid">'+
+      '<div class="variation-card"><h3>Votos recebidos</h3><div class="chart-caption">Valores absolutos. As barras usam a mesma escala dentro do recorte selecionado.</div><div class="vchart">'+votesRows+'</div><div class="variation-legend"><span><i class="legend-dot"></i>2022</span><span><i class="legend-dot second"></i>2026</span></div></div>'+
+      '<div class="variation-card"><h3>Participação nos votos válidos</h3><div class="chart-caption">Percentual calculado sobre os votos válidos de cada eleição no recorte.</div><div class="vchart">'+shareRows+'</div><div class="variation-legend"><span><i class="legend-dot"></i>2022</span><span><i class="legend-dot second"></i>2026</span></div></div>'+
+    '</div>'+
+    '<div class="variation-deltas">'+
+      '<div class="variation-delta"><div class="k">Lula • variação de votos</div><div class="v '+deltaClass(deltaLula)+'">'+deltaText(deltaLula)+'</div><div class="s">'+(deltaLula>=0?'+':'')+pct(deltaLulaPct,2)+' em relação a 2022</div></div>'+
+      '<div class="variation-delta"><div class="k">Lula • variação de participação</div><div class="v '+deltaClass(deltaLulaShare)+'">'+(deltaLulaShare>=0?'+':'')+pct(deltaLulaShare,2)+'</div><div class="s">diferença em pontos percentuais nos votos válidos</div></div>'+
+    '</div>';
+}
+
+
+const CAPITALS={
+  AC:'Rio Branco',AL:'Maceió',AP:'Macapá',AM:'Manaus',BA:'Salvador',CE:'Fortaleza',DF:'Brasília',ES:'Vitória',GO:'Goiânia',MA:'São Luís',MT:'Cuiabá',MS:'Campo Grande',MG:'Belo Horizonte',PA:'Belém',PB:'João Pessoa',PR:'Curitiba',PE:'Recife',PI:'Teresina',RJ:'Rio de Janeiro',RN:'Natal',RS:'Porto Alegre',RO:'Porto Velho',RR:'Boa Vista',SC:'Florianópolis',SP:'São Paulo',SE:'Aracaju',TO:'Palmas'
+};
+
+function geoDeltaRow(y22,y26,code22='13',code26='13'){
+  const v22=num(y22?.votos?.[code22]),v26=num(y26?.votos?.[code26]);
+  return {v22,v26,delta:v26-v22,p22:totalVotes(y22)?v22/totalVotes(y22)*100:0,p26:totalVotes(y26)?v26/totalVotes(y26)*100:0};
+}
+function geoOppRow(y22,y26){
+  const v22=num(y22?.votos?.['22']),v26=num(y26?.votos?.['22']);
+  return {v22,v26,delta:v26-v22,p22:totalVotes(y22)?v22/totalVotes(y22)*100:0,p26:totalVotes(y26)?v26/totalVotes(y26)*100:0};
+}
+function signed(v){return v>0?'+'+fmt(v):fmt(v)}
+function signedPct(v){return (v>0?'+':'')+pct(v,2)}
+function geoDeltaClass(v){return v>0?'geo-positive':v<0?'geo-negative':'geo-neutral'}
+function geoTableRows(rows){
+  return rows.map(r=>'<tr>'+r.map((c,i)=>'<td class="'+(i>0?'num':'')+'">'+c+'</td>').join('')+'</tr>').join('');
+}
+function geoStateRows(){
+  const a=state.years['2022'].index?.ufs||{},b=state.years['2026'].index?.ufs||{};
+  const ufs=Object.keys(a).filter(u=>b[u] && u!=='ZZ').sort();
+  return ufs.map(uf=>{
+    const rL=geoDeltaRow(a[uf].resumo,b[uf].resumo);
+    const rO=geoOppRow(a[uf].resumo,b[uf].resumo);
+    return {uf,nome:uf, lula:rL, opos:rO};
+  });
+}
+function geoCapitalRows(){
+  const a=state.years['2022'].index?.ufs||{},b=state.years['2026'].index?.ufs||{};
+  return Object.entries(CAPITALS).filter(([uf])=>a[uf]?.municipios && b[uf]?.municipios).map(([uf,capital])=>{
+    const ma=Object.entries(a[uf].municipios).find(([,m])=>String(m.nm_municipio).localeCompare(capital,'pt-BR',{sensitivity:'base'})===0);
+    const mb=Object.entries(b[uf].municipios).find(([,m])=>String(m.nm_municipio).localeCompare(capital,'pt-BR',{sensitivity:'base'})===0);
+    if(!ma||!mb)return null;
+    const rL=geoDeltaRow(ma[1].resumo,mb[1].resumo), rO=geoOppRow(ma[1].resumo,mb[1].resumo);
+    return {uf,capital,lula:rL,opos:rO};
+  }).filter(Boolean);
+}
+function geoMunicipioRows(filter=''){
+  const a=state.years['2022'].index?.ufs||{},b=state.years['2026'].index?.ufs||{};
+  const q=String(filter||'').trim().toLocaleLowerCase('pt-BR');
+  const rows=[];
+  for(const uf of Object.keys(a).sort()){
+    if(uf==='ZZ'||!b[uf])continue;
+    const ma=a[uf].municipios||{}, mb=b[uf].municipios||{};
+    for(const code of Object.keys(ma)){
+      if(!mb[code])continue;
+      const name=ma[code].nm_municipio||mb[code].nm_municipio||code;
+      if(q && !String(name).toLocaleLowerCase('pt-BR').includes(q) && !uf.toLocaleLowerCase().includes(q))continue;
+      rows.push({uf,name,code,lula:geoDeltaRow(ma[code].resumo,mb[code].resumo),opos:geoOppRow(ma[code].resumo,mb[code].resumo)});
+    }
+  }
+  return rows.sort((x,y)=>x.name.localeCompare(y.name,'pt-BR')||x.uf.localeCompare(y.uf));
+}
+function geoBlockCell(r,field){
+  return '<td class="num">'+fmt(r[field])+'</td><td class="num '+geoDeltaClass(r.delta)+'">'+signed(r.delta)+'</td><td class="num">'+signedPct(r.p26-r.p22)+'</td>';
+}
+function renderGeoTable(title,rows,type){
+  let body='';
+  if(type==='uf') body=geoTableRows(rows.map(r=>['<strong>'+r.uf+'</strong>',fmt(r.lula.v22),fmt(r.lula.v26),'<span class="'+geoDeltaClass(r.lula.delta)+'">'+signed(r.lula.delta)+'</span>',signedPct(r.lula.p26-r.lula.p22),fmt(r.opos.v22),fmt(r.opos.v26),'<span class="'+geoDeltaClass(r.opos.delta)+'">'+signed(r.opos.delta)+'</span>',signedPct(r.opos.p26-r.opos.p22)]));
+  if(type==='capital') body=geoTableRows(rows.map(r=>['<strong>'+escapeHtml(r.capital)+'</strong><br><span class="geo-badge">'+r.uf+'</span>',fmt(r.lula.v22),fmt(r.lula.v26),'<span class="'+geoDeltaClass(r.lula.delta)+'">'+signed(r.lula.delta)+'</span>',signedPct(r.lula.p26-r.lula.p22),fmt(r.opos.v22),fmt(r.opos.v26),'<span class="'+geoDeltaClass(r.opos.delta)+'">'+signed(r.opos.delta)+'</span>',signedPct(r.opos.p26-r.opos.p22)]));
+  if(type==='mun') body=geoTableRows(rows.map(r=>['<strong>'+escapeHtml(r.name)+'</strong><br><span class="geo-badge">'+r.uf+' • '+escapeHtml(r.code)+'</span>',fmt(r.lula.v22),fmt(r.lula.v26),'<span class="'+geoDeltaClass(r.lula.delta)+'">'+signed(r.lula.delta)+'</span>',signedPct(r.lula.p26-r.lula.p22),fmt(r.opos.v22),fmt(r.opos.v26),'<span class="'+geoDeltaClass(r.opos.delta)+'">'+signed(r.opos.delta)+'</span>',signedPct(r.opos.p26-r.opos.p22)]));
+  return '<h3 class="geo-section-title">'+title+'</h3><div class="tablewrap"><table class="table geo-table"><thead><tr><th>Localidade</th><th colspan="4">Lula • 2022 → 2026</th><th colspan="4">Jair 2022 → Flávio 2026<br><span class="small">bloco analítico definido pelo usuário</span></th></tr><tr><th></th><th>2022</th><th>2026</th><th>Δ votos</th><th>Δ p.p.</th><th>2022</th><th>2026</th><th>Δ votos</th><th>Δ p.p.</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+}
+function geoSorted(rows, key='lula', direction='desc'){
+  return [...rows].sort((a,b)=>{
+    const da=a[key]?.delta||0, db=b[key]?.delta||0;
+    return direction==='desc' ? (db-da) : (da-db);
+  });
+}
+function geoPlaceRows(rows,key,labelFn,limit){
+  return rows.slice(0,limit).map((r,i)=>{
+    const d=r[key].delta;
+    return '<tr><td>'+String(i+1)+'</td><td>'+labelFn(r)+'</td><td><span class="'+(d>0?'geo-positive':d<0?'geo-negative':'geo-neutral')+'">'+signed(d)+'</span></td><td>'+signedPct(r[key].p26-r[key].p22)+'</td></tr>';
+  }).join('');
+}
+function geoTopTable(title,subtitle,rows,key,labelFn,limit=10){
+  const gains=geoSorted(rows,key,'desc').slice(0,limit);
+  const losses=geoSorted(rows,key,'asc').slice(0,limit);
+  const table=(items,kind)=>'<div class="geo-top-card"><h4>'+title+' • '+(kind==='gain'?'maiores ganhos':'maiores perdas')+'<small>'+subtitle+'</small></h4><div class="tablewrap"><table class="table geo-table top-table"><thead><tr><th>#</th><th>Localidade</th><th>Δ votos</th><th>Δ p.p.</th></tr></thead><tbody>'+geoPlaceRows(items,key,labelFn,limit)+'</tbody></table></div></div>';
+  return table(gains,'gain')+table(losses,'loss');
+}
+function geoTopFocus(title,subtitle,rows,key,labelFn,limit=10){
+  const gains=geoSorted(rows,key,'desc').slice(0,limit);
+  const losses=geoSorted(rows,key,'asc').slice(0,limit);
+  const list=(items,kind)=>'<div class="geo-focus-card '+kind+'"><div class="geo-focus-card-head"><strong>'+title+' • '+(kind==='gain'?'Onde mais cresceu':'Onde mais perdeu')+'</strong><span>Δ votos</span></div><div class="geo-list">'+items.map((r,i)=>{
+    const d=r[key].delta;
+    return '<div class="geo-item"><div class="geo-rank">'+(i+1)+'</div><div class="geo-place">'+labelFn(r)+'<div class="geo-mini">2022: '+fmt(r[key].v22)+' • 2026: '+fmt(r[key].v26)+'</div></div><div class="geo-delta '+kind+'">'+signed(d)+'<div class="geo-mini">'+signedPct(r[key].p26-r[key].p22)+'</div></div></div>';
+  }).join('')+'</div></div>';
+  return list(gains,'gain')+list(losses,'loss');
+}
+function renderGeografia(){
+  const years=currentYears();
+  if(years.length<2){$('tab-geografia').innerHTML='<div class="empty">A análise geográfica requer as duas bases carregadas e o modo <strong>Comparar 2022 × 2026</strong>.</div>';return;}
+
+  const states=geoStateRows(), caps=geoCapitalRows(), mus=geoMunicipioRows('');
+  const currentSearch=document.getElementById('geoSearch')?.value||'';
+  const filtered=geoMunicipioRows(currentSearch);
+
+  const lulaLabelState=r=>'<strong>'+escapeHtml(r.uf)+'</strong>';
+  const lulaLabelCapital=r=>'<strong>'+escapeHtml(r.capital)+'</strong><small>'+r.uf+'</small>';
+  const lulaLabelMunicipio=r=>'<strong>'+escapeHtml(r.name)+'</strong><small>'+r.uf+' • '+escapeHtml(r.code)+'</small>';
+
+  $('tab-geografia').innerHTML=
+    '<div class="geo-head"><div><div class="geo-title">Onde Lula ganhou e perdeu votos?</div><div class="geo-sub">Variação líquida de votos de Lula entre 2022 e 2026. Cálculo: <strong>votos 2026 − votos 2022</strong>.</div></div><div class="small">Brasil • 1º turno</div></div>'+
+    '<div class="geo-note"><strong>Como interpretar:</strong> números positivos indicam crescimento de votos de Lula no local; números negativos indicam perda de votos. A ordenação é feita exclusivamente pela variação de votos, sem transformar o resultado em avaliação política.</div>'+
+
+    '<div class="geo-section-label">Estados <span class="geo-badge">10 maiores ganhos + 10 maiores perdas</span></div>'+
+    '<div class="geo-focus">'+geoTopFocus('Estados','Variação de votos de Lula • 2022 → 2026',states,'lula',lulaLabelState,10)+'</div>'+
+
+    '<div class="geo-section-label">Capitais <span class="geo-badge">10 maiores ganhos + 10 maiores perdas</span></div>'+
+    '<div class="geo-focus">'+geoTopFocus('Capitais','Variação de votos de Lula • 2022 → 2026',caps,'lula',lulaLabelCapital,10)+'</div>'+
+
+    '<div class="geo-section-label">Municípios <span class="geo-badge">25 maiores ganhos + 25 maiores perdas</span></div>'+
+    '<div class="geo-controls"><input id="geoSearch" class="geo-control geo-search" placeholder="Filtrar municípios por nome ou UF…" value="'+escapeHtml(currentSearch)+'"><span class="geo-badge">'+fmt(filtered.length)+' municípios no filtro</span></div>'+
+    '<div class="geo-focus">'+geoTopFocus('Municípios','Ranking dos maiores movimentos absolutos de votos de Lula',filtered,'lula',lulaLabelMunicipio,25)+'</div>'+
+
+    '<div class="geo-section-label">Bloco analítico: Jair Bolsonaro 2022 → Flávio Bolsonaro 2026 <span class="geo-badge">código 22 em cada eleição</span></div>'+
+    '<div class="geo-note">Esta seção atende à análise solicitada: compara os votos associados ao código 22 em 2022 e 2026 como um único <strong>bloco analítico</strong>. Os candidatos continuam identificados separadamente nos dados: Jair Bolsonaro em 2022 e Flávio Bolsonaro em 2026.</div>'+
+    '<div class="geo-focus">'+geoTopFocus('Estados','Variação do bloco 22 • Jair 2022 → Flávio 2026',states,'opos',lulaLabelState,10)+'</div>'+ 
+    '<div class="geo-focus">'+geoTopFocus('Capitais','Variação do bloco 22 • Jair 2022 → Flávio 2026',caps,'opos',lulaLabelCapital,10)+'</div>'+ 
+    '<div class="geo-focus">'+geoTopFocus('Municípios','Variação do bloco 22 • Jair 2022 → Flávio 2026',filtered,'opos',lulaLabelMunicipio,25)+'</div>';
+
+  const inp=document.getElementById('geoSearch');
+  if(inp)inp.addEventListener('input',()=>renderGeografia());
+}
+
+function renderZonas(){
+  const years=currentYears();
+  if(!state.uf||!state.municipio){
+    $('tab-zonas').innerHTML='<div class="empty">Selecione UF e município para listar as zonas.</div>';
+    return;
+  }
+
+  const zones=commonZonas(state.uf,state.municipio).sort((a,b)=>num(a[0])-num(b[0]));
+  if(!zones.length){$('tab-zonas').innerHTML='<div class="empty">Nenhuma zona comum encontrada.</div>';return}
+
+  if(years.length===1){
+    const y=years[0];
+    $('tab-zonas').innerHTML='<h2>Zonas • '+y+'</h2><div class="tablewrap"><table class="table"><thead><tr><th>Zona</th><th>Seções</th><th>Votos</th></tr></thead><tbody>'+
+      zones.map(([z,o])=>{
+        const s=o.resumo;
+        return '<tr><td><button class="btn" style="padding:5px 9px" data-zone="'+escapeHtml(z)+'">'+escapeHtml(z)+'</button></td><td>'+fmt(o.secoes)+'</td><td>'+fmt(totalVotes(s))+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }else{
+    $('tab-zonas').innerHTML='<h2>Zonas comuns • 2022 × 2026</h2><div class="tablewrap"><table class="table"><thead><tr><th>Zona</th><th>Seções 2022</th><th>Votos 2022</th><th>Seções 2026</th><th>Votos 2026</th><th>Δ votos</th></tr></thead><tbody>'+
+      zones.map(([z,o])=>{
+        const a=state.years['2022'].index.ufs[state.uf].municipios[state.municipio].zonas[z].resumo;
+        const b=state.years['2026'].index.ufs[state.uf].municipios[state.municipio].zonas[z].resumo;
+        const da=totalVotes(a),db=totalVotes(b),d=db-da;
+        return '<tr><td><button class="btn" style="padding:5px 9px" data-zone="'+escapeHtml(z)+'">'+escapeHtml(z)+'</button></td><td>'+fmt(a.secoes)+'</td><td>'+fmt(da)+'</td><td>'+fmt(b.secoes)+'</td><td>'+fmt(db)+'</td><td class="'+deltaClass(d)+'">'+deltaText(d)+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }
+
+  $('tab-zonas').querySelectorAll('[data-zone]').forEach(btn=>btn.addEventListener('click',async()=>{
+    $('zona').value=btn.dataset.zone;
+    await onZona();
+    document.querySelector('[data-tab="secoes"]').click();
+  }));
+}
+
+function renderSecoes(){
+  const years=currentYears();
+
+  if(!state.uf||!state.municipio||!state.zona){
+    $('tab-secoes').innerHTML='<div class="empty">Selecione UF, município e zona para listar as seções.</div>';
+    return;
+  }
+
+  const rowsByYear={};
+  for(const y of years){
+    rowsByYear[y]=filteredRows(y);
+  }
+
+  let sections=[];
+  if(years.length===1){
+    sections=[...new Set(rowsByYear[years[0]].map(r=>String(r.s)))].sort((a,b)=>num(a)-num(b));
+  }else{
+    const a=new Set(rowsByYear['2022'].map(r=>String(r.s)));
+    const b=new Set(rowsByYear['2026'].map(r=>String(r.s)));
+    sections=[...a].filter(s=>b.has(s)).sort((x,y)=>num(x)-num(y));
+  }
+
+  if(years.length===1){
+    const y=years[0];
+    $('tab-secoes').innerHTML='<h2>Seções • '+y+'</h2><div class="tablewrap"><table class="table"><thead><tr><th>Seção</th><th>Local</th><th>Votos</th><th>Mais votado</th><th>Votos</th></tr></thead><tbody>'+
+      rowsByYear[y].sort((a,b)=>num(a.s)-num(b.s)).map(r=>{
+        const arr=rankingArray({votos:r.v});
+        const top=arr[0];
+        return '<tr><td><button class="btn" style="padding:5px 9px" data-section="'+escapeHtml(r.s)+'">'+escapeHtml(r.s)+'</button></td><td>'+escapeHtml(r.l??'')+'</td><td>'+fmt(totalVotes({votos:r.v}))+'</td><td>'+escapeHtml(top?candidateName(y,top[0]):'')+'</td><td>'+fmt(top?top[1]:0)+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }else{
+    const r22=new Map(rowsByYear['2022'].map(r=>[String(r.s),r]));
+    const r26=new Map(rowsByYear['2026'].map(r=>[String(r.s),r]));
+    $('tab-secoes').innerHTML='<h2>Seções comuns • 2022 × 2026</h2><div class="tablewrap"><table class="table"><thead><tr><th>Seção</th><th>Votos 2022</th><th>Votos 2026</th><th>Δ votos</th><th>Mais votado 2022</th><th>Mais votado 2026</th></tr></thead><tbody>'+
+      sections.map(s=>{
+        const a=r22.get(s),b=r26.get(s);
+        const va=totalVotes({votos:a.v}),vb=totalVotes({votos:b.v}),d=vb-va;
+        const ta=rankingArray({votos:a.v})[0],tb=rankingArray({votos:b.v})[0];
+        return '<tr><td><button class="btn" style="padding:5px 9px" data-section="'+escapeHtml(s)+'">'+escapeHtml(s)+'</button></td><td>'+fmt(va)+'</td><td>'+fmt(vb)+'</td><td class="'+deltaClass(d)+'">'+deltaText(d)+'</td><td>'+escapeHtml(ta?candidateName('2022',ta[0]):'')+'</td><td>'+escapeHtml(tb?candidateName('2026',tb[0]):'')+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }
+
+  $('tab-secoes').querySelectorAll('[data-section]').forEach(btn=>btn.addEventListener('click',()=>{
+    $('secao').value=btn.dataset.section;
+    onSecao();
+    document.querySelector('[data-tab="resumo"]').click();
+  }));
+}
+
+function parseCandidateSelection(){
+  if(!state.candidato)return null;
+  const [year,code]=state.candidato.split('|');
+  return {year,code};
+}
+
+function renderCandidate(){
+  const years=currentYears();
+  const sel=parseCandidateSelection();
+
+  if(!sel){
+    $('tab-candidatoTab').innerHTML='<div class="empty">Selecione um candidato/categoria no filtro superior.</div>';
+    return;
+  }
+
+  if(!years.includes(sel.year)){
+    $('tab-candidatoTab').innerHTML='<div class="empty">O candidato selecionado pertence a uma eleição que não está no modo atual.</div>';
+    return;
+  }
+
+  const s=summaryFor(sel.year);
+  const rows=filteredRows(sel.year);
+  if(!s){$('tab-candidatoTab').innerHTML='<div class="empty">Dados não disponíveis.</div>';return}
+
+  const v=num(s.votos?.[sel.code]);
+  const total=totalVotes(s);
+  const secCount=rows.filter(r=>num(r.v?.[sel.code])>0).length;
+  const maxSec=Math.max(0,...rows.map(r=>num(r.v?.[sel.code])));
+  const topSections=[...rows].sort((x,y)=>num(y.v?.[sel.code])-num(x.v?.[sel.code])).slice(0,20);
+
+  $('tab-candidatoTab').innerHTML=
+    '<h2>'+escapeHtml(candidateName(sel.year,sel.code))+' <span class="small">'+sel.year+' • código '+escapeHtml(sel.code)+'</span></h2>'+
+    '<div class="metrics" style="margin-bottom:15px">'+
+      '<div class="metric"><div class="k">Votos</div><div class="v">'+fmt(v)+'</div><div class="s">'+pct(total?v/total*100:0)+' do recorte</div></div>'+
+      '<div class="metric"><div class="k">Seções com voto</div><div class="v">'+fmt(secCount)+'</div></div>'+
+      '<div class="metric"><div class="k">Máximo em uma seção</div><div class="v">'+fmt(maxSec)+'</div></div>'+
+    '</div>'+
+    '<h3>Maiores votações por seção</h3>'+
+    '<div class="tablewrap"><table class="table"><thead><tr><th>Zona</th><th>Seção</th><th>Local</th><th>Votos</th></tr></thead><tbody>'+
+    topSections.map(r=>'<tr><td>'+escapeHtml(r.z)+'</td><td>'+escapeHtml(r.s)+'</td><td>'+escapeHtml(r.l??'')+'</td><td>'+fmt(r.v?.[sel.code]||0)+'</td></tr>').join('')+
+    '</tbody></table></div>';
+}
+
+const mapState={map:null,layer:null,geojson:null,loaded:false,loading:false,uiReady:false,kind:'majority22',uf:'',matched:0,unmatched:0,index22:null,index26:null};
+const GEOJSON_URL='https://cdn.jsdelivr.net/gh/henriquemalvar/br-geojson@main/dist/municipios/all.geojson';
+function normName(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+// Padroniza variantes de grafia entre os dados eleitorais e a malha municipal.
+// A normalização é aplicada somente à chave de cruzamento; os nomes exibidos não mudam.
+const MAP_NAME_ALIASES={
+  baraodomontealto:'baraodemontealto', baraodemontealto:'baraodemontealto',
+  saotomedasletras:'saothomedasletras', saothomedasletras:'saothomedasletras',
+  santoantoniadoleverger:'santoantoniodeleverger', santoantoniodeleverger:'santoantoniodeleverger',
+  eldoradodoscarajas:'eldoradodocarajas', eldoradodocarajas:'eldoradodocarajas',
+  acu:'assu', assu:'assu',
+  ares:'arez', arez:'arez',
+  januariocicco:'januariocicco', boasaude:'januariocicco',
+  alvoradadeste:'alvoradadoeste', alvoradadoeste:'alvoradadoeste',
+  alvoradadooeste:'alvoradadoeste',
+  espigaodeste:'espigaodoeste', espigaodoeste:'espigaodoeste',
+  espigaodooeste:'espigaodoeste',
+  donaeuzebia:'donaeuzebia', donaeusebia:'donaeuzebia', donaeuzebya:'donaeuzebia',
+  amparodesaofrancisco:'amparodosaofrancisco', amparodosaofrancisco:'amparodosaofrancisco',
+  saoluizdoparaitinga:'saoluisdoparaitinga', saoluisdoparaitinga:'saoluisdoparaitinga'
+};
+function normMapName(v){const n=normName(v);return MAP_NAME_ALIASES[n]||n;}
+function validVoteTotal(votes){return Object.entries(votes||{}).reduce((sum,[code,value])=>sum+(['95','96'].includes(String(code))?0:num(value)),0);}
+function winnerFromSummary(summary,year){
+  const votes=summary?.votos||{}; let bestCode=null,bestVotes=-1;
+  for(const [code,value] of Object.entries(votes)){
+    if(['95','96'].includes(String(code)))continue;
+    if(num(value)>bestVotes){bestVotes=num(value);bestCode=String(code);}
+  }
+  return {code:bestCode,votes:Math.max(0,bestVotes)};
+}
+function municipalityMapIndex(year){
+  const out=new Map(); const idx=state.years[year].index;
+  if(!idx?.ufs)return out;
+  for(const [uf,u] of Object.entries(idx.ufs)){
+    if(uf==='ZZ')continue;
+    for(const [code,m] of Object.entries(u.municipios||{})){
+      const name=m.nm_municipio||m.nome||'';
+      out.set(uf+'|'+normMapName(name),{year,uf,code,name,summary:m.resumo||{votos:{}}});
+    }
+  }
+  return out;
+}
+function mapFeatureKey(f){
+  const p=f?.properties||{};
+  const uf=String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase();
+  const name=p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||'';
+  return uf+'|'+normMapName(name);
+}
+function mapFeatureLabel(feature){
+  const p=feature?.properties||{};
+  return {
+    uf:String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase(),
+    name:String(p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||''),
+    code:String(p.codigo||p.CD_MUN||p.cd_mun||p.code||p.id||p.geocode||p.GEOCODIGO||'')
+  };
+}
+function editDistance(a,b){
+  const prev=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+    let diagonal=prev[0]; prev[0]=i;
+    for(let j=1;j<=b.length;j++){
+      const old=prev[j];
+      prev[j]=Math.min(prev[j]+1,prev[j-1]+1,diagonal+(a[i-1]===b[j-1]?0:1));
+      diagonal=old;
+    }
+  }
+  return prev[b.length];
+}
+function findMunicipalityMatch(index,uf,name){
+  if(!index||!uf||!name)return null;
+  const exact=index.get(uf+'|'+normMapName(name));
+  if(exact)return exact;
+  // Fallback only when there is one clearly closest candidate in the same UF.
+  const target=normMapName(name);
+  let best=null,bestDist=Infinity,ties=0;
+  for(const [key,value] of index.entries()){
+    if(!key.startsWith(uf+'|'))continue;
+    const candidate=key.slice(uf.length+1);
+    const dist=editDistance(target,candidate);
+    const allowed=Math.max(2,Math.floor(Math.min(target.length,candidate.length)*0.16));
+    if(dist<=allowed){
+      if(dist<bestDist){best=value;bestDist=dist;ties=1;}
+      else if(dist===bestDist)ties++;
+    }
+  }
+  return ties===1?best:null;
+}
+function mapStatsForFeature(feature){
+  const p=feature?.properties||{};
+  const uf=String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase();
+  const name=String(p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||'');
+  const key=mapFeatureKey(feature);
+  const a=mapState.index22?.get(key)||findMunicipalityMatch(mapState.index22,uf,name);
+  const b=mapState.index26?.get(key)||findMunicipalityMatch(mapState.index26,uf,name);
+  if(!a&&!b)return null;
+  const s22=a?.summary||{votos:{}},s26=b?.summary||{votos:{}};
+  const v22=s22.votos||{},v26=s26.votos||{};
+  const valid22=validVoteTotal(v22),valid26=validVoteTotal(v26);
+  const lula22=num(v22['13']),op22=num(v22['22']),lula26=num(v26['13']),op26=num(v26['22']);
+  const win22=winnerFromSummary(s22,'2022'),win26=winnerFromSummary(s26,'2026');
+  const share22=valid22?lula22/valid22*100:0,share26=valid26?lula26/valid26*100:0;
+  return {key,uf:a?.uf||b?.uf||feature.properties?.uf||'',name:a?.name||b?.name||feature.properties?.nome||feature.properties?.name||'Município',code:a?.code||b?.code||'',v22,v26,valid22,valid26,lula22,op22,lula26,op26,share22,share26,deltaPp:share26-share22,win22,win26,majority22:valid22>0&&lula22/valid22>.5?'lula':valid22>0&&op22/valid22>.5?'opos':'none',majority26:valid26>0&&lula26/valid26>.5?'lula':valid26>0&&op26/valid26>.5?'opos':'none'};
+}
+function mapFill(d){
+  if(!d)return '#293346';
+  if(mapState.kind==='majority22'){
+    if(d.majority22==='lula')return '#c6283d';
+    if(d.majority22==='opos')return '#2867bd';
+    if(d.lula22>d.op22)return '#e88b98';
+    if(d.op22>d.lula22)return '#8bb8ec';
+    return '#687386';
+  }
+  if(mapState.kind==='majority26'){
+    if(d.majority26==='lula')return '#c6283d';
+    if(d.majority26==='opos')return '#2867bd';
+    if(d.lula26>d.op26)return '#e88b98';
+    if(d.op26>d.lula26)return '#8bb8ec';
+    return '#687386';
+  }
+  if(mapState.kind==='switch'){
+    const l22=d.win22.code==='13',l26=d.win26.code==='13';
+    if(l22&&l26)return '#c6283d';
+    if(l22&&!l26)return '#2878d0';
+    if(!l22&&l26)return '#d97706';
+    return '#747e8e';
+  }
+  const x=d.deltaPp;
+  if(x>=8)return '#087f5b'; if(x>=3)return '#2ca782'; if(x>0.5)return '#86cdb4';
+  if(x<=-8)return '#a61e32'; if(x<=-3)return '#d9485f'; if(x<-.5)return '#e9a1aa'; return '#6f7b8e';
+}
+function mapStyle(feature){const d=mapStatsForFeature(feature);if(mapState.uf&&d?.uf!==mapState.uf)return {color:'#243147',weight:.25,fillColor:'#0e1728',fillOpacity:.08};return {color:'#18243a',weight:.55,opacity:.9,fillColor:mapFill(d),fillOpacity:.86};}
+function mapPopup(d){if(!d)return '<strong>Sem correspondência com a base eleitoral</strong>';
+  const winnerName=(year,w)=>w.code?candidateName(year,w.code):'Sem dados';
+  return '<strong>'+escapeHtml(d.name)+' • '+escapeHtml(d.uf)+'</strong><hr style="border-color:#33445f">'+
+  '<b>2022</b><br>Lula: '+fmt(d.lula22)+' ('+pct(d.share22,2)+')<br>Jair Bolsonaro: '+fmt(d.op22)+' ('+pct(d.valid22?d.op22/d.valid22*100:0,2)+')<br>Mais votado: '+escapeHtml(winnerName('2022',d.win22))+'<br><br>'+ 
+  '<b>2026</b><br>Lula: '+fmt(d.lula26)+' ('+pct(d.share26,2)+')<br>Flávio Bolsonaro: '+fmt(d.op26)+' ('+pct(d.valid26?d.op26/d.valid26*100:0,2)+')<br>Mais votado: '+escapeHtml(winnerName('2026',d.win26))+'<br><br><b>Variação da participação de Lula:</b> '+signedPct(d.deltaPp)+' p.p.';
+}
+function mapLegend(){
+  let items=[];
+  if(mapState.kind==='majority22')items=[['#c6283d','Lula > 50% dos votos válidos'],['#e88b98','Lula mais votado, mas ≤ 50%'],['#2867bd','Jair Bolsonaro > 50%'],['#8bb8ec','Jair Bolsonaro mais votado, mas ≤ 50%'],['#687386','Empate entre os dois candidatos']];
+  if(mapState.kind==='majority26')items=[['#c6283d','Lula > 50% dos votos válidos'],['#e88b98','Lula mais votado, mas ≤ 50%'],['#2867bd','Flávio Bolsonaro > 50%'],['#8bb8ec','Flávio Bolsonaro mais votado, mas ≤ 50%'],['#687386','Empate entre os dois candidatos']];
+  if(mapState.kind==='switch')items=[['#c6283d','Lula mais votado nos dois anos'],['#2878d0','Lula mais votado em 2022; adversário em 2026'],['#d97706','Adversário em 2022; Lula em 2026'],['#747e8e','Adversário mais votado nos dois anos']];
+  if(mapState.kind==='delta')items=[['#087f5b','Aumento ≥ 8 p.p.'],['#2ca782','Aumento de 3 a 8 p.p.'],['#86cdb4','Aumento de 0,5 a 3 p.p.'],['#6f7b8e','Variação entre −0,5 e +0,5 p.p.'],['#e9a1aa','Queda de 0,5 a 3 p.p.'],['#d9485f','Queda de 3 a 8 p.p.'],['#a61e32','Queda ≥ 8 p.p.']];
+  return items.map(([c,l])=>'<div class="map-legend-item"><span class="map-swatch" style="background:'+c+'"></span><span>'+l+'</span></div>').join('');
+}
+function updateMapLayer(){
+  if(!mapState.map||!mapState.geojson)return;
+  if(mapState.layer)mapState.map.removeLayer(mapState.layer);
+  let matched=0,unmatched=0,counts={};
+  const unmatchedFeatures=[];
+  mapState.layer=L.geoJSON(mapState.geojson,{style:mapStyle,onEachFeature:(feature,layer)=>{
+    const d=mapStatsForFeature(feature);
+    if(d)matched++;else {unmatched++; unmatchedFeatures.push(mapFeatureLabel(feature));}
+    const fill=mapFill(d);counts[fill]=(counts[fill]||0)+1;
+    layer.bindTooltip(d?escapeHtml(d.name)+' • '+d.uf:'Sem dados eleitorais',{sticky:true,direction:'auto'});
+    layer.bindPopup(d?mapPopup(d):'<strong>Sem correspondência</strong>');
+    layer.on('mouseover',e=>e.target.setStyle({weight:1.8,color:'#f4f7ff',fillOpacity:.98}));
+    layer.on('mouseout',e=>mapState.layer?.resetStyle(e.target));
+  }}).addTo(mapState.map);
+  mapState.matched=matched;mapState.unmatched=unmatched;
+  const bounds=mapState.layer.getBounds();if(bounds.isValid())mapState.map.fitBounds(bounds,{padding:[10,10]});
+  $('mapLegend').innerHTML=mapLegend();
+  $('mapMatched').textContent=fmt(matched);
+  $('mapUnmatched').textContent=fmt(unmatched);
+  const list=$('mapUnmatchedList');
+  if(list){
+    if(!unmatchedFeatures.length) list.innerHTML='Todos os municípios da malha encontraram correspondência nas bases eleitorais.';
+    else {
+      unmatchedFeatures.sort((a,b)=>(a.uf+' '+a.name).localeCompare(b.uf+' '+b.name,'pt-BR'));
+      list.innerHTML='<div class="tablewrap"><table class="table"><thead><tr><th>UF identificada</th><th>Nome na malha</th><th>Código geográfico</th><th>Chave normalizada</th></tr></thead><tbody>'+
+        unmatchedFeatures.map(x=>'<tr><td>'+escapeHtml(x.uf||'N/D')+'</td><td>'+escapeHtml(x.name||'Nome não identificado')+'</td><td>'+escapeHtml(x.code||'N/D')+'</td><td><span class="small">'+escapeHtml((x.uf||'')+'|'+normName(x.name))+'</span></td></tr>').join('')+
+        '</tbody></table></div>';
+    }
+  }
+  $('mapDescription').textContent=({majority22:'Municípios onde Lula ou Jair Bolsonaro superaram 50% dos votos válidos em 2022.',majority26:'Municípios onde Lula ou Flávio Bolsonaro superaram 50% dos votos válidos em 2026.',switch:'Classificação pelo candidato mais votado em cada município nos dois primeiros turnos comparados.',delta:'Diferença da participação de Lula nos votos válidos: percentual de 2026 menos percentual de 2022.'})[mapState.kind];
+}
+async function renderMapTab(){
+  if(!hasYear('2022')||!hasYear('2026')){$('tab-mapas').innerHTML='<div class="empty">Carregue as pastas de dados detalhados de 2022 e 2026 para gerar os mapas.</div>';mapState.uiReady=false;return;}
+  if(mapState.uiReady&&mapState.map){
+    if(!mapState.index22||!mapState.index26){mapState.index22=municipalityMapIndex('2022');mapState.index26=municipalityMapIndex('2026');}
+    updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);return;
+  }
+  if(!mapState.index22||!mapState.index26){mapState.index22=municipalityMapIndex('2022');mapState.index26=municipalityMapIndex('2026');}
+  $('tab-mapas').innerHTML='<div class="geo-head"><div><div class="geo-title">Mapas eleitorais municipais</div><div class="geo-sub">Explore como a votação se distribuiu pelos municípios. Passe o cursor para ver um resumo e clique para comparar os números.</div></div><div class="small">1º turno • 2022 × 2026</div></div>'+
+  '<div class="map-toolbar"><div class="map-field"><label>Visualização</label><select id="mapKind"><option value="majority22">2022 • maioria absoluta</option><option value="majority26">2026 • maioria absoluta</option><option value="switch">Mudança do candidato mais votado</option><option value="delta">Variação da participação de Lula</option></select></div><div class="map-field"><label>Estado</label><select id="mapUF"><option value="">Brasil inteiro</option>'+Object.keys(state.years['2022'].index.ufs).filter(u=>u!=='ZZ').sort().map(u=>'<option value="'+u+'">'+u+'</option>').join('')+'</select></div><div class="map-note">As malhas municipais são carregadas da base geográfica pública do IBGE, distribuída em GeoJSON. É necessária conexão com a internet para carregar a geometria e a biblioteca do mapa.</div></div>'+
+  '<div class="map-layout"><div id="electionMap" class="election-map" role="img" aria-label="Mapa eleitoral interativo do Brasil"></div><div class="map-side"><div class="map-stat"><div class="k">Municípios com dados correspondentes</div><div id="mapMatched" class="big">—</div><div class="map-note">Correspondência por UF e nome normalizado.</div></div><div class="map-stat"><div class="k">Sem correspondência</div><div id="mapUnmatched" class="big">—</div><div class="map-note">A lista detalhada aparece abaixo do mapa.</div></div><div class="map-stat"><div class="k">Legenda</div><div id="mapLegend" class="map-legend"></div></div><div class="map-stat"><div class="k">Como interpretar</div><div id="mapDescription" class="map-note"></div><div class="map-note" style="margin-top:10px">“Maioria absoluta” significa mais de 50% dos votos válidos. O mapa de mudança usa o candidato mais votado, que não precisa ultrapassar 50%.</div></div></div></div><div class="map-stat" style="margin-top:14px"><div class="k">Diagnóstico de municípios sem correspondência</div><div id="mapUnmatchedList" class="map-note" style="margin-top:8px">A lista será exibida após carregar o mapa.</div></div>';
+  mapState.uiReady=true;
+  $('mapKind').value=mapState.kind;$('mapUF').value=mapState.uf;
+  $('mapKind').addEventListener('change',e=>{mapState.kind=e.target.value;updateMapLayer();});
+  $('mapUF').addEventListener('change',e=>{mapState.uf=e.target.value;updateMapLayer();});
+  if(!mapState.loaded&&!mapState.loading){
+    mapState.loading=true;
+    try{
+      if(typeof L==='undefined')throw new Error('A biblioteca Leaflet não carregou. Verifique a conexão com a internet.');
+      const res=await fetch(GEOJSON_URL);if(!res.ok)throw new Error('Falha ao carregar a malha municipal ('+res.status+').');
+      mapState.geojson=await res.json();mapState.loaded=true;
+      mapState.map=L.map('electionMap',{zoomControl:true,scrollWheelZoom:true,preferCanvas:true,attributionControl:true});
+      mapState.map.attributionControl.setPrefix('');
+      mapState.map.attributionControl.addAttribution('Malha municipal: IBGE • GeoJSON via br-geojson');
+      updateMapLayer();
+    }catch(e){$('electionMap').innerHTML='<div style="padding:22px;color:#eef3ff">Não foi possível carregar o mapa. '+escapeHtml(e.message)+'<br><br>Confira a conexão e abra novamente a aba Mapas eleitorais.</div>';}
+    finally{mapState.loading=false;}
+  }else if(mapState.map){updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);}
+}
+
+function renderAll(){
+  renderSpotlight();
+  renderMetrics();
+  renderResumo();
+  renderRanking();
+  renderVariation();
+  renderGeografia();
+  renderZonas();
+  renderSecoes();
+  renderCandidate();
+}
+
+function setMode(mode){
+  state.mode=mode;
+  state.uf='';
+  state.municipio='';
+  state.zona='';
+  state.secao='';
+  state.candidato='';
+  for(const y of ['2022','2026'])state.years[y].rows=[];
+
+  document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  rebuildFilters();
+  renderAll();
+
+  const label=mode==='compare'?'Comparação 2022 × 2026':('Somente '+mode);
+  setStatus(label+' • selecione a abrangência geográfica','ok');
+}
+
+async function loadYearOnline(year){
+  const d=state.years[year];
+  const folder='presidente_detalhado_'+year+'/';
+  d.files.clear();
+  d.loadedRanges.clear();
+  d.rows=[];
+  d.remoteBase=new URL(folder,document.baseURI);
+  const [indexResponse,candidatesResponse]=await Promise.all([
+    fetch(new URL('index.json',d.remoteBase)),
+    fetch(new URL('candidatos.json',d.remoteBase))
+  ]);
+  if(!indexResponse.ok)throw new Error('Não foi possível carregar '+folder+'index.json ('+indexResponse.status+').');
+  if(!candidatesResponse.ok)throw new Error('Não foi possível carregar '+folder+'candidatos.json ('+candidatesResponse.status+').');
+  d.index=await indexResponse.json();
+  d.candidates=await candidatesResponse.json();
+  if(typeof mapState!=='undefined'){mapState.index22=null;mapState.index26=null;}
+  const ufs=Object.keys(d.index.ufs||{});
+  if(!ufs.length)throw new Error('index.json de '+year+' não contém UFs.');
+  updateDataStatus();
+  rebuildFilters();
+  setStatus('Dados '+year+' carregados online • '+fmt(d.index.total_secoes)+' seções','ok');
+  renderAll();
+}
+
+async function loadAllOnline(){
+  setStatus('Carregando índices eleitorais de 2022 e 2026…');
+  try{
+    await Promise.all([loadYearOnline('2022'),loadYearOnline('2026')]);
+    $('onlineBadge').textContent='Dados carregados';
+    setStatus('Dados de 2022 e 2026 carregados • selecione a abrangência geográfica','ok');
+  }catch(err){
+    console.error(err);
+    $('onlineBadge').textContent='Falha ao carregar dados';
+    setStatus('Erro ao carregar dados online: '+err.message+' Confira se as duas pastas de dados estão no repositório.','err');
+  }
+}
+
+$('uf').addEventListener('change',onUF);
+$('municipio').addEventListener('change',onMunicipio);
+$('zona').addEventListener('change',onZona);
+$('secao').addEventListener('change',onSecao);
+$('candidato').addEventListener('change',onCandidate);
+
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('section[id^="tab-"]').forEach(x=>x.classList.add('hidden'));
+  b.classList.add('active');
+  $('tab-'+b.dataset.tab).classList.remove('hidden');
+  if(b.dataset.tab==='mapas')renderMapTab();
+}));
+
+updateDataStatus();
+rebuildFilters();
+renderAll();
+loadAllOnline();
+</script>
+</body>
+</html>
