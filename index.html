@@ -1313,6 +1313,11 @@ function updateMapLayer(){
   $('mapUnmatched').textContent=fmt(unmatched);
   const switchCount=$('mapSwitchCount'), switchDetail=$('mapSwitchCountDetail');
   if(switchCount && switchDetail){
+    const switchTitles={switch1T:'Mudança de liderança • 2022 × 2026 (1º turno)',switch2T:'Mudança de liderança • 2022 × 2026 (2º turno)',switch22T:'Mudança de liderança • 2022',switch26T:'Mudança de liderança • 2026'};
+    const switchTitle=switchTitles[mapState.kind];
+    const switchTitleEl=switchCount.parentElement?.querySelector('.k');
+    if(switchTitleEl) switchTitleEl.textContent=switchTitle||'Municípios com mudança de liderança';
+    if(switchCount && switchDetail){
     if(mapState.kind.startsWith('switch')){
       switchCount.textContent=fmt(leadershipSwitches);
       const descriptions={
@@ -1327,6 +1332,7 @@ function updateMapLayer(){
     } else {
       switchCount.textContent='—';
       switchDetail.textContent='O contador de mudança de liderança fica disponível nas visualizações “Mudança do mais votado”.';
+    }
     }
   }
   const list=$('mapUnmatchedList');
