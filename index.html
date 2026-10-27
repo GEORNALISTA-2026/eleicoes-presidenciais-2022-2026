@@ -1284,11 +1284,17 @@ function mapLegend(){
 function updateMapLayer(){
   if(!mapState.map||!mapState.geojson)return;
   if(mapState.layer)mapState.map.removeLayer(mapState.layer);
-  let matched=0,unmatched=0,counts={};
+  let matched=0,unmatched=0,counts={},leadershipSwitches=0;
   const unmatchedFeatures=[];
   mapState.layer=L.geoJSON(mapState.geojson,{style:mapStyle,onEachFeature:(feature,layer)=>{
     const d=mapStatsForFeature(feature);
-    if(d)matched++;else {unmatched++; unmatchedFeatures.push(mapFeatureLabel(feature));}
+    if(d) {
+      matched++;
+      if(mapState.kind==='switch26T' && (!mapState.uf || d.uf===mapState.uf) &&
+         d.winA.code!==null && d.winA.code!==undefined &&
+         d.winB.code!==null && d.winB.code!==undefined &&
+         String(d.winA.code)!==String(d.winB.code)) leadershipSwitches++;
+    } else {unmatched++; unmatchedFeatures.push(mapFeatureLabel(feature));}
     const fill=mapFill(d);counts[fill]=(counts[fill]||0)+1;
     layer.bindTooltip(d?escapeHtml(d.name)+' • '+d.uf:'Sem dados eleitorais',{sticky:true,direction:'auto'});
     layer.bindPopup(d?mapPopup(d):'<strong>Sem correspondência</strong>');
@@ -1300,6 +1306,18 @@ function updateMapLayer(){
   $('mapLegend').innerHTML=mapLegend();
   $('mapMatched').textContent=fmt(matched);
   $('mapUnmatched').textContent=fmt(unmatched);
+  const switchCount=$('mapSwitchCount'), switchDetail=$('mapSwitchCountDetail');
+  if(switchCount && switchDetail){
+    if(mapState.kind==='switch26T'){
+      switchCount.textContent=fmt(leadershipSwitches);
+      switchDetail.textContent=mapState.uf
+        ? 'Municípios de '+mapState.uf+' em que o candidato mais votado mudou do 1º para o 2º turno de 2026.'
+        : 'Brasil inteiro: municípios em que o candidato mais votado mudou entre os turnos de 2026.';
+    } else {
+      switchCount.textContent='—';
+      switchDetail.textContent='Selecione “2026 • mudança do mais votado entre turnos” para calcular este total.';
+    }
+  }
   const list=$('mapUnmatchedList');
   if(list){
     if(!unmatchedFeatures.length) list.innerHTML='Todos os municípios da malha encontraram correspondência nas bases eleitorais.';
@@ -1318,7 +1336,7 @@ async function renderMapTab(){
   if(mapState.uiReady&&mapState.map){updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);return;}
   $('tab-mapas').innerHTML='<div class="geo-head"><div><div class="geo-title">Mapas eleitorais municipais</div><div class="geo-sub">Explore como a votação se distribuiu pelos municípios. Passe o cursor para ver um resumo e clique para comparar os números.</div></div><div class="small">1º turno • 2022 × 2026</div></div>'+
   '<div class="map-toolbar"><div class="map-field"><label>Visualização</label><select id="mapKind"><optgroup label="Maioria absoluta por turno"><option value="majority22_1T">2022 • 1º turno</option><option value="majority22_2T">2022 • 2º turno</option><option value="majority26_1T">2026 • 1º turno</option><option value="majority26_2T">2026 • 2º turno</option></optgroup><optgroup label="Variação entre eleições"><option value="delta1T">2022 × 2026 • 1º turno</option><option value="delta2T">2022 × 2026 • 2º turno</option><option value="switch1T">Mudança do mais votado • 1º turno</option><option value="switch2T">Mudança do mais votado • 2º turno</option></optgroup><optgroup label="Mudança de liderança entre turnos"><option value="switch22T">2022 • mudança do mais votado entre turnos</option><option value="switch26T">2026 • mudança do mais votado entre turnos</option></optgroup><optgroup label="Variação dentro da mesma eleição"><option value="delta22">2022 • variação da participação</option><option value="votes22">2022 • variação absoluta de votos</option><option value="delta26">2026 • variação da participação</option><option value="votes26">2026 • variação absoluta de votos</option></optgroup></select></div><div class="map-field"><label>Estado</label><select id="mapUF"><option value="">Brasil inteiro</option>'+Object.keys(state.years['2022'].index.ufs).filter(u=>u!=='ZZ').sort().map(u=>'<option value="'+u+'">'+u+'</option>').join('')+'</select></div><div class="map-note">As malhas municipais são carregadas da base geográfica pública do IBGE, distribuída em GeoJSON. É necessária conexão com a internet para carregar a geometria e a biblioteca do mapa.</div></div>'+
-  '<div class="map-layout"><div id="electionMap" class="election-map" role="img" aria-label="Mapa eleitoral interativo do Brasil"></div><div class="map-side"><div class="map-stat"><div class="k">Municípios com dados correspondentes</div><div id="mapMatched" class="big">—</div><div class="map-note">Correspondência por UF e nome normalizado.</div></div><div class="map-stat"><div class="k">Sem correspondência</div><div id="mapUnmatched" class="big">—</div><div class="map-note">A lista detalhada aparece abaixo do mapa.</div></div><div class="map-stat"><div class="k">Legenda</div><div id="mapLegend" class="map-legend"></div></div><div class="map-stat"><div class="k">Como interpretar</div><div id="mapDescription" class="map-note"></div><div class="map-note" style="margin-top:10px">“Maioria absoluta” significa mais de 50% dos votos válidos. O mapa de mudança usa o candidato mais votado, que não precisa ultrapassar 50%.</div></div></div></div><div class="map-stat" style="margin-top:14px"><div class="k">Diagnóstico de municípios sem correspondência</div><div id="mapUnmatchedList" class="map-note" style="margin-top:8px">A lista será exibida após carregar o mapa.</div></div>';
+  '<div class="map-layout"><div id="electionMap" class="election-map" role="img" aria-label="Mapa eleitoral interativo do Brasil"></div><div class="map-side"><div class="map-stat"><div class="k">Mudança de liderança • 2026</div><div id="mapSwitchCount" class="big">—</div><div id="mapSwitchCountDetail" class="map-note">Selecione “2026 • mudança do mais votado entre turnos” para calcular este total.</div></div><div class="map-stat"><div class="k">Municípios com dados correspondentes</div><div id="mapMatched" class="big">—</div><div class="map-note">Correspondência por UF e nome normalizado.</div></div><div class="map-stat"><div class="k">Sem correspondência</div><div id="mapUnmatched" class="big">—</div><div class="map-note">A lista detalhada aparece abaixo do mapa.</div></div><div class="map-stat"><div class="k">Legenda</div><div id="mapLegend" class="map-legend"></div></div><div class="map-stat"><div class="k">Como interpretar</div><div id="mapDescription" class="map-note"></div><div class="map-note" style="margin-top:10px">“Maioria absoluta” significa mais de 50% dos votos válidos. O mapa de mudança usa o candidato mais votado, que não precisa ultrapassar 50%.</div></div></div></div><div class="map-stat" style="margin-top:14px"><div class="k">Diagnóstico de municípios sem correspondência</div><div id="mapUnmatchedList" class="map-note" style="margin-top:8px">A lista será exibida após carregar o mapa.</div></div>';
   mapState.uiReady=true;
   $('mapKind').value=mapState.kind;$('mapUF').value=mapState.uf;
   $('mapKind').addEventListener('change',e=>{mapState.kind=e.target.value;updateMapLayer();});
