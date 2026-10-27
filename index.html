@@ -1126,7 +1126,9 @@ const MAP_NAME_ALIASES={
   espigaodooeste:'espigaodoeste',
   donaeuzebia:'donaeuzebia', donaeusebia:'donaeuzebia', donaeuzebya:'donaeuzebia',
   amparodesaofrancisco:'amparodosaofrancisco', amparodosaofrancisco:'amparodosaofrancisco',
-  saoluizdoparaitinga:'saoluisdoparaitinga', saoluisdoparaitinga:'saoluisdoparaitinga'
+  saoluizdoparaitinga:'saoluisdoparaitinga', saoluisdoparaitinga:'saoluisdoparaitinga',
+  // Mesmo município em bases eleitorais distintas: código TSE 92690.
+  bomjesusdegoias:'bomjesus', bomjesus:'bomjesus'
 };
 function normMapName(v){const n=normName(v);return MAP_NAME_ALIASES[n]||n;}
 function validVoteTotal(votes){return Object.entries(votes||{}).reduce((sum,[code,value])=>sum+(['95','96'].includes(String(code))?0:num(value)),0);}
