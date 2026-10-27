@@ -1211,8 +1211,8 @@ function mapPair(){
   if(k==='majority22_2T')return ['2022_2T','2022_2T'];
   if(k==='majority26_1T')return ['2026_1T','2026_1T'];
   if(k==='majority26_2T')return ['2026_2T','2026_2T'];
-  if(k==='delta22'||k==='votes22')return ['2022_1T','2022_2T'];
-  if(k==='delta26'||k==='votes26')return ['2026_1T','2026_2T'];
+  if(k==='delta22'||k==='votes22'||k==='switch22T')return ['2022_1T','2022_2T'];
+  if(k==='delta26'||k==='votes26'||k==='switch26T')return ['2026_1T','2026_2T'];
   if(k==='delta2T'||k==='switch2T')return ['2022_2T','2026_2T'];
   return ['2022_1T','2026_1T'];
 }
@@ -1245,7 +1245,14 @@ function mapFill(d){
   }
   if(mapState.kind.startsWith('switch')){
     const lA=d.winA.code==='13',lB=d.winB.code==='13';
-    if(lA&&lB)return '#c6283d'; if(lA&&!lB)return '#2878d0'; if(!lA&&lB)return '#d97706'; return '#747e8e';
+    const finalistsA=d.ka.startsWith('2022')?['13','22']:['13','22'];
+    const finalistA=finalistsA.includes(String(d.winA.code)), finalistB=finalistsA.includes(String(d.winB.code));
+    if(String(d.winA.code)===String(d.winB.code))return '#c6283d';
+    if(lA&&lB)return '#c6283d';
+    if(lA&&!lB)return '#2878d0';
+    if(!lA&&lB)return '#d97706';
+    if(!finalistA||!finalistB)return '#8b5cf6';
+    return '#747e8e';
   }
   const x=d.deltaPp;
   if(x>=8)return '#087f5b'; if(x>=3)return '#2ca782'; if(x>0.5)return '#86cdb4';
@@ -1257,13 +1264,18 @@ function mapPopup(d){if(!d)return '<strong>Sem correspondência com a base eleit
   const candidateA=d.ka.startsWith('2022')?'Jair Bolsonaro':'Flávio Bolsonaro';
   const candidateB=d.kb.startsWith('2022')?'Jair Bolsonaro':'Flávio Bolsonaro';
   const section=(title,lula,op,valid,share,candidate)=>'<b>'+title+'</b><br>Lula: '+fmt(lula)+' ('+pct(share,2)+')<br>'+candidate+': '+fmt(op)+' ('+pct(valid?op/valid*100:0,2)+')';
-  return '<strong>'+escapeHtml(d.name)+' • '+escapeHtml(d.uf)+'</strong><hr style="border-color:#33445f">'+section(label(d.ka),d.lulaA,d.opA,d.validA,d.shareA,candidateA)+'<br><br>'+section(label(d.kb),d.lulaB,d.opB,d.validB,d.shareB,candidateB)+'<br><br><b>Variação da participação de Lula:</b> '+signedPct(d.deltaPp)+' p.p.';
+  const winnerLabel=(w,k)=>w.code==='13'?'Lula':w.code==='22'?(k.startsWith('2022')?'Jair Bolsonaro':'Flávio Bolsonaro'):'outro candidato (código '+String(w.code??'—')+')';
+  const winnerComparison=(mapState.kind==='switch22T'||mapState.kind==='switch26T')?'<br><br><b>Mais votado no 1º turno:</b> '+escapeHtml(winnerLabel(d.winA,d.ka))+'<br><b>Mais votado no 2º turno:</b> '+escapeHtml(winnerLabel(d.winB,d.kb))+'<br><b>Resultado:</b> '+(String(d.winA.code)===String(d.winB.code)?'mesmo candidato':'mudança de liderança'):'';
+  return '<strong>'+escapeHtml(d.name)+' • '+escapeHtml(d.uf)+'</strong><hr style="border-color:#33445f">'+section(label(d.ka),d.lulaA,d.opA,d.validA,d.shareA,candidateA)+'<br><br>'+section(label(d.kb),d.lulaB,d.opB,d.validB,d.shareB,candidateB)+'<br><br><b>Variação da participação de Lula:</b> '+signedPct(d.deltaPp)+' p.p.'+winnerComparison;
 }
 function mapLegend(){
   let items=[];
   if(mapState.kind.startsWith('majority'))items=[['#c6283d','Lula > 50% dos votos válidos'],['#e88b98','Lula mais votado, mas ≤ 50%'],['#2867bd','Adversário > 50%'],['#8bb8ec','Adversário mais votado, mas ≤ 50%'],['#687386','Empate entre os dois candidatos']];
   else if(mapState.kind==='votes22'||mapState.kind==='votes26')items=[['#087f5b','Aumento ≥ 10 mil votos'],['#2ca782','Aumento de 1 mil a 10 mil'],['#86cdb4','Aumento de até 1 mil'],['#6f7b8e','Sem variação'],['#e9a1aa','Queda de até 1 mil'],['#d9485f','Queda de 1 mil a 10 mil'],['#a61e32','Queda ≥ 10 mil']];
-  else if(mapState.kind.startsWith('switch'))items=[['#c6283d','Lula mais votado nos dois recortes'],['#2878d0','Lula no primeiro; adversário no segundo'],['#d97706','Adversário no primeiro; Lula no segundo'],['#747e8e','Adversário mais votado nos dois recortes']];
+  else if(mapState.kind.startsWith('switch')){
+    if(mapState.kind==='switch22T'||mapState.kind==='switch26T')items=[['#c6283d','Mesmo candidato mais votado nos dois turnos'],['#2878d0','Lula → adversário'],['#d97706','Adversário → Lula'],['#8b5cf6','Um dos turnos teve outro candidato como mais votado'],['#747e8e','Outra mudança de liderança']];
+    else items=[['#c6283d','Lula mais votado nos dois recortes'],['#2878d0','Lula no primeiro; adversário no segundo'],['#d97706','Adversário no primeiro; Lula no segundo'],['#747e8e','Adversário mais votado nos dois recortes']];
+  }
   else items=[['#087f5b','Aumento ≥ 8 p.p.'],['#2ca782','Aumento de 3 a 8 p.p.'],['#86cdb4','Aumento de 0,5 a 3 p.p.'],['#6f7b8e','Variação entre −0,5 e +0,5 p.p.'],['#e9a1aa','Queda de 0,5 a 3 p.p.'],['#d9485f','Queda de 3 a 8 p.p.'],['#a61e32','Queda ≥ 8 p.p.']];
   return items.map(([c,l])=>'<div class="map-legend-item"><span class="map-swatch" style="background:'+c+'"></span><span>'+l+'</span></div>').join('');
 }
@@ -1296,14 +1308,14 @@ function updateMapLayer(){
         '</tbody></table></div>';
     }
   }
-  $('mapDescription').textContent=({majority22_1T:'Maioria absoluta por município — 2022, 1º turno.',majority22_2T:'Maioria absoluta por município — 2022, 2º turno.',majority26_1T:'Maioria absoluta por município — 2026, 1º turno.',majority26_2T:'Maioria absoluta por município — 2026, 2º turno.',switch1T:'Mudança do candidato mais votado entre 2022 e 2026 no 1º turno.',switch2T:'Mudança do candidato mais votado entre 2022 e 2026 no 2º turno.',delta1T:'Diferença da participação de Lula: 2026 menos 2022, no 1º turno.',delta2T:'Diferença da participação de Lula: 2026 menos 2022, no 2º turno.',delta22:'Variação da participação de Lula entre o 1º e o 2º turno de 2022.',delta26:'Variação da participação de Lula entre o 1º e o 2º turno de 2026.',votes22:'Variação absoluta dos votos de Lula por município: 2º turno menos 1º turno de 2022.',votes26:'Variação absoluta dos votos de Lula por município: 2º turno menos 1º turno de 2026.'})[mapState.kind]||'Compare a distribuição dos votos no recorte selecionado.';
+  $('mapDescription').textContent=({majority22_1T:'Maioria absoluta por município — 2022, 1º turno.',majority22_2T:'Maioria absoluta por município — 2022, 2º turno.',majority26_1T:'Maioria absoluta por município — 2026, 1º turno.',majority26_2T:'Maioria absoluta por município — 2026, 2º turno.',switch1T:'Mudança do candidato mais votado entre 2022 e 2026 no 1º turno.',switch2T:'Mudança do candidato mais votado entre 2022 e 2026 no 2º turno.',switch22T:'Mudança do candidato mais votado entre o 1º e o 2º turno de 2022.',switch26T:'Mudança do candidato mais votado entre o 1º e o 2º turno de 2026.',delta1T:'Diferença da participação de Lula: 2026 menos 2022, no 1º turno.',delta2T:'Diferença da participação de Lula: 2026 menos 2022, no 2º turno.',delta22:'Variação da participação de Lula entre o 1º e o 2º turno de 2022.',delta26:'Variação da participação de Lula entre o 1º e o 2º turno de 2026.',votes22:'Variação absoluta dos votos de Lula por município: 2º turno menos 1º turno de 2022.',votes26:'Variação absoluta dos votos de Lula por município: 2º turno menos 1º turno de 2026.'})[mapState.kind]||'Compare a distribuição dos votos no recorte selecionado.';
 }
 async function renderMapTab(){
   if(!hasYear('2022')||!hasYear('2026')){$('tab-mapas').innerHTML='<div class="empty">Carregue as pastas de dados detalhados de 2022 e 2026 para gerar os mapas.</div>';mapState.uiReady=false;return;}
   try{await loadAllMapIndexes();}catch(err){$('tab-mapas').innerHTML='<div class="empty">Não foi possível carregar as quatro bases necessárias para comparar turnos: '+escapeHtml(err.message)+'</div>';return;}
   if(mapState.uiReady&&mapState.map){updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);return;}
   $('tab-mapas').innerHTML='<div class="geo-head"><div><div class="geo-title">Mapas eleitorais municipais</div><div class="geo-sub">Explore como a votação se distribuiu pelos municípios. Passe o cursor para ver um resumo e clique para comparar os números.</div></div><div class="small">1º turno • 2022 × 2026</div></div>'+
-  '<div class="map-toolbar"><div class="map-field"><label>Visualização</label><select id="mapKind"><optgroup label="Maioria absoluta por turno"><option value="majority22_1T">2022 • 1º turno</option><option value="majority22_2T">2022 • 2º turno</option><option value="majority26_1T">2026 • 1º turno</option><option value="majority26_2T">2026 • 2º turno</option></optgroup><optgroup label="Variação entre eleições"><option value="delta1T">2022 × 2026 • 1º turno</option><option value="delta2T">2022 × 2026 • 2º turno</option><option value="switch1T">Mudança do mais votado • 1º turno</option><option value="switch2T">Mudança do mais votado • 2º turno</option></optgroup><optgroup label="Variação dentro da mesma eleição"><option value="delta22">2022 • variação da participação</option><option value="votes22">2022 • variação absoluta de votos</option><option value="delta26">2026 • variação da participação</option><option value="votes26">2026 • variação absoluta de votos</option></optgroup></select></div><div class="map-field"><label>Estado</label><select id="mapUF"><option value="">Brasil inteiro</option>'+Object.keys(state.years['2022'].index.ufs).filter(u=>u!=='ZZ').sort().map(u=>'<option value="'+u+'">'+u+'</option>').join('')+'</select></div><div class="map-note">As malhas municipais são carregadas da base geográfica pública do IBGE, distribuída em GeoJSON. É necessária conexão com a internet para carregar a geometria e a biblioteca do mapa.</div></div>'+
+  '<div class="map-toolbar"><div class="map-field"><label>Visualização</label><select id="mapKind"><optgroup label="Maioria absoluta por turno"><option value="majority22_1T">2022 • 1º turno</option><option value="majority22_2T">2022 • 2º turno</option><option value="majority26_1T">2026 • 1º turno</option><option value="majority26_2T">2026 • 2º turno</option></optgroup><optgroup label="Variação entre eleições"><option value="delta1T">2022 × 2026 • 1º turno</option><option value="delta2T">2022 × 2026 • 2º turno</option><option value="switch1T">Mudança do mais votado • 1º turno</option><option value="switch2T">Mudança do mais votado • 2º turno</option></optgroup><optgroup label="Mudança de liderança entre turnos"><option value="switch22T">2022 • mudança do mais votado entre turnos</option><option value="switch26T">2026 • mudança do mais votado entre turnos</option></optgroup><optgroup label="Variação dentro da mesma eleição"><option value="delta22">2022 • variação da participação</option><option value="votes22">2022 • variação absoluta de votos</option><option value="delta26">2026 • variação da participação</option><option value="votes26">2026 • variação absoluta de votos</option></optgroup></select></div><div class="map-field"><label>Estado</label><select id="mapUF"><option value="">Brasil inteiro</option>'+Object.keys(state.years['2022'].index.ufs).filter(u=>u!=='ZZ').sort().map(u=>'<option value="'+u+'">'+u+'</option>').join('')+'</select></div><div class="map-note">As malhas municipais são carregadas da base geográfica pública do IBGE, distribuída em GeoJSON. É necessária conexão com a internet para carregar a geometria e a biblioteca do mapa.</div></div>'+
   '<div class="map-layout"><div id="electionMap" class="election-map" role="img" aria-label="Mapa eleitoral interativo do Brasil"></div><div class="map-side"><div class="map-stat"><div class="k">Municípios com dados correspondentes</div><div id="mapMatched" class="big">—</div><div class="map-note">Correspondência por UF e nome normalizado.</div></div><div class="map-stat"><div class="k">Sem correspondência</div><div id="mapUnmatched" class="big">—</div><div class="map-note">A lista detalhada aparece abaixo do mapa.</div></div><div class="map-stat"><div class="k">Legenda</div><div id="mapLegend" class="map-legend"></div></div><div class="map-stat"><div class="k">Como interpretar</div><div id="mapDescription" class="map-note"></div><div class="map-note" style="margin-top:10px">“Maioria absoluta” significa mais de 50% dos votos válidos. O mapa de mudança usa o candidato mais votado, que não precisa ultrapassar 50%.</div></div></div></div><div class="map-stat" style="margin-top:14px"><div class="k">Diagnóstico de municípios sem correspondência</div><div id="mapUnmatchedList" class="map-note" style="margin-top:8px">A lista será exibida após carregar o mapa.</div></div>';
   mapState.uiReady=true;
   $('mapKind').value=mapState.kind;$('mapUF').value=mapState.uf;
