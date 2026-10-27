@@ -81,7 +81,7 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
   <div class="hero">
     <div class="title">
       <h1>Presidente 2022 × 2026</h1>
-      <p>Resultados presidenciais por seção • comparação detalhada 2022 × 2026</p>
+      <p>Resultados presidenciais por seção • 1º e 2º turnos de 2022 e 2026</p>
     </div>
     <div class="actions">
       <span class="pill" id="onlineBadge">Carregando dados online…</span>
@@ -101,6 +101,13 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
   </div>
 
   <div class="card">
+    <div class="field" style="max-width:320px;margin-bottom:12px">
+      <label for="turno">Turno eleitoral</label>
+      <select id="turno">
+        <option value="1T">1º turno</option>
+        <option value="2T">2º turno</option>
+      </select>
+    </div>
     <div class="modebar">
       <button class="mode active" data-mode="compare">Comparar 2022 × 2026</button>
       <button class="mode" data-mode="2022">Somente 2022</button>
@@ -155,6 +162,7 @@ const $ = id => document.getElementById(id);
 
 const state = {
   mode: 'compare',
+  turno: '1T',
   years: {
     2022: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null},
     2026: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null}
@@ -205,6 +213,7 @@ function aggregate(rows){
 }
 
 function hasYear(year){return !!state.years[year].index}
+function turnLabel(){return state.turno==='2T'?'2º turno':'1º turno';}
 
 function currentYears(){
   if(state.mode==='2022') return hasYear('2022')?['2022']:[];
@@ -583,7 +592,7 @@ function duelCard(year,summary){
   const barA=pairTotal?a/pairTotal*100:50;
   const barB=pairTotal?b/pairTotal*100:50;
   return '<article class="duel">'+
-    '<div class="duel-head"><div class="duel-year">'+year+' • 1º turno</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
+    '<div class="duel-head"><div class="duel-year">'+year+' • '+turnLabel()+'</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
     '<div class="faces">'+
       '<div class="cand"><div class="name">'+escapeHtml(p[0].name)+'</div><div class="role">'+escapeHtml(p[0].role)+' • nº '+p[0].code+'</div><div class="votes">'+fmt(a)+'</div><div class="share">'+pct(va)+' dos votos válidos</div></div>'+ 
       '<div class="vs">VS</div>'+ 
@@ -1247,7 +1256,7 @@ function setMode(mode){
 
 async function loadYearOnline(year){
   const d=state.years[year];
-  const folder='presidente_detalhado_'+year+'/';
+  const folder='presidente_detalhado_'+year+(state.turno==='2T'?'_2T':'')+'/';
   d.files.clear();
   d.loadedRanges.clear();
   d.rows=[];
@@ -1270,15 +1279,15 @@ async function loadYearOnline(year){
 }
 
 async function loadAllOnline(){
-  setStatus('Carregando índices eleitorais de 2022 e 2026…');
+  setStatus('Carregando índices eleitorais de 2022 e 2026 • '+turnLabel()+'…');
   try{
     await Promise.all([loadYearOnline('2022'),loadYearOnline('2026')]);
     $('onlineBadge').textContent='Dados carregados';
-    setStatus('Dados de 2022 e 2026 carregados • selecione a abrangência geográfica','ok');
+    setStatus('Dados de 2022 e 2026 carregados • '+turnLabel()+' • selecione a abrangência geográfica','ok');
   }catch(err){
     console.error(err);
     $('onlineBadge').textContent='Falha ao carregar dados';
-    setStatus('Erro ao carregar dados online: '+err.message+' Confira se as duas pastas de dados estão no repositório.','err');
+    setStatus('Erro ao carregar dados online: '+err.message+' Confira se as pastas de dados do turno selecionado estão no repositório.','err');
   }
 }
 
@@ -1288,6 +1297,22 @@ $('zona').addEventListener('change',onZona);
 $('secao').addEventListener('change',onSecao);
 $('candidato').addEventListener('change',onCandidate);
 
+$('turno').addEventListener('change',async()=>{
+  state.turno=$('turno').value;
+  for(const y of ['2022','2026']){
+    state.years[y].index=null;
+    state.years[y].candidates={};
+    state.years[y].files.clear();
+    state.years[y].loadedRanges.clear();
+    state.years[y].rows=[];
+    state.years[y].remoteBase=null;
+  }
+  state.uf='';state.municipio='';state.zona='';state.secao='';state.candidato='';
+  $('uf').value='';$('municipio').value='';$('zona').value='';$('secao').value='';$('candidato').value='';
+  $('onlineBadge').textContent='Carregando dados…';
+  updateDataStatus();rebuildFilters();renderAll();
+  await loadAllOnline();
+});
 document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
