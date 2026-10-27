@@ -74,32 +74,30 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
 @media(max-width:850px){.map-layout{grid-template-columns:1fr}.map-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.election-map{height:520px}}
 @media(max-width:520px){.map-side{grid-template-columns:1fr}.election-map{height:440px}.map-field,.map-field select{width:100%;min-width:0}}
 
-/* Navegação reorganizada: contexto claro e mapa como área principal */
-.nav-card{padding:22px 24px;margin-top:4px}
-.nav-heading,.filter-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:16px}
-.nav-heading h2,.filter-heading h2{margin:3px 0 4px;font-size:19px;letter-spacing:-.02em}
-.nav-heading p{margin:0;color:var(--muted);font-size:12px}
-.eyebrow,.section-kicker{font-size:10px;font-weight:900;letter-spacing:.13em;color:#8eadd8;text-transform:uppercase}
-.turn-control{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid rgba(125,180,255,.28);border-radius:13px;background:rgba(8,15,28,.72);white-space:nowrap}
-.turn-control label{font-size:12px;color:var(--muted);font-weight:800}
-.turn-control select{font:inherit;color:#fff;background:#111e34;border:1px solid #3b5278;border-radius:9px;padding:10px 12px;min-width:130px}
-.modebar{width:100%;padding:5px;margin:0}
-.mode{flex:1;text-align:center;min-height:44px}
-.mode span{display:block;font-size:10px;font-weight:600;opacity:.78;margin-top:2px}
-.turn-hint{font-size:11px;color:var(--muted);margin-top:11px}
-.filter-card{padding:17px 22px}
-.filter-heading{margin-bottom:12px}
-.filter-heading h2{font-size:16px}
-.filter-heading .btn{padding:8px 11px;font-size:11px}
-.section-kicker{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 9px;color:#8eadd8}
-.section-kicker span:last-child{color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:none}
-#tab-mapas{padding:20px}
-.map-tab{background:linear-gradient(135deg,#244d7e,#3c3b75)!important;border-color:rgba(142,188,255,.35)!important;color:#fff!important}
-.map-layout{grid-template-columns:minmax(0,1fr) 260px}
-.election-map{height:min(72vh,760px);min-height:520px}
-.map-toolbar{padding:12px;border:1px solid rgba(117,145,190,.15);border-radius:13px;background:rgba(7,14,27,.35)}
-@media(max-width:760px){.nav-heading,.filter-heading{align-items:stretch;flex-direction:column}.turn-control{justify-content:space-between}.modebar{display:grid;grid-template-columns:1fr}.mode{width:100%}.section-kicker{align-items:flex-start;gap:8px;flex-direction:column}.election-map{height:55vh;min-height:420px}.map-layout{grid-template-columns:1fr}}
-\n</style>
+/* Explorador comparativo: visão consolidada dos quatro recortes */
+.explorer-toolbar{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin:14px 0}
+.explorer-toolbar select{width:100%;padding:10px 11px;border-radius:10px;border:1px solid var(--line);background:#0d1526;color:var(--text)}
+.explorer-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 16px}
+.explorer-kpi{padding:14px;border-radius:14px;background:linear-gradient(150deg,rgba(20,34,58,.92),rgba(8,15,27,.9));border:1px solid rgba(117,145,190,.2);min-width:0}
+.explorer-kpi .eyebrow{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.explorer-kpi .value{font-size:clamp(18px,2vw,27px);font-weight:900;letter-spacing:-.035em;margin-top:5px;overflow-wrap:anywhere}
+.explorer-kpi .detail{font-size:11px;color:var(--muted);margin-top:3px}
+.explorer-periods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.explorer-period{padding:13px;border-radius:14px;background:rgba(7,14,26,.58);border:1px solid rgba(117,145,190,.18);min-width:0}
+.explorer-period h3{font-size:13px;margin:0 0 8px;color:#d9e6ff}
+.explorer-period .candidate-row{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin:6px 0}
+.explorer-period .candidate-row strong{font-variant-numeric:tabular-nums}
+.explorer-bar{height:8px;display:flex;overflow:hidden;border-radius:99px;background:#26334d;margin:9px 0}
+.explorer-bar .lula{background:#d9485f}.explorer-bar .opponent{background:#4388db}.explorer-bar .other{background:#75839a}
+.explorer-section-title{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:20px 0 10px}
+.explorer-section-title h3{margin:0;font-size:16px}.explorer-section-title p{margin:3px 0 0;color:var(--muted);font-size:11px}
+.explorer-chart{display:grid;gap:10px}.explorer-chart-row{display:grid;grid-template-columns:minmax(125px,190px) 1fr 90px;gap:10px;align-items:center;font-size:12px}
+.explorer-chart-label{color:#dbe6fb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.explorer-track{height:13px;background:#26334d;border-radius:99px;overflow:hidden;display:flex}.explorer-track span{height:100%;display:block}.explorer-table-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.explorer-tag{display:inline-block;padding:3px 7px;border-radius:99px;background:#1b2a43;border:1px solid #304564;color:#c9d9f5;font-size:10px}
+@media(max-width:1000px){.explorer-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-periods{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.explorer-toolbar,.explorer-periods{grid-template-columns:1fr}.explorer-chart-row{grid-template-columns:100px 1fr 75px;gap:6px}.explorer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-kpi{padding:11px}}
+
+</style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <body>
@@ -107,7 +105,7 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
   <div class="hero">
     <div class="title">
       <h1>Presidente 2022 × 2026</h1>
-      <p>Resultados presidenciais por seção • 1º e 2º turnos de 2022 e 2026</p>
+      <p>Resultados presidenciais por seção • comparação detalhada 2022 × 2026</p>
     </div>
     <div class="actions">
       <span class="pill" id="onlineBadge">Carregando dados online…</span>
@@ -126,25 +124,15 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
     </div>
   </div>
 
-  <div class="card nav-card">
-    <div class="nav-heading">
-      <div><div class="eyebrow">01 · CONTEXTO DA ANÁLISE</div><h2>O que você quer explorar?</h2>
-      <p>Escolha o turno e defina se quer comparar as eleições ou examinar um ano isoladamente.</p></div>
-      <div class="turn-control"><label for="turno">Turno</label><select id="turno">
-        <option value="1T">1º turno</option>
-        <option value="2T">2º turno</option>
-      </select></div>
-    </div>
+  <div class="card">
     <div class="modebar">
-      <button class="mode active" data-mode="compare">Comparar eleições <span>2022 × 2026</span></button>
-      <button class="mode" data-mode="2022">Explorar 2022</button>
-      <button class="mode" data-mode="2026">Explorar 2026</button>
+      <button class="mode active" data-mode="compare">Comparar 2022 × 2026</button>
+      <button class="mode" data-mode="2022">Somente 2022</button>
+      <button class="mode" data-mode="2026">Somente 2026</button>
     </div>
-    <div class="turn-hint" id="turnHint">Comparação entre 2022 e 2026 no turno selecionado.</div>
   </div>
 
-  <div class="card filter-card">
-    <div class="filter-heading"><div><div class="eyebrow">02 · RECORTE GEOGRÁFICO</div><h2>Filtrar por localidade</h2></div><button class="btn" id="resetFilters" type="button">Limpar filtros</button></div>
+  <div class="card">
     <div class="toolbar">
       <div class="field"><label>UF</label><select id="uf" disabled><option value="">Brasil</option></select></div>
       <div class="field"><label>Município</label><select id="municipio" disabled><option value="">Todos</option></select></div>
@@ -154,28 +142,28 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
     </div>
   </div>
 
-  <div class="section-kicker"><span>03 · VISÃO GERAL</span><span id="scopeLabel">Brasil · comparação entre eleições</span></div>
   <section class="spotlight card" id="spotlight"></section>
 
   <div class="metrics" id="metrics"></div>
 
-  <div class="section-kicker map-kicker"><span>04 · EXPLORAÇÃO VISUAL</span><span>Mapa em destaque</span></div>
   <div class="tabs">
-    <button class="tab active map-tab" data-tab="mapas">Mapa eleitoral</button>
-    <button class="tab" data-tab="resumo">Resumo</button>
+    <button class="tab active" data-tab="resumo">Resumo</button>
+    <button class="tab" data-tab="explorador">Explorador comparativo</button>
     <button class="tab" data-tab="ranking">Ranking</button>
     <button class="tab" data-tab="variacao">Variação</button>
     <button class="tab" data-tab="geografia">Geografia</button>
+    <button class="tab" data-tab="mapas">Mapas eleitorais</button>
     <button class="tab" data-tab="zonas">Zonas</button>
     <button class="tab" data-tab="secoes">Seções</button>
     <button class="tab" data-tab="candidatoTab">Candidato</button>
   </div>
 
-  <section id="tab-mapas" class="card"></section>
-  <section id="tab-resumo" class="card hidden"></section>
+  <section id="tab-resumo" class="card"></section>
+  <section id="tab-explorador" class="card hidden"></section>
   <section id="tab-ranking" class="card hidden"></section>
   <section id="tab-variacao" class="card hidden"></section>
   <section id="tab-geografia" class="card hidden"></section>
+  <section id="tab-mapas" class="card hidden"></section>
   <section id="tab-zonas" class="card hidden"></section>
   <section id="tab-secoes" class="card hidden"></section>
   <section id="tab-candidatoTab" class="card hidden"></section>
@@ -193,7 +181,6 @@ const $ = id => document.getElementById(id);
 
 const state = {
   mode: 'compare',
-  turno: '1T',
   years: {
     2022: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null},
     2026: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null}
@@ -244,7 +231,6 @@ function aggregate(rows){
 }
 
 function hasYear(year){return !!state.years[year].index}
-function turnLabel(){return state.turno==='2T'?'2º turno':'1º turno';}
 
 function currentYears(){
   if(state.mode==='2022') return hasYear('2022')?['2022']:[];
@@ -623,7 +609,7 @@ function duelCard(year,summary){
   const barA=pairTotal?a/pairTotal*100:50;
   const barB=pairTotal?b/pairTotal*100:50;
   return '<article class="duel">'+
-    '<div class="duel-head"><div class="duel-year">'+year+' • '+turnLabel()+'</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
+    '<div class="duel-head"><div class="duel-year">'+year+' • 1º turno</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
     '<div class="faces">'+
       '<div class="cand"><div class="name">'+escapeHtml(p[0].name)+'</div><div class="role">'+escapeHtml(p[0].role)+' • nº '+p[0].code+'</div><div class="votes">'+fmt(a)+'</div><div class="share">'+pct(va)+' dos votos válidos</div></div>'+ 
       '<div class="vs">VS</div>'+ 
@@ -1050,7 +1036,78 @@ function renderCandidate(){
     '</tbody></table></div>';
 }
 
-const mapState={map:null,layer:null,geojson:null,loaded:false,loading:false,uiReady:false,kind:'majority22',uf:'',matched:0,unmatched:0,index22:null,index26:null};
+
+const explorerState={ready:false,periodMode:'all',uf:'',municipio:'',metric:'share',sort:'delta'};
+const EXPLORER_PERIODS=[
+ {key:'2022_1T',label:'2022 • 1º turno',year:'2022',turn:'1º turno',opponent:'Jair Bolsonaro'},
+ {key:'2022_2T',label:'2022 • 2º turno',year:'2022',turn:'2º turno',opponent:'Jair Bolsonaro'},
+ {key:'2026_1T',label:'2026 • 1º turno',year:'2026',turn:'1º turno',opponent:'Flávio Bolsonaro'},
+ {key:'2026_2T',label:'2026 • 2º turno',year:'2026',turn:'2º turno',opponent:'Flávio Bolsonaro'}
+];
+function explorerLocationLabel(){if(explorerState.municipio){const i=mapState.indexes[explorerState.periodMode==='e22'?'2022_1T':'2022_1T'];const found=[...mapState.indexes['2022_1T'].values()].find(x=>x.uf===explorerState.uf&&x.code===explorerState.municipio);return found?found.name+' • '+found.uf:'Município selecionado';}return explorerState.uf||'Brasil (soma municipal)';}
+function explorerPeriodSummary(key){
+ const index=mapState.indexes[key];let votes={13:0,22:0,95:0,96:0},municipalities=0;
+ if(!index)return {votes,valid:0,lula:0,opponent:0,municipalities:0,shareLula:0,shareOpp:0};
+ for(const row of index.values()){
+  if(explorerState.uf&&row.uf!==explorerState.uf)continue;
+  if(explorerState.municipio&&row.code!==explorerState.municipio)continue;
+  const v=row.summary?.votos||{};municipalities++;
+  for(const c of ['13','22','95','96'])votes[c]+=num(v[c]);
+ }
+ const valid=Object.entries(votes).reduce((a,[c,v])=>a+(['95','96'].includes(c)?0:v),0);
+ const lula=votes['13'],opponent=votes['22'];
+ return {votes,valid,lula,opponent,other:Math.max(0,valid-lula-opponent),municipalities,shareLula:valid?lula/valid*100:0,shareOpp:valid?opponent/valid*100:0,shareOther:valid?Math.max(0,valid-lula-opponent)/valid*100:0};
+}
+function explorerFmtDelta(v){return (v>0?'+':'')+fmt(v)}
+function explorerPp(v){return (v>0?'+':'')+num(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' p.p.'}
+function explorerPeriodCards(sums){return EXPLORER_PERIODS.map(p=>{const s=sums[p.key];return '<div class="explorer-period"><h3>'+p.label+'</h3><div class="candidate-row"><span>Lula · PT 13</span><strong>'+fmt(s.lula)+'</strong></div><div class="candidate-row"><span>'+p.opponent+'</span><strong>'+fmt(s.opponent)+'</strong></div><div class="explorer-bar"><span class="lula" style="width:'+s.shareLula+'%"></span><span class="opponent" style="width:'+s.shareOpp+'%"></span></div><div class="candidate-row"><span>Lula · votos válidos</span><strong>'+pct(s.shareLula,2)+'</strong></div><div class="candidate-row"><span>'+p.opponent+' · válidos</span><strong>'+pct(s.shareOpp,2)+'</strong></div><div class="candidate-row"><span>Votos válidos</span><strong>'+fmt(s.valid)+'</strong></div><div class="small">Municípios incluídos: '+fmt(s.municipalities)+'</div></div>';}).join('')}
+function explorerComparisonTable(sums){
+ const rows=[['Lula • votos',sums['2022_1T'].lula,sums['2022_2T'].lula,sums['2026_1T'].lula,sums['2026_2T'].lula,'votesLula'],['Jair Bolsonaro (2022) / Flávio Bolsonaro (2026) • votos',sums['2022_1T'].opponent,sums['2022_2T'].opponent,sums['2026_1T'].opponent,sums['2026_2T'].opponent,'votesOpp'],['Lula • % válidos',sums['2022_1T'].shareLula,sums['2022_2T'].shareLula,sums['2026_1T'].shareLula,sums['2026_2T'].shareLula,'shareLula'],['Adversário • % válidos',sums['2022_1T'].shareOpp,sums['2022_2T'].shareOpp,sums['2026_1T'].shareOpp,sums['2026_2T'].shareOpp,'shareOpp'],['Total de votos válidos',sums['2022_1T'].valid,sums['2022_2T'].valid,sums['2026_1T'].valid,sums['2026_2T'].valid,'valid']];
+ return '<div class="tablewrap"><table class="table"><thead><tr><th>Indicador</th><th>2022 · 1T</th><th>2022 · 2T</th><th>2026 · 1T</th><th>2026 · 2T</th><th>Δ 2022 1T→2T</th><th>Δ 2026 1T→2T</th></tr></thead><tbody>'+rows.map(r=>{const isPct=r[5].startsWith('share');const f=v=>isPct?pct(v,2):fmt(v);return '<tr><td>'+r[0]+'</td><td>'+f(r[1])+'</td><td>'+f(r[2])+'</td><td>'+f(r[3])+'</td><td>'+f(r[4])+'</td><td class="'+(r[2]-r[1]>=0?'delta-up':'delta-down')+'">'+(isPct?explorerPp(r[2]-r[1]):explorerFmtDelta(r[2]-r[1]))+'</td><td class="'+(r[4]-r[3]>=0?'delta-up':'delta-down')+'">'+(isPct?explorerPp(r[4]-r[3]):explorerFmtDelta(r[4]-r[3]))+'</td></tr>';}).join('')+'</tbody></table></div>';
+}
+function explorerMunicipalityRows(){
+ const base=mapState.indexes['2022_1T'];if(!base)return [];
+ const rows=[];
+ for(const [key,a] of base.entries()){
+  if(explorerState.uf&&a.uf!==explorerState.uf)continue;
+  const b=mapState.indexes['2022_2T']?.get(key),c=mapState.indexes['2026_1T']?.get(key),d=mapState.indexes['2026_2T']?.get(key);
+  if(!b||!c||!d)continue;
+  const stat=x=>{const v=x.summary?.votos||{},valid=validVoteTotal(v);return {l:num(v['13']),o:num(v['22']),valid,lp:valid?num(v['13'])/valid*100:0,op:valid?num(v['22'])/valid*100:0}};
+  const x=stat(a),y=stat(b),z=stat(c),w=stat(d);
+  rows.push({name:a.name,uf:a.uf,code:a.code,x,y,z,w,delta22:y.lp-x.lp,delta26:w.lp-z.lp,deltaVotes22:y.l-x.l,deltaVotes26:w.l-z.l});
+ }
+ return rows;
+}
+function renderExplorerTab(){
+ const root=$('tab-explorador');
+ root.innerHTML='<div class="geo-head"><div><div class="geo-title">Explorador comparativo eleitoral</div><div class="geo-sub">Quatro recortes, métricas consistentes e comparação entre turnos e eleições. Percentuais calculados sobre votos válidos.</div></div><span class="explorer-tag">Visão municipal agregada</span></div><div class="explorer-toolbar"><div class="field"><label>Território</label><select id="explorerUF"><option value="">Brasil (soma municipal)</option></select></div><div class="field"><label>Município</label><select id="explorerMunicipio"><option value="">Todos os municípios</option></select></div><div class="field"><label>Ordenação da tabela</label><select id="explorerSort"><option value="delta">Maior variação 1T→2T (2026)</option><option value="delta22">Maior variação 1T→2T (2022)</option><option value="votes">Mais votos para Lula (2026 2T)</option><option value="name">Nome do município</option></select></div></div><div id="explorerContent"><div class="empty">Carregando índices dos quatro turnos…</div></div>';
+ const ufSel=$('explorerUF'),munSel=$('explorerMunicipio');
+ const ufs=Object.keys(state.years['2022'].index?.ufs||{}).filter(u=>u!=='ZZ').sort();
+ ufSel.innerHTML='<option value="">Brasil (soma municipal)</option>'+ufs.map(u=>option(u,u)).join('');ufSel.value=explorerState.uf;
+ function fillMunicipios(){const idx=mapState.indexes['2022_1T'];const opts=[...idx.values()].filter(x=>!explorerState.uf||x.uf===explorerState.uf).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));munSel.innerHTML='<option value="">Todos os municípios</option>'+opts.map(x=>option(x.code,x.name+' • '+x.uf)).join('');if(!opts.some(x=>x.code===explorerState.municipio))explorerState.municipio='';munSel.value=explorerState.municipio;}
+ fillMunicipios();$('explorerSort').value=explorerState.sort;
+ ufSel.onchange=()=>{explorerState.uf=ufSel.value;explorerState.municipio='';fillMunicipios();paint();};
+ munSel.onchange=()=>{explorerState.municipio=munSel.value;paint();};
+ $('explorerSort').onchange=()=>{explorerState.sort=$('explorerSort').value;paint();};
+ function paint(){
+  const sums=Object.fromEntries(EXPLORER_PERIODS.map(p=>[p.key,explorerPeriodSummary(p.key)]));
+  const s22a=sums['2022_1T'],s22b=sums['2022_2T'],s26a=sums['2026_1T'],s26b=sums['2026_2T'];
+  const selected=explorerState.municipio?munSel.options[munSel.selectedIndex]?.text:explorerState.uf||'Brasil (soma municipal)';
+  const kpis='<div class="explorer-kpis"><div class="explorer-kpi"><div class="eyebrow">Lula · variação 2022 entre turnos</div><div class="value">'+explorerPp(s22b.shareLula-s22a.shareLula)+'</div><div class="detail">'+explorerFmtDelta(s22b.lula-s22a.lula)+' votos</div></div><div class="explorer-kpi"><div class="eyebrow">Lula · variação 2026 entre turnos</div><div class="value">'+explorerPp(s26b.shareLula-s26a.shareLula)+'</div><div class="detail">'+explorerFmtDelta(s26b.lula-s26a.lula)+' votos</div></div><div class="explorer-kpi"><div class="eyebrow">Votos válidos · 2022</div><div class="value">'+fmt(s22b.valid)+'</div><div class="detail">2º turno • soma municipal</div></div><div class="explorer-kpi"><div class="eyebrow">Votos válidos · 2026</div><div class="value">'+fmt(s26b.valid)+'</div><div class="detail">2º turno • soma municipal</div></div></div>';
+  let cards=explorerPeriodCards(sums);
+  let rows=explorerMunicipalityRows();
+  const sort=explorerState.sort;rows.sort((a,b)=>sort==='name'?a.name.localeCompare(b.name,'pt-BR'):sort==='delta22'?b.delta22-a.delta22:sort==='votes'?b.w.l-a.w.l:b.delta26-a.delta26);
+  const showRows=rows.slice(0,100);
+  const table='<div class="explorer-section-title"><div><h3>Detalhamento municipal</h3><p>Até 100 municípios por página de visualização; exporte o conjunto filtrado em CSV.</p></div><div class="explorer-table-actions"><button class="btn" id="explorerExport">Exportar CSV</button></div></div><div class="tablewrap"><table class="table"><thead><tr><th>Município</th><th>UF</th><th>Lula 2022 1T</th><th>Lula 2022 2T</th><th>Δ 2022 (p.p.)</th><th>Lula 2026 1T</th><th>Lula 2026 2T</th><th>Δ 2026 (p.p.)</th><th>Flávio 2026 2T</th></tr></thead><tbody>'+showRows.map(r=>'<tr><td>'+escapeHtml(r.name)+'</td><td>'+r.uf+'</td><td>'+pct(r.x.lp,2)+'</td><td>'+pct(r.y.lp,2)+'</td><td class="'+(r.delta22>=0?'delta-up':'delta-down')+'">'+explorerPp(r.delta22)+'</td><td>'+pct(r.z.lp,2)+'</td><td>'+pct(r.w.lp,2)+'</td><td class="'+(r.delta26>=0?'delta-up':'delta-down')+'">'+explorerPp(r.delta26)+'</td><td>'+fmt(r.w.o)+'</td></tr>').join('')+'</tbody></table></div>';
+  const comparison='<div class="explorer-section-title"><div><h3>Comparação dos quatro recortes</h3><p>Valores absolutos e percentuais de votos válidos no território selecionado: '+escapeHtml(selected)+'.</p></div></div>'+explorerComparisonTable(sums);
+  const warning='<div class="notice" style="margin-top:14px"><strong>Nota metodológica.</strong> O painel agrega os resumos municipais presentes nos quatro arquivos <code>index.json</code>. Por isso, o total nacional desta tela é a soma dos municípios e pode não incluir seções no exterior. A variação entre turnos é uma diferença entre totais agregados, não uma medida de transferência individual de votos.</div>';
+  $('explorerContent').innerHTML=kpis+'<div class="explorer-section-title"><div><h3>Os quatro recortes eleitorais</h3><p>Votos absolutos, participação nos válidos e volume de votos válidos.</p></div></div><div class="explorer-periods">'+cards+'</div>'+comparison+table+warning;
+  $('explorerExport').onclick=()=>{const header=['municipio','UF','Lula_2022_1T','Lula_2022_2T','Lula_pct_2022_1T','Lula_pct_2022_2T','delta_pp_2022','Lula_2026_1T','Lula_2026_2T','Lula_pct_2026_1T','Lula_pct_2026_2T','delta_pp_2026','Flavio_2026_2T'];const csv=[header.join(';'),...rows.map(r=>[r.name,r.uf,r.x.l,r.y.l,r.x.lp.toFixed(4),r.y.lp.toFixed(4),r.delta22.toFixed(4),r.z.l,r.w.l,r.z.lp.toFixed(4),r.w.lp.toFixed(4),r.delta26.toFixed(4),r.w.o].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';'))].join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='comparacao_eleitoral_municipios.csv';a.click();URL.revokeObjectURL(url);};
+ }
+ paint();
+}
+
+const mapState={map:null,layer:null,geojson:null,loaded:false,loading:false,uiReady:false,kind:'majority22_1T',uf:'',matched:0,unmatched:0,index22:null,index26:null,indexes:{}};
 const GEOJSON_URL='https://cdn.jsdelivr.net/gh/henriquemalvar/br-geojson@main/dist/municipios/all.geojson';
 function normName(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
 // Padroniza variantes de grafia entre os dados eleitorais e a malha municipal.
@@ -1081,8 +1138,8 @@ function winnerFromSummary(summary,year){
   }
   return {code:bestCode,votes:Math.max(0,bestVotes)};
 }
-function municipalityMapIndex(year){
-  const out=new Map(); const idx=state.years[year].index;
+function municipalityMapIndex(year, sourceIndex=null){
+  const out=new Map(); const idx=sourceIndex||state.years[year].index;
   if(!idx?.ufs)return out;
   for(const [uf,u] of Object.entries(idx.ufs)){
     if(uf==='ZZ')continue;
@@ -1092,6 +1149,16 @@ function municipalityMapIndex(year){
     }
   }
   return out;
+}
+async function loadAllMapIndexes(){
+  const specs=[['2022_1T','presidente_detalhado_2022/'],['2022_2T','presidente_detalhado_2022_2T/'],['2026_1T','presidente_detalhado_2026/'],['2026_2T','presidente_detalhado_2026_2T/']];
+  for(const [key,folder] of specs){
+    if(mapState.indexes[key])continue;
+    const response=await fetch(new URL('index.json',new URL(folder,document.baseURI)));
+    if(!response.ok)throw new Error('Não foi possível carregar '+folder+'index.json ('+response.status+').');
+    mapState.indexes[key]=municipalityMapIndex(key.slice(0,4),await response.json());
+  }
+  mapState.index22=mapState.indexes['2022_1T']; mapState.index26=mapState.indexes['2026_1T'];
 }
 function mapFeatureKey(f){
   const p=f?.properties||{};
@@ -1138,44 +1205,47 @@ function findMunicipalityMatch(index,uf,name){
   }
   return ties===1?best:null;
 }
+function mapPair(){
+  const k=mapState.kind;
+  if(k==='majority22_1T')return ['2022_1T','2022_1T'];
+  if(k==='majority22_2T')return ['2022_2T','2022_2T'];
+  if(k==='majority26_1T')return ['2026_1T','2026_1T'];
+  if(k==='majority26_2T')return ['2026_2T','2026_2T'];
+  if(k==='delta22'||k==='votes22')return ['2022_1T','2022_2T'];
+  if(k==='delta26'||k==='votes26')return ['2026_1T','2026_2T'];
+  if(k==='delta2T'||k==='switch2T')return ['2022_2T','2026_2T'];
+  return ['2022_1T','2026_1T'];
+}
 function mapStatsForFeature(feature){
   const p=feature?.properties||{};
   const uf=String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase();
   const name=String(p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||'');
+  const [ka,kb]=mapPair(), ia=mapState.indexes[ka], ib=mapState.indexes[kb];
   const key=mapFeatureKey(feature);
-  const a=mapState.index22?.get(key)||findMunicipalityMatch(mapState.index22,uf,name);
-  const b=mapState.index26?.get(key)||findMunicipalityMatch(mapState.index26,uf,name);
+  const a=ia?.get(key)||findMunicipalityMatch(ia,uf,name), b=ib?.get(key)||findMunicipalityMatch(ib,uf,name);
   if(!a&&!b)return null;
-  const s22=a?.summary||{votos:{}},s26=b?.summary||{votos:{}};
-  const v22=s22.votos||{},v26=s26.votos||{};
-  const valid22=validVoteTotal(v22),valid26=validVoteTotal(v26);
-  const lula22=num(v22['13']),op22=num(v22['22']),lula26=num(v26['13']),op26=num(v26['22']);
-  const win22=winnerFromSummary(s22,'2022'),win26=winnerFromSummary(s26,'2026');
-  const share22=valid22?lula22/valid22*100:0,share26=valid26?lula26/valid26*100:0;
-  return {key,uf:a?.uf||b?.uf||feature.properties?.uf||'',name:a?.name||b?.name||feature.properties?.nome||feature.properties?.name||'Município',code:a?.code||b?.code||'',v22,v26,valid22,valid26,lula22,op22,lula26,op26,share22,share26,deltaPp:share26-share22,win22,win26,majority22:valid22>0&&lula22/valid22>.5?'lula':valid22>0&&op22/valid22>.5?'opos':'none',majority26:valid26>0&&lula26/valid26>.5?'lula':valid26>0&&op26/valid26>.5?'opos':'none'};
+  const sa=a?.summary||{votos:{}}, sb=b?.summary||{votos:{}};
+  const va=sa.votos||{}, vb=sb.votos||{};
+  const validA=validVoteTotal(va),validB=validVoteTotal(vb);
+  const lulaA=num(va['13']),opA=num(va['22']),lulaB=num(vb['13']),opB=num(vb['22']);
+  const winA=winnerFromSummary(sa,ka.slice(0,4)),winB=winnerFromSummary(sb,kb.slice(0,4));
+  const shareA=validA?lulaA/validA*100:0,shareB=validB?lulaB/validB*100:0;
+  return {key,uf:a?.uf||b?.uf||uf,name:a?.name||b?.name||name||'Município',code:a?.code||b?.code||'',ka,kb,va,vb,validA,validB,lulaA,opA,lulaB,opB,shareA,shareB,deltaPp:shareB-shareA,deltaLulaVotes:lulaB-lulaA,winA,winB,majorityA:validA>0&&lulaA/validA>.5?'lula':validA>0&&opA/validA>.5?'opos':'none',majorityB:validB>0&&lulaB/validB>.5?'lula':validB>0&&opB/validB>.5?'opos':'none'};
 }
 function mapFill(d){
   if(!d)return '#293346';
-  if(mapState.kind==='majority22'){
-    if(d.majority22==='lula')return '#c6283d';
-    if(d.majority22==='opos')return '#2867bd';
-    if(d.lula22>d.op22)return '#e88b98';
-    if(d.op22>d.lula22)return '#8bb8ec';
-    return '#687386';
+  if(mapState.kind.startsWith('majority')){
+    const m=d.majorityA;
+    const l=d.lulaA, o=d.opA;
+    if(m==='lula')return '#c6283d'; if(m==='opos')return '#2867bd';
+    if(l>o)return '#e88b98'; if(o>l)return '#8bb8ec'; return '#687386';
   }
-  if(mapState.kind==='majority26'){
-    if(d.majority26==='lula')return '#c6283d';
-    if(d.majority26==='opos')return '#2867bd';
-    if(d.lula26>d.op26)return '#e88b98';
-    if(d.op26>d.lula26)return '#8bb8ec';
-    return '#687386';
+  if(mapState.kind==='votes22'||mapState.kind==='votes26'){
+    const x=d.deltaLulaVotes; if(x>=10000)return '#087f5b'; if(x>=1000)return '#2ca782'; if(x>0)return '#86cdb4'; if(x<=-10000)return '#a61e32'; if(x<=-1000)return '#d9485f'; if(x<0)return '#e9a1aa'; return '#6f7b8e';
   }
-  if(mapState.kind==='switch'){
-    const l22=d.win22.code==='13',l26=d.win26.code==='13';
-    if(l22&&l26)return '#c6283d';
-    if(l22&&!l26)return '#2878d0';
-    if(!l22&&l26)return '#d97706';
-    return '#747e8e';
+  if(mapState.kind.startsWith('switch')){
+    const lA=d.winA.code==='13',lB=d.winB.code==='13';
+    if(lA&&lB)return '#c6283d'; if(lA&&!lB)return '#2878d0'; if(!lA&&lB)return '#d97706'; return '#747e8e';
   }
   const x=d.deltaPp;
   if(x>=8)return '#087f5b'; if(x>=3)return '#2ca782'; if(x>0.5)return '#86cdb4';
@@ -1183,17 +1253,18 @@ function mapFill(d){
 }
 function mapStyle(feature){const d=mapStatsForFeature(feature);if(mapState.uf&&d?.uf!==mapState.uf)return {color:'#243147',weight:.25,fillColor:'#0e1728',fillOpacity:.08};return {color:'#18243a',weight:.55,opacity:.9,fillColor:mapFill(d),fillOpacity:.86};}
 function mapPopup(d){if(!d)return '<strong>Sem correspondência com a base eleitoral</strong>';
-  const winnerName=(year,w)=>w.code?candidateName(year,w.code):'Sem dados';
-  return '<strong>'+escapeHtml(d.name)+' • '+escapeHtml(d.uf)+'</strong><hr style="border-color:#33445f">'+
-  '<b>2022</b><br>Lula: '+fmt(d.lula22)+' ('+pct(d.share22,2)+')<br>Jair Bolsonaro: '+fmt(d.op22)+' ('+pct(d.valid22?d.op22/d.valid22*100:0,2)+')<br>Mais votado: '+escapeHtml(winnerName('2022',d.win22))+'<br><br>'+ 
-  '<b>2026</b><br>Lula: '+fmt(d.lula26)+' ('+pct(d.share26,2)+')<br>Flávio Bolsonaro: '+fmt(d.op26)+' ('+pct(d.valid26?d.op26/d.valid26*100:0,2)+')<br>Mais votado: '+escapeHtml(winnerName('2026',d.win26))+'<br><br><b>Variação da participação de Lula:</b> '+signedPct(d.deltaPp)+' p.p.';
+  const label=k=>({'2022_1T':'2022 • 1º turno','2022_2T':'2022 • 2º turno','2026_1T':'2026 • 1º turno','2026_2T':'2026 • 2º turno'}[k]||k);
+  const candidateA=d.ka.startsWith('2022')?'Jair Bolsonaro':'Flávio Bolsonaro';
+  const candidateB=d.kb.startsWith('2022')?'Jair Bolsonaro':'Flávio Bolsonaro';
+  const section=(title,lula,op,valid,share,candidate)=>'<b>'+title+'</b><br>Lula: '+fmt(lula)+' ('+pct(share,2)+')<br>'+candidate+': '+fmt(op)+' ('+pct(valid?op/valid*100:0,2)+')';
+  return '<strong>'+escapeHtml(d.name)+' • '+escapeHtml(d.uf)+'</strong><hr style="border-color:#33445f">'+section(label(d.ka),d.lulaA,d.opA,d.validA,d.shareA,candidateA)+'<br><br>'+section(label(d.kb),d.lulaB,d.opB,d.validB,d.shareB,candidateB)+'<br><br><b>Variação da participação de Lula:</b> '+signedPct(d.deltaPp)+' p.p.';
 }
 function mapLegend(){
   let items=[];
-  if(mapState.kind==='majority22')items=[['#c6283d','Lula > 50% dos votos válidos'],['#e88b98','Lula mais votado, mas ≤ 50%'],['#2867bd','Jair Bolsonaro > 50%'],['#8bb8ec','Jair Bolsonaro mais votado, mas ≤ 50%'],['#687386','Empate entre os dois candidatos']];
-  if(mapState.kind==='majority26')items=[['#c6283d','Lula > 50% dos votos válidos'],['#e88b98','Lula mais votado, mas ≤ 50%'],['#2867bd','Flávio Bolsonaro > 50%'],['#8bb8ec','Flávio Bolsonaro mais votado, mas ≤ 50%'],['#687386','Empate entre os dois candidatos']];
-  if(mapState.kind==='switch')items=[['#c6283d','Lula mais votado nos dois anos'],['#2878d0','Lula mais votado em 2022; adversário em 2026'],['#d97706','Adversário em 2022; Lula em 2026'],['#747e8e','Adversário mais votado nos dois anos']];
-  if(mapState.kind==='delta')items=[['#087f5b','Aumento ≥ 8 p.p.'],['#2ca782','Aumento de 3 a 8 p.p.'],['#86cdb4','Aumento de 0,5 a 3 p.p.'],['#6f7b8e','Variação entre −0,5 e +0,5 p.p.'],['#e9a1aa','Queda de 0,5 a 3 p.p.'],['#d9485f','Queda de 3 a 8 p.p.'],['#a61e32','Queda ≥ 8 p.p.']];
+  if(mapState.kind.startsWith('majority'))items=[['#c6283d','Lula > 50% dos votos válidos'],['#e88b98','Lula mais votado, mas ≤ 50%'],['#2867bd','Adversário > 50%'],['#8bb8ec','Adversário mais votado, mas ≤ 50%'],['#687386','Empate entre os dois candidatos']];
+  else if(mapState.kind==='votes22'||mapState.kind==='votes26')items=[['#087f5b','Aumento ≥ 10 mil votos'],['#2ca782','Aumento de 1 mil a 10 mil'],['#86cdb4','Aumento de até 1 mil'],['#6f7b8e','Sem variação'],['#e9a1aa','Queda de até 1 mil'],['#d9485f','Queda de 1 mil a 10 mil'],['#a61e32','Queda ≥ 10 mil']];
+  else if(mapState.kind.startsWith('switch'))items=[['#c6283d','Lula mais votado nos dois recortes'],['#2878d0','Lula no primeiro; adversário no segundo'],['#d97706','Adversário no primeiro; Lula no segundo'],['#747e8e','Adversário mais votado nos dois recortes']];
+  else items=[['#087f5b','Aumento ≥ 8 p.p.'],['#2ca782','Aumento de 3 a 8 p.p.'],['#86cdb4','Aumento de 0,5 a 3 p.p.'],['#6f7b8e','Variação entre −0,5 e +0,5 p.p.'],['#e9a1aa','Queda de 0,5 a 3 p.p.'],['#d9485f','Queda de 3 a 8 p.p.'],['#a61e32','Queda ≥ 8 p.p.']];
   return items.map(([c,l])=>'<div class="map-legend-item"><span class="map-swatch" style="background:'+c+'"></span><span>'+l+'</span></div>').join('');
 }
 function updateMapLayer(){
@@ -1225,17 +1296,14 @@ function updateMapLayer(){
         '</tbody></table></div>';
     }
   }
-  $('mapDescription').textContent=({majority22:'Municípios onde Lula ou Jair Bolsonaro superaram 50% dos votos válidos em 2022.',majority26:'Municípios onde Lula ou Flávio Bolsonaro superaram 50% dos votos válidos em 2026.',switch:'Classificação pelo candidato mais votado em cada município nos dois primeiros turnos comparados.',delta:'Diferença da participação de Lula nos votos válidos: percentual de 2026 menos percentual de 2022.'})[mapState.kind];
+  $('mapDescription').textContent=({majority22_1T:'Maioria absoluta por município — 2022, 1º turno.',majority22_2T:'Maioria absoluta por município — 2022, 2º turno.',majority26_1T:'Maioria absoluta por município — 2026, 1º turno.',majority26_2T:'Maioria absoluta por município — 2026, 2º turno.',switch1T:'Mudança do candidato mais votado entre 2022 e 2026 no 1º turno.',switch2T:'Mudança do candidato mais votado entre 2022 e 2026 no 2º turno.',delta1T:'Diferença da participação de Lula: 2026 menos 2022, no 1º turno.',delta2T:'Diferença da participação de Lula: 2026 menos 2022, no 2º turno.',delta22:'Variação da participação de Lula entre o 1º e o 2º turno de 2022.',delta26:'Variação da participação de Lula entre o 1º e o 2º turno de 2026.',votes22:'Variação absoluta dos votos de Lula por município: 2º turno menos 1º turno de 2022.',votes26:'Variação absoluta dos votos de Lula por município: 2º turno menos 1º turno de 2026.'})[mapState.kind]||'Compare a distribuição dos votos no recorte selecionado.';
 }
 async function renderMapTab(){
   if(!hasYear('2022')||!hasYear('2026')){$('tab-mapas').innerHTML='<div class="empty">Carregue as pastas de dados detalhados de 2022 e 2026 para gerar os mapas.</div>';mapState.uiReady=false;return;}
-  if(mapState.uiReady&&mapState.map){
-    if(!mapState.index22||!mapState.index26){mapState.index22=municipalityMapIndex('2022');mapState.index26=municipalityMapIndex('2026');}
-    updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);return;
-  }
-  if(!mapState.index22||!mapState.index26){mapState.index22=municipalityMapIndex('2022');mapState.index26=municipalityMapIndex('2026');}
+  try{await loadAllMapIndexes();}catch(err){$('tab-mapas').innerHTML='<div class="empty">Não foi possível carregar as quatro bases necessárias para comparar turnos: '+escapeHtml(err.message)+'</div>';return;}
+  if(mapState.uiReady&&mapState.map){updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);return;}
   $('tab-mapas').innerHTML='<div class="geo-head"><div><div class="geo-title">Mapas eleitorais municipais</div><div class="geo-sub">Explore como a votação se distribuiu pelos municípios. Passe o cursor para ver um resumo e clique para comparar os números.</div></div><div class="small">1º turno • 2022 × 2026</div></div>'+
-  '<div class="map-toolbar"><div class="map-field"><label>Visualização</label><select id="mapKind"><option value="majority22">2022 • maioria absoluta</option><option value="majority26">2026 • maioria absoluta</option><option value="switch">Mudança do candidato mais votado</option><option value="delta">Variação da participação de Lula</option></select></div><div class="map-field"><label>Estado</label><select id="mapUF"><option value="">Brasil inteiro</option>'+Object.keys(state.years['2022'].index.ufs).filter(u=>u!=='ZZ').sort().map(u=>'<option value="'+u+'">'+u+'</option>').join('')+'</select></div><div class="map-note">As malhas municipais são carregadas da base geográfica pública do IBGE, distribuída em GeoJSON. É necessária conexão com a internet para carregar a geometria e a biblioteca do mapa.</div></div>'+
+  '<div class="map-toolbar"><div class="map-field"><label>Visualização</label><select id="mapKind"><optgroup label="Maioria absoluta por turno"><option value="majority22_1T">2022 • 1º turno</option><option value="majority22_2T">2022 • 2º turno</option><option value="majority26_1T">2026 • 1º turno</option><option value="majority26_2T">2026 • 2º turno</option></optgroup><optgroup label="Variação entre eleições"><option value="delta1T">2022 × 2026 • 1º turno</option><option value="delta2T">2022 × 2026 • 2º turno</option><option value="switch1T">Mudança do mais votado • 1º turno</option><option value="switch2T">Mudança do mais votado • 2º turno</option></optgroup><optgroup label="Variação dentro da mesma eleição"><option value="delta22">2022 • variação da participação</option><option value="votes22">2022 • variação absoluta de votos</option><option value="delta26">2026 • variação da participação</option><option value="votes26">2026 • variação absoluta de votos</option></optgroup></select></div><div class="map-field"><label>Estado</label><select id="mapUF"><option value="">Brasil inteiro</option>'+Object.keys(state.years['2022'].index.ufs).filter(u=>u!=='ZZ').sort().map(u=>'<option value="'+u+'">'+u+'</option>').join('')+'</select></div><div class="map-note">As malhas municipais são carregadas da base geográfica pública do IBGE, distribuída em GeoJSON. É necessária conexão com a internet para carregar a geometria e a biblioteca do mapa.</div></div>'+
   '<div class="map-layout"><div id="electionMap" class="election-map" role="img" aria-label="Mapa eleitoral interativo do Brasil"></div><div class="map-side"><div class="map-stat"><div class="k">Municípios com dados correspondentes</div><div id="mapMatched" class="big">—</div><div class="map-note">Correspondência por UF e nome normalizado.</div></div><div class="map-stat"><div class="k">Sem correspondência</div><div id="mapUnmatched" class="big">—</div><div class="map-note">A lista detalhada aparece abaixo do mapa.</div></div><div class="map-stat"><div class="k">Legenda</div><div id="mapLegend" class="map-legend"></div></div><div class="map-stat"><div class="k">Como interpretar</div><div id="mapDescription" class="map-note"></div><div class="map-note" style="margin-top:10px">“Maioria absoluta” significa mais de 50% dos votos válidos. O mapa de mudança usa o candidato mais votado, que não precisa ultrapassar 50%.</div></div></div></div><div class="map-stat" style="margin-top:14px"><div class="k">Diagnóstico de municípios sem correspondência</div><div id="mapUnmatchedList" class="map-note" style="margin-top:8px">A lista será exibida após carregar o mapa.</div></div>';
   mapState.uiReady=true;
   $('mapKind').value=mapState.kind;$('mapUF').value=mapState.uf;
@@ -1281,13 +1349,13 @@ function setMode(mode){
   rebuildFilters();
   renderAll();
 
-  const label=mode==='compare'?'Comparação 2022 × 2026':('Explorando '+mode); $('turnHint').textContent=(mode==='compare'?'Comparação entre 2022 e 2026':('Visualização isolada da eleição de '+mode))+' no '+turnLabel()+'.'; $('scopeLabel').textContent=(state.uf||'Brasil')+' · '+(mode==='compare'?'2022 × 2026':'eleição '+mode);
+  const label=mode==='compare'?'Comparação 2022 × 2026':('Somente '+mode);
   setStatus(label+' • selecione a abrangência geográfica','ok');
 }
 
 async function loadYearOnline(year){
   const d=state.years[year];
-  const folder='presidente_detalhado_'+year+(state.turno==='2T'?'_2T':'')+'/';
+  const folder='presidente_detalhado_'+year+'/';
   d.files.clear();
   d.loadedRanges.clear();
   d.rows=[];
@@ -1310,15 +1378,15 @@ async function loadYearOnline(year){
 }
 
 async function loadAllOnline(){
-  setStatus('Carregando índices eleitorais de 2022 e 2026 • '+turnLabel()+'…');
+  setStatus('Carregando índices eleitorais de 2022 e 2026…');
   try{
     await Promise.all([loadYearOnline('2022'),loadYearOnline('2026')]);
     $('onlineBadge').textContent='Dados carregados';
-    setStatus('Dados de 2022 e 2026 carregados • '+turnLabel()+' • selecione a abrangência geográfica','ok');
+    setStatus('Dados de 2022 e 2026 carregados • selecione a abrangência geográfica','ok');
   }catch(err){
     console.error(err);
     $('onlineBadge').textContent='Falha ao carregar dados';
-    setStatus('Erro ao carregar dados online: '+err.message+' Confira se as pastas de dados do turno selecionado estão no repositório.','err');
+    setStatus('Erro ao carregar dados online: '+err.message+' Confira se as duas pastas de dados estão no repositório.','err');
   }
 }
 
@@ -1327,30 +1395,7 @@ $('municipio').addEventListener('change',onMunicipio);
 $('zona').addEventListener('change',onZona);
 $('secao').addEventListener('change',onSecao);
 $('candidato').addEventListener('change',onCandidate);
-$('resetFilters').addEventListener('click',()=>{
-  state.uf='';state.municipio='';state.zona='';state.secao='';state.candidato='';
-  for(const y of ['2022','2026'])state.years[y].rows=[];
-  rebuildFilters();renderAll();
-  if(mapState.map)updateMapLayer();
-  $('scopeLabel').textContent='Brasil · '+(state.mode==='compare'?'2022 × 2026':'eleição '+state.mode);
-});
 
-$('turno').addEventListener('change',async()=>{
-  state.turno=$('turno').value;
-  for(const y of ['2022','2026']){
-    state.years[y].index=null;
-    state.years[y].candidates={};
-    state.years[y].files.clear();
-    state.years[y].loadedRanges.clear();
-    state.years[y].rows=[];
-    state.years[y].remoteBase=null;
-  }
-  state.uf='';state.municipio='';state.zona='';state.secao='';state.candidato='';
-  $('uf').value='';$('municipio').value='';$('zona').value='';$('secao').value='';$('candidato').value='';
-  $('onlineBadge').textContent='Carregando dados…';
-  updateDataStatus();rebuildFilters();renderAll();
-  await loadAllOnline();
-});
 document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
@@ -1359,6 +1404,7 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
   b.classList.add('active');
   $('tab-'+b.dataset.tab).classList.remove('hidden');
   if(b.dataset.tab==='mapas')renderMapTab();
+  if(b.dataset.tab==='explorador')renderExplorerTab();
 }));
 
 updateDataStatus();
