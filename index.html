@@ -133,6 +133,14 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
   </div>
 
   <div class="card">
+    <div class="modebar" aria-label="Turno eleitoral">
+      <span style="align-self:center;color:var(--muted);font-weight:800;margin-right:4px">Turno:</span>
+      <button class="mode turn active" data-turn="1T">1º Turno</button>
+      <button class="mode turn" data-turn="2T">2º Turno</button>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="toolbar">
       <div class="field"><label>UF</label><select id="uf" disabled><option value="">Brasil</option></select></div>
       <div class="field"><label>Município</label><select id="municipio" disabled><option value="">Todos</option></select></div>
@@ -181,6 +189,7 @@ const $ = id => document.getElementById(id);
 
 const state = {
   mode: 'compare',
+  turn: '1T',
   years: {
     2022: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null},
     2026: {files:new Map(), index:null, candidates:{}, loadedRanges:new Map(), rows:[], remoteBase:null}
@@ -609,7 +618,7 @@ function duelCard(year,summary){
   const barA=pairTotal?a/pairTotal*100:50;
   const barB=pairTotal?b/pairTotal*100:50;
   return '<article class="duel">'+
-    '<div class="duel-head"><div class="duel-year">'+year+' • 1º turno</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
+    '<div class="duel-head"><div class="duel-year">'+year+' • '+(state.turn==='2T'?'2º turno':'1º turno')+'</div><div class="duel-level">'+escapeHtml(levelLabel())+'</div></div>'+ 
     '<div class="faces">'+
       '<div class="cand"><div class="name">'+escapeHtml(p[0].name)+'</div><div class="role">'+escapeHtml(p[0].role)+' • nº '+p[0].code+'</div><div class="votes">'+fmt(a)+'</div><div class="share">'+pct(va)+' dos votos válidos</div></div>'+ 
       '<div class="vs">VS</div>'+ 
@@ -1404,7 +1413,7 @@ function setMode(mode){
 
 async function loadYearOnline(year){
   const d=state.years[year];
-  const folder='presidente_detalhado_'+year+'/';
+  const folder='presidente_detalhado_'+year+(state.turn==='2T'?'_2T':'')+'/';
   d.files.clear();
   d.loadedRanges.clear();
   d.rows=[];
@@ -1427,11 +1436,11 @@ async function loadYearOnline(year){
 }
 
 async function loadAllOnline(){
-  setStatus('Carregando índices eleitorais de 2022 e 2026…');
+  setStatus('Carregando índices eleitorais de 2022 ('+(state.turn==='2T'?'2º':'1º')+' turno) e 2026…');
   try{
     await Promise.all([loadYearOnline('2022'),loadYearOnline('2026')]);
     $('onlineBadge').textContent='Dados carregados';
-    setStatus('Dados de 2022 e 2026 carregados • selecione a abrangência geográfica','ok');
+    setStatus('Dados de 2022 e 2026 • '+(state.turn==='2T'?'2º':'1º')+' turno carregados • selecione a abrangência geográfica','ok');
   }catch(err){
     console.error(err);
     $('onlineBadge').textContent='Falha ao carregar dados';
@@ -1445,7 +1454,20 @@ $('zona').addEventListener('change',onZona);
 $('secao').addEventListener('change',onSecao);
 $('candidato').addEventListener('change',onCandidate);
 
-document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+document.querySelectorAll('.mode:not(.turn)').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+document.querySelectorAll('.turn').forEach(b=>b.addEventListener('click',async()=>{
+  const next=b.dataset.turn;
+  if(next===state.turn)return;
+  state.turn=next;
+  state.uf='';state.municipio='';state.zona='';state.secao='';state.candidato='';
+  for(const y of ['2022','2026']){
+    const d=state.years[y];d.index=null;d.candidates={};d.files.clear();d.loadedRanges.clear();d.rows=[];d.remoteBase=null;
+  }
+  document.querySelectorAll('.turn').forEach(x=>x.classList.toggle('active',x.dataset.turn===next));
+  updateDataStatus();rebuildFilters();renderAll();
+  $('onlineBadge').textContent='Carregando dados…';
+  await loadAllOnline();
+}));
 
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
