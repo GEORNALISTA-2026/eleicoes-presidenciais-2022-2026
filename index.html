@@ -185,7 +185,7 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
 .zero-row{padding:13px 14px;border-bottom:1px solid #e8edf4;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
 .zero-row:last-child{border-bottom:0}.zero-place{font-weight:800;color:#172033}.zero-meta{font-size:11px;color:#64748b;margin-top:3px}
 .zero-zone-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.zero-zone-tag{font-size:11px;padding:4px 7px;border-radius:6px;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}
+.zero-zone-tag{font-size:11px;padding:4px 7px;border-radius:6px;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}\n.zero-section-button{font:inherit;font-size:11px;padding:5px 8px;border-radius:7px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;cursor:pointer;font-weight:800}\n.zero-section-button:hover,.zero-section-button:focus{background:#dbeafe;border-color:#60a5fa;outline:2px solid #bfdbfe}\n.zero-detail{margin-top:14px;border:1px solid #dbe3ef;border-radius:16px;padding:18px;background:#fff;color:#172033}\n.zero-detail-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:800;font-size:18px;margin-bottom:18px}\n.zero-detail-sub{color:#64748b;font-weight:500}\n.zero-duel{display:grid;grid-template-columns:1fr 54px 1fr;gap:12px;align-items:center;text-align:center}\n.zero-duel-name{font-size:clamp(17px,2vw,25px);font-weight:900}\n.zero-duel-party{color:#64748b;font-size:13px;margin:4px 0 12px}\n.zero-duel-votes{font-size:clamp(30px,4vw,42px);font-weight:950;line-height:1.1}\n.zero-duel-pct{font-size:13px;color:#64748b;margin-top:8px}\n.zero-vs{border-radius:50%;width:48px;height:48px;background:#eff6ff;border:1px solid #dbeafe;display:grid;place-items:center;font-weight:900;color:#475569}\n.zero-detail-bar{height:10px;border-radius:99px;background:#e2e8f0;overflow:hidden;margin:18px 0}\n.zero-detail-bar span{display:block;height:100%;background:#2563eb}\n.zero-detail-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}\n.zero-detail-metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px}\n.zero-detail-metric label{display:block;color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}\n.zero-detail-metric strong{font-size:18px}\n@media(max-width:600px){.zero-duel{grid-template-columns:1fr 40px 1fr;gap:5px}.zero-detail-metrics{grid-template-columns:1fr}.zero-detail{padding:12px}}
 .zero-count{font-size:12px;font-weight:900;color:#b91c1c;white-space:nowrap}
 .zero-note{font-size:12px;line-height:1.5;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0;padding:11px 13px;border-radius:10px;margin:12px 0}
 @media(max-width:900px){.zero-layout{grid-template-columns:1fr}.zero-list{max-height:none}.zero-map{height:460px}}
@@ -1515,7 +1515,8 @@ async function zeroCollect(index){
      if(!item){item={key,uf,code:municipioCode,name:m.nm_municipio||m.nome||'Município',zones:[]};found.set(key,item);}
      let zoneItem=item.zones.find(x=>String(x.zone)===String(zone));
      if(!zoneItem){zoneItem={zone,sections:[]};item.zones.push(zoneItem);}
-     zoneItem.sections.push({section:String(row.s),votes:num(row.v?.[code])});
+     const validVotes=Object.entries(row.v||{}).reduce((sum,[candidate,v])=>sum+(candidate==='95'||candidate==='96'?0:num(v)),0);
+     zoneItem.sections.push({section:String(row.s),votes:num(row.v?.[code]),lula:num(row.v?.['13']),other:num(row.v?.['22']),validVotes,local:row.l||''});
     }
    }
   }
@@ -1542,10 +1543,32 @@ function zeroFeatureLabel(feature){
 function zeroPopup(item){
  return '<strong>'+escapeHtml(item.name)+' • '+escapeHtml(item.uf)+'</strong><hr style="border-color:#e2e8f0"><b>'+escapeHtml(zeroCandidateName())+'</b> recebeu zero votos nestas seções:<br>'+item.zones.map(z=>'Zona '+escapeHtml(z.zone)+': '+z.sections.map(s=>'Seção '+escapeHtml(s.section)+' ('+escapeHtml(s.votes)+' votos)').join('; ')).join('<br>');
 }
+function zeroShowSectionDetail(item,zone,section){
+ const target=$('zeroSectionDetail');
+ if(!target)return;
+ const year=zeroVotesState.year;
+ const nameA='Lula',nameB=year==='2022'?'Jair Bolsonaro':'Flávio Bolsonaro';
+ const partyA='PT · nº 13',partyB='PL · nº 22';
+ const a=section.lula,b=section.other,total=Math.max(0,section.validVotes);
+ const pa=total?100*a/total:0,pb=total?100*b/total:0;
+ const diff=a-b,pp=pa-pb;
+ target.innerHTML='<div class="zero-detail"><div class="zero-detail-head"><span>Confronto presidencial</span><span class="zero-detail-sub">'+escapeHtml(year)+' • '+(zeroVotesState.turn==='2T'?'2º turno':'1º turno')+'<br>'+escapeHtml(item.name)+' • Zona '+escapeHtml(zone.zone)+' • Seção '+escapeHtml(section.section)+'</span></div>'+
+ '<div class="zero-duel"><div><div class="zero-duel-name">'+nameA+'</div><div class="zero-duel-party">'+partyA+'</div><div class="zero-duel-votes">'+fmt(a)+'</div><div class="zero-duel-pct">'+pct(pa,1)+' dos votos válidos</div></div><div class="zero-vs">VS</div><div><div class="zero-duel-name">'+nameB+'</div><div class="zero-duel-party">'+partyB+'</div><div class="zero-duel-votes">'+fmt(b)+'</div><div class="zero-duel-pct">'+pct(pb,1)+' dos votos válidos</div></div></div>'+
+ '<div class="zero-detail-bar"><span style="width:'+Math.max(0,Math.min(100,pa))+'%"></span></div>'+
+ '<div class="zero-detail-metrics"><div class="zero-detail-metric"><label>Diferença em votos</label><strong>'+((diff>0?'+':'')+fmt(diff))+'</strong></div><div class="zero-detail-metric"><label>Diferença em p.p.</label><strong>'+((pp>0?'+':'')+pct(pp,2))+'</strong></div><div class="zero-detail-metric"><label>Votos válidos dos dois</label><strong>'+pct(total?(a+b)*100/total:0,1)+'</strong></div></div>'+
+ '<div class="zero-note">Percentuais calculados sobre os votos válidos registrados nesta seção. A consulta foi aberta a partir do filtro de zero votos para '+escapeHtml(zeroCandidateName())+'.</div></div>';
+ target.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 function zeroRenderList(results){
  const root=$('zeroResultsList');
  if(!results.length){root.innerHTML='<div class="empty">Nenhuma seção com zero votos para os filtros selecionados.</div>';return;}
- root.innerHTML=results.map(item=>'<div class="zero-row"><div><div class="zero-place">'+escapeHtml(item.name)+' <span class="small">('+escapeHtml(item.uf)+')</span></div><div class="zero-meta">Código municipal: '+escapeHtml(item.code)+'</div>'+item.zones.map(z=>'<div class="zero-zone-tags"><span class="zero-zone-tag">Zona '+escapeHtml(z.zone)+'</span>'+z.sections.map(s=>'<span class="zero-zone-tag">Seção '+escapeHtml(s.section)+' · '+escapeHtml(s.votes)+' votos</span>').join('')+'</div>').join('')+'</div><div class="zero-count">'+item.zones.reduce((n,z)=>n+z.sections.length,0)+' seção(ões)</div></div>').join('');
+ root.innerHTML=results.map(item=>'<div class="zero-row"><div><div class="zero-place">'+escapeHtml(item.name)+' <span class="small">('+escapeHtml(item.uf)+')</span></div><div class="zero-meta">Código municipal: '+escapeHtml(item.code)+'</div>'+item.zones.map(z=>'<div class="zero-zone-tags"><span class="zero-zone-tag">Zona '+escapeHtml(z.zone)+'</span>'+z.sections.map(s=>'<button type="button" class="zero-section-button" data-municipio="'+escapeHtml(item.key)+'" data-zona="'+escapeHtml(z.zone)+'" data-secao="'+escapeHtml(s.section)+'">Seção '+escapeHtml(s.section)+' · '+escapeHtml(s.votes)+' votos · ver confronto</button>').join('')+'</div>').join('')+'</div><div class="zero-count">'+item.zones.reduce((n,z)=>n+z.sections.length,0)+' seção(ões)</div></div>').join('')+'<div id="zeroSectionDetail" aria-live="polite"></div>';
+ root.querySelectorAll('.zero-section-button').forEach(button=>button.addEventListener('click',()=>{
+  const item=results.find(x=>x.key===button.dataset.municipio);
+  const zone=item?.zones.find(x=>String(x.zone)===button.dataset.zona);
+  const section=zone?.sections.find(x=>String(x.section)===button.dataset.secao);
+  if(item&&zone&&section)zeroShowSectionDetail(item,zone,section);
+ }));
 }
 function zeroUpdateMap(results){
  if(!zeroVotesState.map||!zeroVotesState.geojson)return;
