@@ -258,7 +258,7 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
     <button class="tab" data-tab="zonas">Zonas</button>
     <button class="tab" data-tab="secoes">Seções</button>
     <button class="tab" data-tab="candidatoTab">Candidato</button>
-    <button class="tab" data-tab="zero-votos">Zonas com zero votos</button>
+    <button class="tab" data-tab="zero-votos">Seções com zero votos</button>
   </div>
 
   <section id="tab-resumo" class="card"></section>
@@ -1494,24 +1494,37 @@ async function zeroLoadIndex(){
  zeroVotesState.indexes[key]=index;
  return index;
 }
-function zeroCollect(index){
+async function zeroCollect(index){
  const found=new Map(),code=zeroVotesState.candidate;
- for(const [uf,u] of Object.entries(index.ufs||{})){
-  if(uf==='ZZ')continue;
+ const entries=Object.entries(index.ufs||{}).filter(([uf])=>uf!=='ZZ');
+ await Promise.all(entries.map(async ([uf,u])=>{
+  const fileUrl=new URL(encodeURIComponent(uf)+'.jsonl',new URL(zeroFolder(),document.baseURI));
+  const response=await fetch(fileUrl);
+  if(!response.ok)throw new Error('Não foi possível carregar '+uf+'.jsonl ('+response.status+').');
+  const blob=await response.blob();
   for(const [municipioCode,m] of Object.entries(u.municipios||{})){
-   const zones=[];
    for(const [zone,z] of Object.entries(m.zonas||{})){
-    const summary=z.resumo;
-    if(!summary||!summary.votos)continue;
-    if(num(summary.votos[code])===0){
-     zones.push({zone,voters:num(summary.comparecimento),sections:num(summary.secoes)});
+    if(z.start==null||z.end==null)continue;
+    const raw=await blob.slice(Number(z.start),Number(z.end)).text();
+    for(const line of raw.split('\n').filter(Boolean)){
+     let row;
+     try{row=JSON.parse(line);}catch(err){continue;}
+     if(num(row.v?.[code])!==0)continue;
+     const key=uf+'|'+normMapName(m.nm_municipio||m.nome||'');
+     let item=found.get(key);
+     if(!item){item={key,uf,code:municipioCode,name:m.nm_municipio||m.nome||'Município',zones:[]};found.set(key,item);}
+     let zoneItem=item.zones.find(x=>String(x.zone)===String(zone));
+     if(!zoneItem){zoneItem={zone,sections:[]};item.zones.push(zoneItem);}
+     zoneItem.sections.push({section:String(row.s),votes:num(row.v?.[code])});
     }
    }
-   if(zones.length){
-    zones.sort((a,b)=>num(a.zone)-num(b.zone));
-    const key=uf+'|'+normMapName(m.nm_municipio||m.nome||'');
-    found.set(key,{key,uf,code:municipioCode,name:m.nm_municipio||m.nome||'Município',zones});
-   }
+  }
+ }));
+ for(const item of found.values()){
+  item.zones.sort((a,b)=>num(a.zone)-num(b.zone));
+  for(const zone of item.zones){
+   const seen=new Set();
+   zone.sections=zone.sections.filter(s=>{if(seen.has(s.section))return false;seen.add(s.section);return true;}).sort((a,b)=>num(a.section)-num(b.section));
   }
  }
  return [...found.values()].sort((a,b)=>a.uf.localeCompare(b.uf)||a.name.localeCompare(b.name,'pt-BR'));
@@ -1527,12 +1540,12 @@ function zeroFeatureLabel(feature){
  return {uf:String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase(),name:String(p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||'')};
 }
 function zeroPopup(item){
- return '<strong>'+escapeHtml(item.name)+' • '+escapeHtml(item.uf)+'</strong><hr style="border-color:#e2e8f0"><b>'+escapeHtml(zeroCandidateName())+'</b> recebeu zero votos em '+item.zones.length+' zona(s):<br>'+item.zones.map(z=>'Zona '+escapeHtml(z.zone)).join(', ');
+ return '<strong>'+escapeHtml(item.name)+' • '+escapeHtml(item.uf)+'</strong><hr style="border-color:#e2e8f0"><b>'+escapeHtml(zeroCandidateName())+'</b> recebeu zero votos nestas seções:<br>'+item.zones.map(z=>'Zona '+escapeHtml(z.zone)+': '+z.sections.map(s=>'Seção '+escapeHtml(s.section)+' ('+escapeHtml(s.votes)+' votos)').join('; ')).join('<br>');
 }
 function zeroRenderList(results){
  const root=$('zeroResultsList');
- if(!results.length){root.innerHTML='<div class="empty">Nenhuma zona com zero votos para os filtros selecionados.</div>';return;}
- root.innerHTML=results.map(item=>'<div class="zero-row"><div><div class="zero-place">'+escapeHtml(item.name)+' <span class="small">('+escapeHtml(item.uf)+')</span></div><div class="zero-meta">Código municipal: '+escapeHtml(item.code)+'</div><div class="zero-zone-tags">'+item.zones.map(z=>'<span class="zero-zone-tag">Zona '+escapeHtml(z.zone)+'</span>').join('')+'</div></div><div class="zero-count">'+item.zones.length+' zona(s)</div></div>').join('');
+ if(!results.length){root.innerHTML='<div class="empty">Nenhuma seção com zero votos para os filtros selecionados.</div>';return;}
+ root.innerHTML=results.map(item=>'<div class="zero-row"><div><div class="zero-place">'+escapeHtml(item.name)+' <span class="small">('+escapeHtml(item.uf)+')</span></div><div class="zero-meta">Código municipal: '+escapeHtml(item.code)+'</div>'+item.zones.map(z=>'<div class="zero-zone-tags"><span class="zero-zone-tag">Zona '+escapeHtml(z.zone)+'</span>'+z.sections.map(s=>'<span class="zero-zone-tag">Seção '+escapeHtml(s.section)+' · '+escapeHtml(s.votes)+' votos</span>').join('')+'</div>').join('')+'</div><div class="zero-count">'+item.zones.reduce((n,z)=>n+z.sections.length,0)+' seção(ões)</div></div>').join('');
 }
 function zeroUpdateMap(results){
  if(!zeroVotesState.map||!zeroVotesState.geojson)return;
@@ -1559,14 +1572,15 @@ async function renderZeroVotesTab(){
  try{
   const index=await zeroLoadIndex();
   if(token!==zeroVotesState.renderToken)return;
-  const results=zeroCollect(index);
+  const results=await zeroCollect(index);
   const totalZones=results.reduce((sum,x)=>sum+x.zones.length,0);
-  root.innerHTML='<div class="geo-head"><div><div class="geo-title">Zonas eleitorais com zero votos</div><div class="geo-sub">Identifique municípios com uma ou mais zonas em que o candidato selecionado não recebeu votos.</div></div></div>'+
+  const totalSections=results.reduce((sum,x)=>sum+x.zones.reduce((n,z)=>n+z.sections.length,0),0);
+  root.innerHTML='<div class="geo-head"><div><div class="geo-title">Seções eleitorais com zero votos</div><div class="geo-sub">Identifique municípios e seções em que o candidato selecionado recebeu exatamente zero votos.</div></div></div>'+
    '<div class="zero-toolbar"><div class="zero-field"><label for="zeroYear">Ano da eleição</label><select id="zeroYear"><option value="2022">2022</option><option value="2026">2026</option></select></div><div class="zero-field"><label for="zeroTurn">Turno</label><select id="zeroTurn"><option value="1T">1º turno</option><option value="2T">2º turno</option></select></div></div>'+
    '<div class="zero-field"><label>Candidato</label><div class="zero-candidates" id="zeroCandidateOptions"></div></div>'+
-   '<div class="zero-note">O resultado é calculado a partir do resumo oficial de cada zona na base detalhada selecionada. Uma zona só é listada quando o total registrado para o candidato é zero. Isso, isoladamente, não indica irregularidade.</div>'+
-   '<div class="zero-summary"><div class="zero-summary-card"><div class="k">Municípios afetados</div><div class="v" id="zeroMunicipalityCount">'+fmt(results.length)+'</div></div><div class="zero-summary-card"><div class="k">Zonas com zero votos</div><div class="v" id="zeroZoneCount">'+fmt(totalZones)+'</div></div><div class="zero-summary-card"><div class="k">Candidato selecionado</div><div class="v" id="zeroCandidateLabel" style="font-size:18px">'+escapeHtml(zeroCandidateName())+'</div></div></div>'+
-   '<div class="zero-layout"><div><h3>Mapa dos municípios</h3><div id="zeroVotesMap" class="zero-map" role="img" aria-label="Mapa de municípios com zonas eleitorais onde o candidato recebeu zero votos"></div><div class="zero-note"><span style="display:inline-block;width:11px;height:11px;background:#e11d48;border-radius:3px;margin-right:6px"></span>Município com pelo menos uma zona com zero votos. Passe o cursor ou clique no município para ver as zonas.</div></div><div><h3>Municípios e zonas identificados</h3><div id="zeroResultsList" class="tablewrap zero-list"></div></div></div>';
+   '<div class="zero-note">A consulta verifica os registros individuais de cada seção eleitoral. Uma seção com zero votos, isoladamente, não indica irregularidade.</div>'+
+   '<div class="zero-summary"><div class="zero-summary-card"><div class="k">Municípios afetados</div><div class="v" id="zeroMunicipalityCount">'+fmt(results.length)+'</div></div><div class="zero-summary-card"><div class="k">Seções com zero votos</div><div class="v" id="zeroZoneCount">'+fmt(totalSections)+'</div></div><div class="zero-summary-card"><div class="k">Candidato selecionado</div><div class="v" id="zeroCandidateLabel" style="font-size:18px">'+escapeHtml(zeroCandidateName())+'</div></div></div>'+
+   '<div class="zero-layout"><div><h3>Mapa dos municípios</h3><div id="zeroVotesMap" class="zero-map" role="img" aria-label="Mapa de municípios com zonas eleitorais onde o candidato recebeu zero votos"></div><div class="zero-note"><span style="display:inline-block;width:11px;height:11px;background:#e11d48;border-radius:3px;margin-right:6px"></span>Município com pelo menos uma zona com zero votos. Passe o cursor ou clique no município para ver as zonas e seções.</div></div><div><h3>Municípios, zonas e seções identificados</h3><div id="zeroResultsList" class="tablewrap zero-list"></div></div></div>';
   $('zeroYear').value=zeroVotesState.year;$('zeroTurn').value=zeroVotesState.turn;
   const candidates=zeroVotesState.year==='2022'?[['13','Lula'],['22','Jair Bolsonaro']]:[['13','Lula'],['22','Flávio Bolsonaro']];
   $('zeroCandidateOptions').innerHTML=candidates.map(([code,name])=>'<label class="zero-candidate"><input type="radio" name="zeroCandidate" value="'+code+'" '+(zeroVotesState.candidate===code?'checked':'')+'>'+name+'</label>').join('');
@@ -1588,7 +1602,7 @@ async function renderZeroVotesTab(){
   }
   zeroUpdateMap(results);
   $('zeroMunicipalityCount').textContent=fmt(results.length);
-  $('zeroZoneCount').textContent=fmt(totalZones);
+  $('zeroZoneCount').textContent=fmt(totalSections);
   $('zeroCandidateLabel').textContent=zeroCandidateName();
  }catch(err){
   if(token!==zeroVotesState.renderToken)return;
