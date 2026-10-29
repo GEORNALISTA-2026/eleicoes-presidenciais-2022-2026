@@ -1590,7 +1590,6 @@ async function renderZeroVotesTab(){
   $('zeroMunicipalityCount').textContent=fmt(results.length);
   $('zeroSectionCount').textContent=fmt(totalSections);
   $('zeroZoneCount').textContent=fmt(totalZones);
-  $('zeroCandidateLabel')?.textContent=zeroCandidateName();
  }catch(err){
   if(token!==zeroVotesState.renderToken)return;
   root.innerHTML='<div class="empty">Não foi possível gerar a consulta: '+escapeHtml(err.message)+'</div>';
