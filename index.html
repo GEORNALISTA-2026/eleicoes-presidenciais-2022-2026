@@ -97,6 +97,75 @@ body{background:radial-gradient(900px 420px at 8% -10%,rgba(73,119,191,.28),tran
 @media(max-width:1000px){.explorer-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-periods{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.explorer-toolbar,.explorer-periods{grid-template-columns:1fr}.explorer-chart-row{grid-template-columns:100px 1fr 75px;gap:6px}.explorer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.explorer-kpi{padding:11px}}
 
+
+/* Redesign claro: hierarquia visual, contraste e navegação */
+:root{
+ --bg:#f4f7fb;--panel:#ffffff;--panel2:#f8fafc;--text:#172033;--muted:#64748b;
+ --line:#dce4ef;--accent:#2563eb;--accent2:#7c3aed;--good:#15803d;--warn:#a16207;--bad:#b91c1c;
+ --shadow:0 5px 18px rgba(15,23,42,.055);--glow:0 8px 28px rgba(15,23,42,.07);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg)!important;color:var(--text)!important;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.container{max-width:1600px;padding:26px}
+.hero{background:linear-gradient(120deg,#fff 0%,#eff6ff 100%)!important;border:1px solid #dbe7f7!important;box-shadow:var(--shadow)!important;border-radius:20px!important}
+.title h1{background:none!important;color:#172554!important;-webkit-text-fill-color:initial;font-size:clamp(26px,3vw,36px);letter-spacing:-.04em}
+.title p{color:#5b6b82!important}
+.card,.duel,.variation-card,.geo-focus-card,.geo-top-card,.map-stat,.explorer-kpi,.explorer-period,.featured-card{
+ background:#fff!important;color:var(--text)!important;border-color:#dce4ef!important;box-shadow:var(--shadow)!important;backdrop-filter:none!important
+}
+.card{border-radius:16px!important;padding:20px}
+.btn{background:#fff!important;color:#243047!important;border:1px solid #cbd5e1!important;box-shadow:none!important}
+.btn:hover{background:#f1f5f9!important;border-color:#94a3b8!important}
+.btn.primary{background:#1d4ed8!important;color:#fff!important;border-color:#1d4ed8!important}
+.modebar,.tabs{background:#e9eef6!important;padding:5px;border-radius:13px}
+.mode,.tab{background:transparent!important;color:#475569!important;border:1px solid transparent!important}
+.mode.active,.tab.active{background:#fff!important;color:#1d4ed8!important;border-color:#cbdcf7!important;box-shadow:0 2px 7px #0f172a0d!important}
+.field label,.map-field label{color:#475569!important}
+.field select,.map-field select,.explorer-toolbar select,.geo-control{
+ background:#fff!important;color:#172033!important;border:1px solid #cbd5e1!important
+}
+.field select:focus,.map-field select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px #2563eb18;outline:none}
+.metric,.explorer-kpi,.explorer-period,.featured-card,.duel-stat,.variation-delta,.variation-note,.geo-note,.notice{
+ background:#f8fafc!important;color:#172033!important;border-color:#e2e8f0!important
+}
+.metric .k,.metric .s,.small,.spot-sub,.duel-level,.cand .role,.cand .share,.duel-note,
+.variation-sub,.variation-card .chart-caption,.bar-year,.variation-delta .k,.variation-delta .s,
+.geo-sub,.geo-place small,.geo-mini,.geo-focus-sub,.geo-rank,.geo-top-card h4 small,
+.explorer-kpi .eyebrow,.explorer-kpi .detail,.explorer-period h3,.map-note,.footer{color:#64748b!important}
+.metric .v,.explorer-kpi .value,.map-stat .big{color:#172033!important}
+.spotlight:before{background:linear-gradient(90deg,#eff6ff55,transparent 45%,#f5f3ff66)!important}
+.duel{background:linear-gradient(145deg,#fff,#f8fafc)!important}
+.vs{background:#eff6ff!important;color:#475569!important;border-color:#dbeafe!important}
+.duel-stat{background:#f8fafc!important}
+.duel-bar,.bartrack,.bar{background:#e2e8f0!important}
+.duel-bar .left{background:#2563eb!important}.duel-bar .right{background:#7c3aed!important}
+.bar>i,.barfill{background:#2563eb!important}
+.tablewrap{border-color:#dce4ef!important;background:#fff!important}
+.table{color:#243047!important}
+.table th,.geo-table th{background:#eef2f7!important;color:#334155!important;border-color:#dce4ef!important}
+.table td,.geo-table td{border-color:#e8edf4!important}
+.table tr:hover td{background:#f1f5f9!important}
+.empty{color:#64748b!important}
+.notice strong{color:#172033!important}
+.pill{background:#f1f5f9!important;color:#475569!important;border-color:#dce4ef!important}
+.pill.ok{color:#166534!important;border-color:#bbf7d0!important;background:#f0fdf4!important}
+.pill.err{color:#991b1b!important;border-color:#fecaca!important;background:#fef2f2!important}
+.delta-up,.geo-positive{color:#15803d!important}.delta-down,.geo-negative{color:#b91c1c!important}
+.geo-badge{background:#eff6ff!important;color:#1d4ed8!important;border-color:#dbeafe!important}
+.geo-focus-card-head{border-color:#e2e8f0!important}
+.geo-item{border-color:#edf1f6!important}
+.map-layout .election-map{background:#eaf0f7!important;border-color:#dce4ef!important}
+.map-stat{background:#fff!important}
+.leaflet-container{background:#eaf0f7!important;color:#172033!important}
+.leaflet-tooltip,.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#fff!important;color:#172033!important;border-color:#cbd5e1!important}
+.leaflet-tooltip:before{border-top-color:#cbd5e1!important}
+.leaflet-popup-content hr{border-color:#e2e8f0!important}
+.geo-table{color:#243047!important}
+.geo-focus-card.gain{border-color:#bbf7d0!important}.geo-focus-card.loss{border-color:#fecaca!important}
+.geo-focus-card-head{background:#f8fafc!important}
+.explorer-period h3{color:#334155!important}
+@media(max-width:650px){.container{padding:12px}.hero{padding:18px!important}.card{padding:15px}.title h1{font-size:25px}}
+
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
