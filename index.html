@@ -166,6 +166,31 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
 .explorer-period h3{color:#334155!important}
 @media(max-width:650px){.container{padding:12px}.hero{padding:18px!important}.card{padding:15px}.title h1{font-size:25px}}
 
+
+/* Consulta de zonas com zero votos por candidato */
+.zero-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.zero-field{display:flex;flex-direction:column;gap:6px}.zero-field label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#475569}
+.zero-field select{padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#172033}
+.zero-candidates{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 16px}
+.zero-candidate{display:flex;align-items:center;gap:8px;border:1px solid #dce4ef;background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:750;color:#243047}
+.zero-candidate:has(input:checked){border-color:#2563eb;background:#eff6ff;color:#1d4ed8;box-shadow:0 0 0 2px #2563eb12}
+.zero-candidate input{accent-color:#2563eb}
+.zero-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.zero-summary-card{background:#fff;border:1px solid #dce4ef;border-radius:13px;padding:14px}
+.zero-summary-card .k{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#64748b;font-weight:800}
+.zero-summary-card .v{font-size:24px;font-weight:900;color:#172033;margin-top:4px}
+.zero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.9fr);gap:14px;align-items:start}
+.zero-map{height:580px;min-height:400px;border:1px solid #dce4ef;border-radius:14px;overflow:hidden;background:#eaf0f7}
+.zero-list{max-height:580px;overflow:auto}
+.zero-row{padding:13px 14px;border-bottom:1px solid #e8edf4;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.zero-row:last-child{border-bottom:0}.zero-place{font-weight:800;color:#172033}.zero-meta{font-size:11px;color:#64748b;margin-top:3px}
+.zero-zone-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.zero-zone-tag{font-size:11px;padding:4px 7px;border-radius:6px;background:#fff1f2;border:1px solid #fecdd3;color:#9f1239}
+.zero-count{font-size:12px;font-weight:900;color:#b91c1c;white-space:nowrap}
+.zero-note{font-size:12px;line-height:1.5;color:#64748b;background:#f8fafc;border:1px solid #e2e8f0;padding:11px 13px;border-radius:10px;margin:12px 0}
+@media(max-width:900px){.zero-layout{grid-template-columns:1fr}.zero-list{max-height:none}.zero-map{height:460px}}
+@media(max-width:600px){.zero-toolbar,.zero-summary{grid-template-columns:1fr}.zero-map{height:400px}.zero-candidates{display:grid;grid-template-columns:1fr}}
+
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
@@ -233,6 +258,7 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
     <button class="tab" data-tab="zonas">Zonas</button>
     <button class="tab" data-tab="secoes">Seções</button>
     <button class="tab" data-tab="candidatoTab">Candidato</button>
+    <button class="tab" data-tab="zero-votos">Zonas com zero votos</button>
   </div>
 
   <section id="tab-resumo" class="card"></section>
@@ -244,6 +270,7 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
   <section id="tab-zonas" class="card hidden"></section>
   <section id="tab-secoes" class="card hidden"></section>
   <section id="tab-candidatoTab" class="card hidden"></section>
+  <section id="tab-zero-votos" class="card hidden"></section>
 
   <div class="footer">
     Destaque: 2022 = Lula × Jair Bolsonaro • 2026 = Lula × Flávio Bolsonaro. Os nomes e números de urna seguem os registros eleitorais do TSE. Dados derivados dos bancos presidenciais e das camadas detalhadas de 2022 e 2026. O dashboard apresenta estatísticas descritivas dos dados. Em 2022, aptos e abstenções não estão disponíveis na tabela de seções usada para a camada detalhada; o comparecimento é obtido pela soma dos votos presidenciais da seção.
@@ -1451,6 +1478,123 @@ async function renderMapTab(){
   }else if(mapState.map){updateMapLayer();setTimeout(()=>mapState.map.invalidateSize(),100);}
 }
 
+
+/* Zonas eleitorais em que o candidato selecionado recebeu zero votos */
+const zeroVotesState={year:'2026',turn:'2T',candidate:'13',indexes:{},map:null,layer:null,geojson:null,geojsonPromise:null,renderToken:0};
+function zeroCandidateName(){return zeroVotesState.candidate==='13'?'Lula':(zeroVotesState.year==='2022'?'Jair Bolsonaro':'Flávio Bolsonaro');}
+function zeroFolder(){return 'presidente_detalhado_'+zeroVotesState.year+(zeroVotesState.turn==='2T'?'_2T':'')+'/';}
+async function zeroLoadIndex(){
+ const key=zeroVotesState.year+'_'+zeroVotesState.turn;
+ if(zeroVotesState.indexes[key])return zeroVotesState.indexes[key];
+ const url=new URL('index.json',new URL(zeroFolder(),document.baseURI));
+ const response=await fetch(url);
+ if(!response.ok)throw new Error('Não foi possível carregar a base '+zeroVotesState.year+' • '+zeroVotesState.turn+' ('+response.status+').');
+ const index=await response.json();
+ if(!index?.ufs)throw new Error('A base selecionada não contém os índices por UF.');
+ zeroVotesState.indexes[key]=index;
+ return index;
+}
+function zeroCollect(index){
+ const found=new Map(),code=zeroVotesState.candidate;
+ for(const [uf,u] of Object.entries(index.ufs||{})){
+  if(uf==='ZZ')continue;
+  for(const [municipioCode,m] of Object.entries(u.municipios||{})){
+   const zones=[];
+   for(const [zone,z] of Object.entries(m.zonas||{})){
+    const summary=z.resumo;
+    if(!summary||!summary.votos)continue;
+    if(num(summary.votos[code])===0){
+     zones.push({zone,voters:num(summary.comparecimento),sections:num(summary.secoes)});
+    }
+   }
+   if(zones.length){
+    zones.sort((a,b)=>num(a.zone)-num(b.zone));
+    const key=uf+'|'+normMapName(m.nm_municipio||m.nome||'');
+    found.set(key,{key,uf,code:municipioCode,name:m.nm_municipio||m.nome||'Município',zones});
+   }
+  }
+ }
+ return [...found.values()].sort((a,b)=>a.uf.localeCompare(b.uf)||a.name.localeCompare(b.name,'pt-BR'));
+}
+function zeroMapFeatureKey(feature){
+ const p=feature?.properties||{};
+ const uf=String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase();
+ const name=p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||'';
+ return uf+'|'+normMapName(name);
+}
+function zeroFeatureLabel(feature){
+ const p=feature?.properties||{};
+ return {uf:String(p.uf||p.UF||p.sigla_uf||p.SIGLA_UF||p.abbrev_state||p.state_abbr||p.state||p.STATE||'').toUpperCase(),name:String(p.nome||p.name||p.NM_MUN||p.nm_mun||p.municipio||p.MUNICIPIO||p.municipality||p.NOME_MUN||'')};
+}
+function zeroPopup(item){
+ return '<strong>'+escapeHtml(item.name)+' • '+escapeHtml(item.uf)+'</strong><hr style="border-color:#e2e8f0"><b>'+escapeHtml(zeroCandidateName())+'</b> recebeu zero votos em '+item.zones.length+' zona(s):<br>'+item.zones.map(z=>'Zona '+escapeHtml(z.zone)).join(', ');
+}
+function zeroRenderList(results){
+ const root=$('zeroResultsList');
+ if(!results.length){root.innerHTML='<div class="empty">Nenhuma zona com zero votos para os filtros selecionados.</div>';return;}
+ root.innerHTML=results.map(item=>'<div class="zero-row"><div><div class="zero-place">'+escapeHtml(item.name)+' <span class="small">('+escapeHtml(item.uf)+')</span></div><div class="zero-meta">Código municipal: '+escapeHtml(item.code)+'</div><div class="zero-zone-tags">'+item.zones.map(z=>'<span class="zero-zone-tag">Zona '+escapeHtml(z.zone)+'</span>').join('')+'</div></div><div class="zero-count">'+item.zones.length+' zona(s)</div></div>').join('');
+}
+function zeroUpdateMap(results){
+ if(!zeroVotesState.map||!zeroVotesState.geojson)return;
+ if(zeroVotesState.layer)zeroVotesState.map.removeLayer(zeroVotesState.layer);
+ const byKey=new Map(results.map(x=>[x.key,x]));
+ zeroVotesState.layer=L.geoJSON(zeroVotesState.geojson,{
+  style:feature=>{const item=byKey.get(zeroMapFeatureKey(feature));return {color:item?'#9f1239':'#cbd5e1',weight:item?1.2:.55,fillColor:item?'#e11d48':'#e8eef5',fillOpacity:item?.86:.42};},
+  onEachFeature:(feature,layer)=>{
+   const item=byKey.get(zeroMapFeatureKey(feature));
+   const label=zeroFeatureLabel(feature);
+   layer.bindTooltip(escapeHtml(label.name)+' • '+escapeHtml(label.uf)+(item?' • '+item.zones.length+' zona(s) com zero votos':''),{sticky:true});
+   if(item)layer.bindPopup(zeroPopup(item));
+  }
+ }).addTo(zeroVotesState.map);
+ const bounds=zeroVotesState.layer.getBounds();
+ if(bounds.isValid())zeroVotesState.map.fitBounds(bounds,{padding:[8,8]});
+}
+async function renderZeroVotesTab(){
+ const root=$('tab-zero-votos');
+ if(!root)return;
+ root.innerHTML='<div class="empty">Carregando índices eleitorais...</div>';
+ const token=++zeroVotesState.renderToken;
+ try{
+  const index=await zeroLoadIndex();
+  if(token!==zeroVotesState.renderToken)return;
+  const results=zeroCollect(index);
+  const totalZones=results.reduce((sum,x)=>sum+x.zones.length,0);
+  root.innerHTML='<div class="geo-head"><div><div class="geo-title">Zonas eleitorais com zero votos</div><div class="geo-sub">Identifique municípios com uma ou mais zonas em que o candidato selecionado não recebeu votos.</div></div></div>'+
+   '<div class="zero-toolbar"><div class="zero-field"><label for="zeroYear">Ano da eleição</label><select id="zeroYear"><option value="2022">2022</option><option value="2026">2026</option></select></div><div class="zero-field"><label for="zeroTurn">Turno</label><select id="zeroTurn"><option value="1T">1º turno</option><option value="2T">2º turno</option></select></div></div>'+
+   '<div class="zero-field"><label>Candidato</label><div class="zero-candidates" id="zeroCandidateOptions"></div></div>'+
+   '<div class="zero-note">O resultado é calculado a partir do resumo oficial de cada zona na base detalhada selecionada. Uma zona só é listada quando o total registrado para o candidato é zero. Isso, isoladamente, não indica irregularidade.</div>'+
+   '<div class="zero-summary"><div class="zero-summary-card"><div class="k">Municípios afetados</div><div class="v" id="zeroMunicipalityCount">'+fmt(results.length)+'</div></div><div class="zero-summary-card"><div class="k">Zonas com zero votos</div><div class="v" id="zeroZoneCount">'+fmt(totalZones)+'</div></div><div class="zero-summary-card"><div class="k">Candidato selecionado</div><div class="v" id="zeroCandidateLabel" style="font-size:18px">'+escapeHtml(zeroCandidateName())+'</div></div></div>'+
+   '<div class="zero-layout"><div><h3>Mapa dos municípios</h3><div id="zeroVotesMap" class="zero-map" role="img" aria-label="Mapa de municípios com zonas eleitorais onde o candidato recebeu zero votos"></div><div class="zero-note"><span style="display:inline-block;width:11px;height:11px;background:#e11d48;border-radius:3px;margin-right:6px"></span>Município com pelo menos uma zona com zero votos. Passe o cursor ou clique no município para ver as zonas.</div></div><div><h3>Municípios e zonas identificados</h3><div id="zeroResultsList" class="tablewrap zero-list"></div></div></div>';
+  $('zeroYear').value=zeroVotesState.year;$('zeroTurn').value=zeroVotesState.turn;
+  const candidates=zeroVotesState.year==='2022'?[['13','Lula'],['22','Jair Bolsonaro']]:[['13','Lula'],['22','Flávio Bolsonaro']];
+  $('zeroCandidateOptions').innerHTML=candidates.map(([code,name])=>'<label class="zero-candidate"><input type="radio" name="zeroCandidate" value="'+code+'" '+(zeroVotesState.candidate===code?'checked':'')+'>'+name+'</label>').join('');
+  $('zeroYear').addEventListener('change',async e=>{zeroVotesState.year=e.target.value;if(zeroVotesState.candidate==='22')zeroVotesState.candidate='22';await renderZeroVotesTab();});
+  $('zeroTurn').addEventListener('change',async e=>{zeroVotesState.turn=e.target.value;await renderZeroVotesTab();});
+  document.querySelectorAll('input[name="zeroCandidate"]').forEach(el=>el.addEventListener('change',async e=>{zeroVotesState.candidate=e.target.value;await renderZeroVotesTab();}));
+  zeroRenderList(results);
+  if(!zeroVotesState.geojson){
+   if(!zeroVotesState.geojsonPromise)zeroVotesState.geojsonPromise=fetch(GEOJSON_URL).then(r=>{if(!r.ok)throw new Error('Falha ao carregar a malha municipal ('+r.status+').');return r.json();});
+   zeroVotesState.geojson=await zeroVotesState.geojsonPromise;
+  }
+  if(token!==zeroVotesState.renderToken)return;
+  if(!zeroVotesState.map){
+   zeroVotesState.map=L.map('zeroVotesMap',{zoomControl:true,scrollWheelZoom:true,preferCanvas:true});
+   zeroVotesState.map.attributionControl.setPrefix('');
+   zeroVotesState.map.attributionControl.addAttribution('Malha municipal: IBGE • GeoJSON via br-geojson');
+  }else{
+   zeroVotesState.map.invalidateSize();
+  }
+  zeroUpdateMap(results);
+  $('zeroMunicipalityCount').textContent=fmt(results.length);
+  $('zeroZoneCount').textContent=fmt(totalZones);
+  $('zeroCandidateLabel').textContent=zeroCandidateName();
+ }catch(err){
+  if(token!==zeroVotesState.renderToken)return;
+  root.innerHTML='<div class="empty">Não foi possível gerar a consulta: '+escapeHtml(err.message)+'</div>';
+ }
+}
+
 function renderAll(){
   renderSpotlight();
   renderMetrics();
@@ -1545,6 +1689,7 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
   $('tab-'+b.dataset.tab).classList.remove('hidden');
   if(b.dataset.tab==='mapas')renderMapTab();
   if(b.dataset.tab==='explorador')renderExplorerTab();
+  if(b.dataset.tab==='zero-votos')renderZeroVotesTab();
 }));
 
 updateDataStatus();
