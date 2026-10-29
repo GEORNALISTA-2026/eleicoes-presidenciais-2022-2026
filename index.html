@@ -1539,7 +1539,7 @@ function zeroUpdateMap(results){
  if(zeroVotesState.layer)zeroVotesState.map.removeLayer(zeroVotesState.layer);
  const byKey=new Map(results.map(x=>[x.key,x]));
  zeroVotesState.layer=L.geoJSON(zeroVotesState.geojson,{
-  style:feature=>{const item=byKey.get(zeroMapFeatureKey(feature));return {color:item?'#9f1239':'#cbd5e1',weight:item?1.2:.55,fillColor:item?'#e11d48':'#e8eef5',fillOpacity:item?.86:.42};},
+  style:feature=>{const item=byKey.get(zeroMapFeatureKey(feature));return {color:item?'#9f1239':'#cbd5e1',weight:item?1.2:.55,fillColor:item?'#e11d48':'#e8eef5',fillOpacity:item ? 0.86 : 0.42};},
   onEachFeature:(feature,layer)=>{
    const item=byKey.get(zeroMapFeatureKey(feature));
    const label=zeroFeatureLabel(feature);
@@ -1553,6 +1553,7 @@ function zeroUpdateMap(results){
 async function renderZeroVotesTab(){
  const root=$('tab-zero-votos');
  if(!root)return;
+ if(zeroVotesState.map){zeroVotesState.map.remove();zeroVotesState.map=null;zeroVotesState.layer=null;}
  root.innerHTML='<div class="empty">Carregando índices eleitorais...</div>';
  const token=++zeroVotesState.renderToken;
  try{
