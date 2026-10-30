@@ -209,6 +209,21 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
 @media(max-width:900px){.zero-layout{grid-template-columns:1fr}.zero-list{max-height:none}.zero-map{height:460px}}
 @media(max-width:600px){.zero-toolbar,.zero-summary{grid-template-columns:1fr}.zero-map{height:400px}.zero-candidates{display:grid;grid-template-columns:1fr}}
 
+
+.runoff-toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.runoff-field{min-width:170px;flex:1}
+.runoff-field label{display:block;color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.runoff-field select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#172033}
+.runoff-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.runoff-kpi{padding:14px;border:1px solid #dbe3ef;border-radius:12px;background:#f8fafc}
+.runoff-kpi label{display:block;color:#64748b;font-size:11px;text-transform:uppercase}
+.runoff-kpi strong{display:block;font-size:25px;margin-top:5px;color:#172033}
+.runoff-table{width:100%;border-collapse:collapse;font-size:13px}
+.runoff-table th,.runoff-table td{padding:9px 10px;text-align:left;border-bottom:1px solid #e2e8f0;white-space:nowrap}
+.runoff-table th{background:#f8fafc;color:#475569;position:sticky;top:0}
+.runoff-table-wrap{overflow:auto;max-height:620px;border:1px solid #e2e8f0;border-radius:12px}
+.runoff-zone{font-weight:800;color:#1d4ed8}
+@media(max-width:600px){.runoff-summary{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
@@ -277,6 +292,7 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
     <button class="tab" data-tab="secoes">Seções</button>
     <button class="tab" data-tab="candidatoTab">Candidato</button>
     <button class="tab" data-tab="zero-votos">Seções com zero votos</button>
+    <button class="tab" data-tab="virada-turno">Mudança entre turnos</button>
   </div>
 
   <section id="tab-resumo" class="card"></section>
@@ -289,6 +305,7 @@ body{background:var(--bg)!important;color:var(--text)!important;font-family:Inte
   <section id="tab-secoes" class="card hidden"></section>
   <section id="tab-candidatoTab" class="card hidden"></section>
   <section id="tab-zero-votos" class="card hidden"></section>
+  <section id="tab-virada-turno" class="card hidden"></section>
 
   <div class="footer">
     Destaque: 2022 = Lula × Jair Bolsonaro • 2026 = Lula × Flávio Bolsonaro. Os nomes e números de urna seguem os registros eleitorais do TSE. Dados derivados dos bancos presidenciais e das camadas detalhadas de 2022 e 2026. O dashboard apresenta estatísticas descritivas dos dados. Em 2022, aptos e abstenções não estão disponíveis na tabela de seções usada para a camada detalhada; o comparecimento é obtido pela soma dos votos presidenciais da seção.
@@ -1746,12 +1763,85 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.tab==='mapas')renderMapTab();
   if(b.dataset.tab==='explorador')renderExplorerTab();
   if(b.dataset.tab==='zero-votos')renderZeroVotesTab();
+  if(b.dataset.tab==='virada-turno')renderRunoffTab();
 }));
 
 updateDataStatus();
 rebuildFilters();
 renderAll();
 loadAllOnline();
+
+/* Seções em que o líder mudou do primeiro para o segundo turno */
+const runoffState={year:'2022',results:{},loading:false,token:0};
+async function runoffReadRound(year,turn){
+ const folder='presidente_detalhado_'+year+(turn==='2T'?'_2T':'')+'/';
+ const base=new URL(folder,document.baseURI);
+ const ir=await fetch(new URL('index.json',base));
+ if(!ir.ok)throw new Error('Falha ao carregar índice de '+year+' '+turn+' ('+ir.status+').');
+ const index=await ir.json();
+ const records=[];
+ const ufs=Object.entries(index.ufs||{}).filter(([uf])=>uf!=='ZZ');
+ await Promise.all(ufs.map(async ([uf,u])=>{
+  const response=await fetch(new URL(encodeURIComponent(uf)+'.jsonl',base));
+  if(!response.ok)throw new Error('Falha ao carregar '+uf+'.jsonl de '+year+' '+turn+' ('+response.status+').');
+  const blob=await response.blob();
+  for(const [municipioCode,m] of Object.entries(u.municipios||{})){
+   for(const [zone,z] of Object.entries(m.zonas||{})){
+    if(z.start==null||z.end==null)continue;
+    const raw=await blob.slice(Number(z.start),Number(z.end)).text();
+    for(const line of raw.split('\n').filter(Boolean)){
+     try{
+      const row=JSON.parse(line);
+      records.push({key:uf+'|'+municipioCode+'|'+zone+'|'+String(row.s),uf,municipioCode,municipio:m.nm_municipio||m.nome||'Município',zone,section:String(row.s),lula:num(row.v?.['13']),right:num(row.v?.['22'])});
+     }catch(err){}
+    }
+   }
+  }
+ }));
+ return records;
+}
+async function runoffCalculate(year){
+ const [first,second]=await Promise.all([runoffReadRound(year,'1T'),runoffReadRound(year,'2T')]);
+ const firstMap=new Map(first.map(x=>[x.key,x]));
+ const secondMap=new Map(second.map(x=>[x.key,x]));
+ const switched=[];
+ for(const [key,a] of firstMap){
+  const b=secondMap.get(key);if(!b)continue;
+  const firstLeader=a.right>a.lula?'right':(a.lula>a.right?'lula':'tie');
+  const secondLeader=b.right>b.lula?'right':(b.lula>b.right?'lula':'tie');
+  if(firstLeader==='right'&&secondLeader==='lula'){
+   switched.push({...a,firstLula:a.lula,firstRight:a.right,secondLula:b.lula,secondRight:b.right});
+  }
+ }
+ switched.sort((a,b)=>a.uf.localeCompare(b.uf)||a.municipio.localeCompare(b.municipio,'pt-BR')||num(a.zone)-num(b.zone)||num(a.section)-num(b.section));
+ const zones=new Set(switched.map(x=>x.uf+'|'+x.municipioCode+'|'+x.zone));
+ const municipalities=new Set(switched.map(x=>x.uf+'|'+x.municipioCode));
+ return {switched,zones:zones.size,municipalities:municipalities.size,matched: [...firstMap.keys()].filter(k=>secondMap.has(k)).length};
+}
+function runoffRender(){
+ const root=$('tab-virada-turno');if(!root)return;
+ const result=runoffState.results[runoffState.year];
+ const candidate=runoffState.year==='2022'?'Jair Bolsonaro':'Flávio Bolsonaro';
+ root.innerHTML='<div class="geo-head"><div><div class="geo-title">Seções em que o líder mudou entre os turnos</div><div class="geo-sub">Identifica seções em que '+candidate+' teve mais votos que Lula no 1º turno e Lula teve mais votos que '+candidate+' no 2º turno.</div></div></div>'+
+ '<div class="runoff-toolbar"><div class="runoff-field"><label for="runoffYear">Eleição</label><select id="runoffYear"><option value="2022">2022 · Jair Bolsonaro × Lula</option><option value="2026">2026 · Flávio Bolsonaro × Lula</option></select></div></div>'+
+ (runoffState.loading?'<div class="empty">Comparando as seções dos dois turnos. Isso pode levar alguns instantes...</div>':result?'<div class="runoff-summary"><div class="runoff-kpi"><label>Seções com mudança</label><strong>'+fmt(result.switched.length)+'</strong></div><div class="runoff-kpi"><label>Zonas eleitorais</label><strong>'+fmt(result.zones)+'</strong></div><div class="runoff-kpi"><label>Municípios</label><strong>'+fmt(result.municipalities)+'</strong></div></div><div class="zero-note">Foram comparadas '+fmt(result.matched)+' seções presentes nos dois turnos. Empates não são considerados liderança. A mudança indica apenas comparação de votos por seção, não que os mesmos eleitores tenham mudado de voto.</div><div class="runoff-table-wrap"><table class="runoff-table"><thead><tr><th>UF</th><th>Município</th><th>Zona</th><th>Seção</th><th>1º turno · '+candidate+'</th><th>1º turno · Lula</th><th>2º turno · Lula</th><th>2º turno · '+candidate+'</th></tr></thead><tbody>'+result.switched.map(x=>'<tr><td>'+escapeHtml(x.uf)+'</td><td>'+escapeHtml(x.municipio)+'</td><td class="runoff-zone">'+escapeHtml(x.zone)+'</td><td>'+escapeHtml(x.section)+'</td><td>'+fmt(x.firstRight)+'</td><td>'+fmt(x.firstLula)+'</td><td>'+fmt(x.secondLula)+'</td><td>'+fmt(x.secondRight)+'</td></tr>').join('')+'</tbody></table></div>':'<div class="empty">Selecione uma eleição para iniciar a comparação.</div>');
+ $('runoffYear').value=runoffState.year;
+ $('runoffYear').addEventListener('change',e=>{runoffState.year=e.target.value;renderRunoffTab();});
+}
+async function renderRunoffTab(){
+ const root=$('tab-virada-turno');if(!root)return;
+ const token=++runoffState.token;
+ runoffState.loading=true;runoffRender();
+ try{
+  if(!runoffState.results[runoffState.year])runoffState.results[runoffState.year]=await runoffCalculate(runoffState.year);
+  if(token!==runoffState.token)return;
+  runoffState.loading=false;runoffRender();
+ }catch(err){
+  if(token!==runoffState.token)return;
+  runoffState.loading=false;
+  root.innerHTML='<div class="empty">Não foi possível comparar os turnos: '+escapeHtml(err.message)+'</div>';
+ }
+}
 </script>
 </body>
 </html>
